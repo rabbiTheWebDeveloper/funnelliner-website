@@ -1,0 +1,345 @@
+/* font-family: 'Noto Sans Bengali', sans-serif; */
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@100;200;300;400;500;600;700;800;900&display=swap");
+
+/* font-family: 'Galada', cursive; */
+@import url("https://fonts.googleapis.com/css2?family=Galada&display=swap");
+
+/* font-family: 'Poppins', sans-serif; */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap");
+
+/* font-family: 'Montserrat', sans-serif; */
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap");
+
+/* font-family: 'Noto Sans', sans-serif; */
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans:wght@100;200;300;400;500;600;700;800;900&display=swap");
+
+/* font-family: 'Raleway', sans-serif; */
+@import url("https://fonts.googleapis.com/css2?family=Raleway:wght@100;200;300;400;500;600;700;900&display=swap");
+
+/* font-family: 'Rubik', sans-serif; */
+@import url("https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800;900&display=swap");
+
+
+
+
+/* CSS Start */
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.container ul,
+.container ol {
+  list-style-type: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.container a {
+  text-decoration: none;
+}
+
+.container a:hover {
+  text-decoration: none;
+}
+
+.container a,
+.container span,
+.container p,
+.container ul,
+.container li,
+.container h1,
+.container h2,
+.container h3,
+.container h4,
+.container h5,
+.container h6 {
+  padding: 0;
+  margin: 0;
+  text-decoration: none;
+  border: 0;
+  background: none;
+  list-style-type: none;
+}
+
+:root {
+  --white: #fff;
+}
+
+/* .form-check-input:checked {
+    background-color: #3BB77E !important;
+    border-color: #000000 !important;
+} */
+  /* thank you  */
+.ThankYou{
+    background: #ffe1e1;
+    padding: 100px 0;
+    position: relative;
+}
+
+.ThankYou .svg {
+    position: absolute;
+    bottom: -80px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: -1;
+    color: var(--white_color);
+}
+
+.ThankYou .svg svg{
+    font-size: 120px;
+    color: var(--bg_color);
+}
+
+.ThankYouBanner svg{
+    font-size: 80px;
+    color: var(--white_color);
+}
+
+.ThankYouBanner h4{
+    font-family: 'Manrope', sans-serif;
+    font-weight: 700;
+    padding: 30px 0;
+    font-size: 40px;
+    line-height: 50px;
+    color: var(--white_color);
+}
+
+.ThankYouBanner p{
+    font-family: 'Manrope', sans-serif;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 28px;
+    color: var(--white_color);
+}
+
+.OrderTitle{
+    padding: 100px;
+}
+
+.OrderTitle h4{
+    font-family: 'Manrope', sans-serif;
+    font-weight: 700;
+    padding: 30px 0;
+    font-size: 28px;
+    line-height: 40px;
+}
+
+.OrderTitleContent{
+    background: #fef5f5;
+    padding: 30px;
+    text-align: left;
+}
+
+.OrderTitleContent ul{
+    text-align: left;
+    padding: 0;
+    margin: 0;
+}
+
+.OrderTitleContent ul li{
+    display: inline-block;
+    padding-right: 20px;
+    margin-right: 20px;
+    border-right: 1px dashed var(--bg_color);
+}
+
+.OrderTitleContent ul li:last-child{
+    border-right: 0;
+}
+
+.OrderTitleContent ul li p{
+    font-family: 'Manrope', sans-serif;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 24px;
+}
+
+.OrderTitleContent ul li h5{
+    font-family: 'Manrope', sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    line-height: 35px;
+    margin-top: 5px;
+}
+
+.OrderDetail{
+    margin-top: 50px;
+}
+
+.OrderDetailContent{
+    background: #fef5f5;
+    padding: 30px;
+    text-align: left;
+}
+
+.OrderDetailContent h5{
+    font-family: 'Manrope', sans-serif;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 35px;
+}
+
+.OrderDetailContentPart h4{
+    font-family: 'Manrope', sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 30px;
+    width: 50%;
+    padding: 15px 0;
+    font-weight: 700;
+}
+
+.OrderDetailContentPart h6{
+    font-family: 'Manrope', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 30px;
+    width: 50%;
+    padding: 15px 0;
+    font-weight: 400;
+}
+
+.OrderDetailContentItem{
+    border-bottom: 1px dashed var(--bg_color);
+}
+
+.OrderDetailContentItem:last-child{
+    border-bottom: 0;
+}
+
+.CallUs{
+    text-align: center;
+    margin-top: 20px;
+}
+
+.CallUs h5{
+    font-family: 'Manrope', sans-serif;
+    font-weight: 700;
+    font-size: 30px;
+    line-height: 30px;
+    padding: 15px 0;
+    font-weight: 700;
+}
+
+.CallUs a{
+    color: var(--bg_color);
+    transition: all linear .3s;
+}
+
+.CallUs a:hover{
+    color: var(--header_color);
+}
+
+/* ---------------------------------------------------------------------------------------------------------------------------------------------------
+    START Otp PART
+--------------------------------------------------------------------------------------------------------------------------------------------------- */
+.Otp{
+    background: #894BCA;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.OtpContent{
+    width: 650px;
+    padding: 30px;
+    border-radius: 20px;
+    background: var(--white);
+    text-align: center;
+}
+
+.OtpContent h4{
+    margin-top: 20px;
+    font-size: 25px;
+    line-height: 35px;
+    color: #FB8C00;
+    font-weight: 700;
+}
+
+.OtpContent p{
+    width: 80%;
+    margin: 10px auto;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.OtpContent p a{
+    color: #894BCA;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.OtpContent .Logo img{
+    height: 80px;
+}
+
+.OtpContent .OtpCode{
+    margin-top: 20px;
+}
+
+.OtpContent .OtpCode label{
+    display: block;
+    font-size: 20px;
+    line-height: 30px;
+    font-weight: 600;
+    color: #6F6F6F;
+}
+
+.OtpContent .OtpCode input{
+    width: 60px;
+    border: 1px solid #FB8C00;
+    padding: 10px;
+    border-radius: 10px;
+    margin: 0 10px;
+    margin-top: 15px;
+    text-align: center;
+    font-weight: 500;
+    font-size: 18px;
+    color: #FB8C00;
+}
+
+.OtpContent .OtpCode input:focus{
+    outline: unset;
+}
+
+.OtpContent .OtpCode .CustomeInput{
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.OtpContent .OtpCode .CustomeInput label{
+    font-size: 16px;
+    list-style: 24px;
+    margin-bottom: 10px;
+}
+
+.OtpContent .OtpCode .CustomeInput input{
+    width: 100%;
+    text-align: left;
+    margin: 0;
+}
+
+
+.OtpContent button{
+    width: 100%;
+    margin-top: 20px;
+    background: #894BCA;
+    border-radius: 10px;
+    padding: 10px 0;
+    font-size: 20px;
+    line-height: 30px;
+    font-weight: 600;
+    color: var(--white);
+    border: none;
+}
+
+.OtpContent button:hover{
+    background: #FB8C00;
+    color: var(--white);
+}
+
