@@ -1,24 +1,16 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Col, Container, Dropdown, Row } from "react-bootstrap";
-import {
-  AiOutlineHeart,
-  AiOutlineSearch,
-  AiOutlineShoppingCart,
-  AiOutlineUser,
-} from "react-icons/ai";
-import { FaCentos } from "react-icons/fa";
-// import Images from "/frontend_asset/img/logo.png";
+
 import { RotatingLines } from "react-loader-spinner";
 const axios = require("axios");
 
-import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import Button from "@mui/material/Button";
 
-import { BsChevronDown, BsGoogle } from "react-icons/bs";
+import {  BsGoogle } from "react-icons/bs";
 import { FaFacebookF, FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 import { useState } from "react";

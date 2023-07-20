@@ -15,7 +15,12 @@ import { useDispatch } from "react-redux";
 import { addToCart } from "../../../redux/stateSlices/CartSlice";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
+import { Swiper, SwiperSlide } from "swiper/react";
+import { FreeMode, Navigation, Thumbs } from "swiper";
 const ProductDescription = ({ data }) => {
+  const [thumbsSwiper, setThumbsSwiper] = useState(null);
+
   const dispatch = useDispatch();
   const router = useRouter();
   const handleAddToCart = (product) => {
@@ -29,9 +34,18 @@ const ProductDescription = ({ data }) => {
     setShopName(localStorage.getItem("shop_name"));
   }, []);
   const priceWithDiscount = parseInt(data?.price) + parseInt(data?.discount);
+
+
+  const prductIamges = []
+  prductIamges.push({ original: data?.main_image?.name, thumbnail: data?.main_image?.name })
+  if (data?.other_images?.length > 0) {
+    data.other_images.map(item => {
+      prductIamges.push({ original: item.name, thumbnail: item.name })
+    })
+  }
   return (
     <>
-      <section className='ProductDetails'>
+      {/* <section className='ProductDetails'>
         <Container>
           <Row>
             <Col xs={6}>
@@ -55,18 +69,7 @@ const ProductDescription = ({ data }) => {
 
                 <p>{data?.short_description}</p>
 
-                {/* <div className='Price'>
-                  <div   onClick={() => handleAddToCart(data)} className='Plus'>
-                    <FiPlus />
-                  </div>
-                  <div  className='Minus'>
-                    <BiMinus />
-                  </div>
-
-                  <input defaultValue={3} readOnly  type='text' />
-                </div> */}
-
-                {/* AddCart */}
+               
                 <div className='AddCart mt-5'>
                   <button onClick={() => handleAddToCart(data)}>
                     {" "}
@@ -74,7 +77,7 @@ const ProductDescription = ({ data }) => {
 
                   </button>
 
-                  <Link  onClick={() => handleBuyNow(data)} href={`/${shopName}/checkout`}>
+                  <Link onClick={() => handleBuyNow(data)} href={`/${shopName}/checkout`}>
                     {" "}
                     <BsCart4 /> Buy Now
                   </Link>
@@ -85,7 +88,7 @@ const ProductDescription = ({ data }) => {
             </Col>
           </Row>
 
-          {/* ProductTabs */}
+         
           <div className='ProductTabs'>
             <Tabs
               defaultActiveKey='profile'
@@ -96,58 +99,100 @@ const ProductDescription = ({ data }) => {
                 <div className='TabsItem'>
                   <p>{data?.short_description}</p>
 
-                  {/* <ul>
-                    <li>
-                      Nunc nec porttitor turpis. In eu risus enim. In vitae
-                      mollis elit.
-                    </li>
-                    <li>
-                      Nunc nec porttitor turpis. In eu risus enim. In vitae
-                      mollis elit.
-                    </li>
-                    <li>
-                      Nunc nec porttitor turpis. In eu risus enim. In vitae
-                      mollis elit.
-                    </li>
-                  </ul>
-
-                  <p>
-                    Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-                    Donec odio. Quisque volutpat mattis eros. Nullam malesuada
-                    erat ut turpis. Suspendisse urna viverra non, semper
-                    suscipit, posuere a, pede. Donec nec justo eget felis
-                    facilisis fermentum. Aliquam porttitor mauris sit amet orci.
-                    Aenean dignissim pellentesque felis. Phasellus ultrices
-                    nulla quis nibh. Quisque a lectus. Donec consectetuer ligula
-                    vulputate sem tristique cursus.
-                  </p> */}
                 </div>
               </Tab>
-
-              {/* <Tab eventKey="Additional information" title="Additional information">
-
-              <div className="TabsItem">
-
-                <div className="TabsItemList d_flex d_justify">
-                  <h4>Weight</h4>
-                  <h5>1 kg</h5>
-                </div>
-
-                 <div className="TabsItemList d_flex d_justify">
-                  <h4>Dimensions</h4>
-                  <h5>224 × 65 × 564 cm</h5>
-                </div>
-
-                 <div className="TabsItemList d_flex d_justify">
-                  <h4>Brand</h4>
-                  <h5>Evoylink</h5>
-                </div>
-
-              </div>
-
-              </Tab> */}
             </Tabs>
           </div>
+        </Container>
+      </section> */}
+
+
+      <section>
+        <Container>
+          <Row>
+            <Col lg={6}>
+              <ImageSliderComponent data={data}></ImageSliderComponent>
+            </Col>
+            {/* <Col lg={6}>
+              <div className='Multipage__1__SliderOneImg'>
+                <>
+                  <Swiper
+                    style={{
+                      "--swiper-navigation-color": "#fff",
+                      "--swiper-pagination-color": "#fff",
+                    }}
+                    loop={true}
+                    spaceBetween={10}
+                    navigation={true}
+                    thumbs={{ swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null }}
+                    modules={[FreeMode, Navigation, Thumbs]}
+                    className="mySwiper2"
+                  >
+
+                    {
+                      prductIamges.map((item, index) => {
+                        return (
+                          <SwiperSlide key={index}>
+                            <div className='Multipage__1__ThambImgBox'>
+                              <img src={item?.thumbnail} />
+                            </div>
+                          </SwiperSlide>
+                        )
+                      })
+                    }
+
+                  </Swiper>
+
+                  <Swiper
+                    onSwiper={setThumbsSwiper}
+                    loop={true}
+                    spaceBetween={10}
+                    slidesPerView={5}
+                    freeMode={true}
+                    watchSlidesProgress={true}
+                    modules={[FreeMode, Navigation, Thumbs]}
+                    className="mySwiper"
+                  >
+                    {
+                      prductIamges.map((item, index) => {
+                        return (
+                          <SwiperSlide key={index}>
+                            <div className='Multipage__1__ThambImgSmall'>
+                              <img src={item?.thumbnail} />
+                            </div>
+                          </SwiperSlide>
+                        )
+                      })
+                    }
+                  </Swiper>
+                </>
+              </div>
+            </Col> */}
+            <Col lg={6}>
+              <div className='Multipage__1__CartDetails'>
+                <div className='Multipage__1__CartInstcok'> {data?.product_qty >= 0 && "IN STOCK"}</div>
+                <h2>{data?.product_name}</h2>
+                <div className='Multipage__1__CartTKDiv'>
+                  <h3>{data?.price} TK</h3>
+                  <h4>{priceWithDiscount + 50}</h4>
+
+                </div>
+                <div className='Multipage__1__CartButtonDiv2'>
+                  <p>{data?.short_description}</p>
+                </div>
+                  <div className='Multipage__1__CartButtonDiv'>
+                    <button className='Multipage__1__CartButtonDivbtn1' onClick={() => handleAddToCart(data)}>
+                      {" "}
+                      <AiOutlineShoppingCart /> ADD TO CART
+                    </button>
+                    <Link onClick={() => handleBuyNow(data)} href={`/${shopName}/checkout`} className='Multipage__1__CartButtonDivbtn2'>
+                      {" "}
+                      <BsCart4 /> Buy Now
+                    </Link>
+                  </div>
+                </div>
+            </Col>
+          </Row>
         </Container>
       </section>
     </>

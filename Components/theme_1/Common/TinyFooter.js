@@ -21,7 +21,7 @@ const TinyFooter = () => {
 
                         <div className="TinyFooterItem">
                             
-                            <p>© 2022 <Link href="https://softitcare.com/">Soft IT Care</Link> . All Rights Reserved.</p>
+                            <p>© 2023 All Rights Reserved <br/> System developed by <Link href="https://funnelliner.com/">Funnel Liner</Link> </p>
 
                         </div>
 

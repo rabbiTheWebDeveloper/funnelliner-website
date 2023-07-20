@@ -4,48 +4,32 @@ import { Col, Container, Dropdown, Row, Form } from "react-bootstrap";
 import { BiCategory } from "react-icons/bi";
 import { BsChevronDown } from "react-icons/bs";
 import { AiOutlineBars } from "react-icons/ai";
-import { FaFacebookF, FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
 import Button from "react-bootstrap/Button";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import { useState, useContext, useEffect } from "react";
-import { useNode, useEditor } from "@craftjs/core";
-import ContentEditable from "react-contenteditable";
-import Context from "../../Context";
-import { baseUrl } from "../../../constant/constant";
+import { useRouter } from "next/router";
+import { GoSearch } from "react-icons/go";
+import { FiHeart } from "react-icons/fi";
+import { AiOutlineShoppingCart } from "react-icons/ai";
+import { BiUser } from "react-icons/bi";
+import { FaFacebookF, FaYoutube, FaInstagram, FaTwitter } from "react-icons/fa";
+import { IoIosArrowDown } from "react-icons/io";
 
-const Menubar = ({ menu1, menu2, menu3, menu4, fontSize, save }) => {
-  const {
-    connectors: { connect, drag },
-    hasSelectedNode,
-    hasDraggedNode,
-    actions: { setProp },
-  } = useNode((state) => ({
-    hasSelectedNode: state.events.selected.size > 0,
-    hasDraggedNode: state.events.dragged.size > 0,
-  }));
-  const { actions, query, enabled } = useEditor((state) => ({
-    enabled: true,
-  }));
+import { useSelector } from "react-redux";
+const axios = require("axios");
+import store from "../../../redux/store";
+
+const Menubar = ({ shopInfo }) => {
+  const { fb, instagram, youtube, twitter } = shopInfo;
+  const router = useRouter()
+  const cartlength = useSelector((state) => state.cart?.cartItems.length);
 
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  const contextValue = useContext(Context);
-  let editActive = false;
-  if (contextValue !== undefined) {
-    editActive = contextValue.value;
-    useEffect(() => {
-      if (contextValue.value1 === true) {
-        const serialize = query.serialize();
-        save(serialize);
-      }
-    }, [contextValue.value1]);
-  }
-
+  const shopName = router.query.shopName
   //category list
   const [categories, setCategories] = useState([]);
-  const [shopName, setShopName] = useState();
-
 
   async function handleFetchCategories(headers) {
 
@@ -62,250 +46,182 @@ const Menubar = ({ menu1, menu2, menu3, menu4, fontSize, save }) => {
 
   useEffect(() => {
     const headers = {
-     "shop-id": localStorage.getItem("shop_id"),
+      "shop-id": localStorage.getItem("shop_id"),
     };
     handleFetchCategories(headers)
-    setShopName(localStorage.getItem('shop_name'));
-    // .then((r) => console.log("r", r));
+
   }, []);
 
-  return (
-    <section className='Menubar'>
-      <Container>
-        <div className='DesktopMenu'>
-          <Row className='d_flex'>
-            {/* left  */}
-            <Col xs={3}>
-              <div className='MenubarLeftLogo'>
-                <Dropdown>
-                  <Dropdown.Toggle id='dropdown-basic'>
-                    <BiCategory /> Browse Categories <BsChevronDown />
-                  </Dropdown.Toggle>
 
-                  <Dropdown.Menu>
+  //add to cart total item count
+  const [cart1, setCart1] = useState([]);
+  const carts = useSelector((state) => state.cart);
+  useEffect(() => {
+    setCart1(carts?.cartItems);
+  }, [carts]);
+  const cartQuantitys = [];
+  cart1.map((item, index) => {
+    return [cartQuantitys.push(item.cartQuantity)];
+  });
+  const totalItem = cartQuantitys.reduce((partialSum, a) => partialSum + a, 0);
+  const handleClickSearchBtn = () => {
+    router.push(`/${shopInfo?.domain}/shop`)
+  }
+  return (
+    <>
+      <div className='Multipage__1__DextopVs'>
+        <Container>
+          <div className='Multipage__1__ManubarDiv'>
+            <div className='Multipage__1__ManubarItem1'>
+              <Link href={`/${shopInfo?.domain}`}>
+                <img
+                  src={shopInfo?.shop_logo?.name}
+                  alt=''
+                />
+              </Link>
+            </div>
+            <div className='Multipage__1__ManubarItem2'>
+              <div className='Multipage__1__ManubarInputDiv'>
+                <input type="text" placeholder="Search here..." />
+                <button onClick={handleClickSearchBtn} type="button" ><GoSearch /></button>
+              </div>
+            </div>
+            <div className='Multipage__1__ManubarItem3'>
+              <ul>
+                <li>
+                  <Link href={`/${shopInfo?.domain}/checkout`}>
+                    <AiOutlineShoppingCart className="Multipage__1__menuicon"></AiOutlineShoppingCart>
+                  </Link>
+                  <div className="Multipage__1__TopNum">{totalItem}</div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </Container>
+        <div className="Multipage__1__HrDiv"></div>
+        <Container>
+          <div className="Multipage__1__MenubarDiv2">
+            <div className="Multipage__1__MenubarDiv2Item">
+              <Dropdown>
+                <Dropdown.Toggle id="dropdown-basic">
+                  <div className='Multipage__1__MenubarImgDiv'>
+                    <img src="/images/multipage-1/img.png" alt="" />
+                    <span>Browse Categories</span>
+                    <div>  <IoIosArrowDown /> </div>
+                  </div>
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  <div className='Multipage__1__DropItem'>
                     {categories?.map((item, index) => {
                       return (
-                        <Dropdown.Item key={index} href='#/action-1'>{item.name}</Dropdown.Item>
+                        <Dropdown.Item key={index} href={`#/${item.name}`}>{item.name}</Dropdown.Item>
                       );
                     })}
-                  </Dropdown.Menu>
-                </Dropdown>
+                  </div>
+                </Dropdown.Menu>
+              </Dropdown>
+              <div className='Multipage__1__MenuDiv'>
+                <Link href={`/${shopInfo?.domain}`}>Home</Link>
+                <Link href={`/${shopInfo?.domain}/shop`}>Shop</Link>
+                <Link href={`/${shopInfo?.domain}/about_us`}>About Us</Link>
+
               </div>
-            </Col>
+            </div>
+            <div className="Multipage__1__MenubarDiv2Item2">
+              <Link href={fb ? fb : "https://www.facebook.com/"} target="_blank" > <FaFacebookF /> </Link>
+              <Link href={instagram ? instagram : "https://www.instagram.com/"} target="_blank" > <FaInstagram /> </Link>
+              <Link href={youtube ? youtube : "https://www.youtube.com/"} target="_blank" > <FaYoutube /> </Link>
+              <Link href={twitter ? twitter : "https://twitter.com/"} target="_blank" > <FaTwitter /> </Link>
+            </div>
+          </div>
+        </Container>
+        <div className="Multipage__1__HrDiv"></div>
+      </div>
 
-            <Col xs={6}>
-              <div className='MenubarMiddle'>
-                <ul>
-                  <li>
-                    {editActive === false && (
-                      <Link href={`/${shopName}`} className='active'>
-                        Home
-                      </Link>
-                    )}
-                    {editActive === true && (
-                      <>
-                        <ContentEditable
-                          html={menu1}
-                          onChange={(e) =>
-                            setProp(
-                              (props) =>
-                                (props.menu1 = e.target.value.replace(
-                                  /<\/?[^>]+(>|$)/g,
-                                  ""
-                                ))
-                            )
-                          }
-                          tagName='a'
-                          style={{ fontSize: `${fontSize}px` }}
-                        />
-                        {/* <Form.Control>
-													<Form.Label>Range</Form.Label>
-													<Form.Range />
-												</Form.Control> */}
-                      </>
-                    )}
-                  </li>
-
-                  <li>
-                    {editActive === false && (
-                      <Link href={`/${shopName}/shop`}> Shop </Link>
-                    )}
-
-                    {editActive === true && (
-                      <>
-                        <ContentEditable
-                          html={menu2}
-                          onChange={(e) =>
-                            setProp(
-                              (props) =>
-                                (props.menu2 = e.target.value.replace(
-                                  /<\/?[^>]+(>|$)/g,
-                                  ""
-                                ))
-                            )
-                          }
-                          tagName='a'
-                          style={{ fontSize: `${fontSize}px` }}
-                        />
-                      </>
-                    )}
-                  </li>
-
-                  <li>
-                    {editActive === false && <Link href=''> About Us </Link>}
-
-                    {editActive === true && (
-                      <ContentEditable
-                        html={menu3}
-                        onChange={(e) =>
-                          setProp(
-                            (props) =>
-                              (props.menu3 = e.target.value.replace(
-                                /<\/?[^>]+(>|$)/g,
-                                ""
-                              ))
-                          )
-                        }
-                        tagName='a'
-                        style={{ fontSize: `${fontSize}px` }}
-                      />
-                    )}
-                  </li>
-
-                  <li>
-                    {editActive === false && <Link href=''> Contact Us </Link>}
-
-                    {editActive === true && (
-                      <ContentEditable
-                        html={menu4}
-                        onChange={(e) =>
-                          setProp(
-                            (props) =>
-                              (props.menu4 = e.target.value.replace(
-                                /<\/?[^>]+(>|$)/g,
-                                ""
-                              ))
-                          )
-                        }
-                        tagName='a'
-                        style={{ fontSize: `${fontSize}px` }}
-                      />
-                    )}
-                  </li>
-                </ul>
-                {editActive === true && (
-                  <Form.Range
-                    min={1}
-                    defaultvalue={fontSize}
-                    max={50}
-                    onChange={(e) => {
-                      setProp((props) => (props.fontSize = e.target.value));
-                    }}
-                  />
-                )}
+      {/* Mobile Menue */}
+      <div className='Multipage__1__MobileVs'>
+        <div className='Multipage__1__MobileVsBg'>
+          <Container>
+            <div className='Multipage__1__MenubarMob1'>
+              <div>
+                <div className="Multipage__1__MenubarDiv2Item2 Multipage__1__MenubarDiv2Item3">
+                  <Link href={fb ? fb : "https://www.facebook.com/"} target="_blank" > <FaFacebookF /> </Link>
+                  <Link href={instagram ? instagram : "https://www.instagram.com/"} target="_blank" > <FaInstagram /> </Link>
+                  <Link href={youtube ? youtube : "https://www.youtube.com/"} target="_blank" > <FaYoutube /> </Link>
+                  <Link href={twitter ? twitter : "https://twitter.com/"} target="_blank" > <FaTwitter /> </Link>
+                </div>
               </div>
-            </Col>
-
-            <Col xs={3}>
-              <div className='SocailIcon'>
-                <Link href=''>
-                  <FaFacebookF />
-                </Link>
-                <Link href=''>
-                  <FaYoutube />
-                </Link>
-                <Link href=''>
-                  <FaInstagram />
-                </Link>
-                <Link href=''>
-                  <FaTwitter />
-                </Link>
+              <div className='Multipage__1__ManubarItem2'>
+                <div className='Multipage__1__ManubarInputDiv'>
+                  <input type="text" placeholder="Search here..." />
+                  <button  onClick={handleClickSearchBtn} type="button" ><GoSearch /></button>
+                </div>
               </div>
-            </Col>
-          </Row>
+            </div>
+          </Container>
         </div>
-
-        {/* MobileMenu */}
-        <div className='MobileMenu'>
-          <Row>
-            <Col xs={4}>
-              <div className='MenubarLeftLogo'>
-                <Dropdown>
-                  <Dropdown.Toggle id='dropdown-basic'>
-                    <BiCategory /> Browse Categories <BsChevronDown />
-                  </Dropdown.Toggle>
-
-                  <Dropdown.Menu>
-                    <Dropdown.Item href='#/action-1'>Action</Dropdown.Item>
-
-                    <Dropdown.Item href='#/action-2'>
-                      Another action
-                    </Dropdown.Item>
-
-                    <Dropdown.Item href='#/action-3'>
-                      Something else
-                    </Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
-              </div>
-            </Col>
-
-            <Col xs={8}>
-              <div className='MobileMenuItem'>
-                <Button onClick={handleShow}>
-                  <AiOutlineBars />
+        <Container>
+          <div className='Multipage__1__MobileVs2'>
+            <div className="Multipage__1__MenubarDiv2">
+              <div className="Multipage__1__MenubarDiv2Item">
+                <Button variant="primary" onClick={handleShow}>
+                  <div className='Multipage__1__MenubarImgDiv'>
+                    <img src="/images/multipage-1/img28.png" alt="" />
+                  </div>
                 </Button>
-
                 <Offcanvas show={show} onHide={handleClose}>
                   <Offcanvas.Header closeButton>
-                    <Offcanvas.Title></Offcanvas.Title>
+                    <Offcanvas.Title>
+                      <Link href={`/${shopInfo?.domain}`}>
+                        <img className="multi_page_one_mobile_logo"
+                          src={shopInfo?.shop_logo?.name}
+                          alt=''
+                        />
+                      </Link>
+                    </Offcanvas.Title>
                   </Offcanvas.Header>
-
                   <Offcanvas.Body>
-                    <div className='MenubarMiddle'>
+                    <div className='Multipage__1__OffCanDiv'>
                       <ul>
                         <li>
-                          <Link href='' className='active'>
-                            Home
-                          </Link>
-                        </li>
+                          <Link href={`/${shopInfo?.domain}`}>Home</Link>
 
-                        <li>
-                          <Link href=''> Shop </Link>
                         </li>
-
                         <li>
-                          <Link href=''> About Us </Link>
+                          <Link href={`/${shopInfo?.domain}/shop`}>Shop</Link>
+
                         </li>
-
                         <li>
-                          <Link href=''> Contact Us </Link>
+                        <Link href={`/${shopInfo?.domain}/about_us`}>About Us</Link>
                         </li>
                       </ul>
-
-                      <div className='SocailIcon'>
-                        <Link href=''>
-                          <FaFacebookF />
-                        </Link>
-                        <Link href=''>
-                          <FaYoutube />
-                        </Link>
-                        <Link href=''>
-                          <FaInstagram />
-                        </Link>
-                        <Link href=''>
-                          <FaTwitter />
-                        </Link>
-                      </div>
                     </div>
                   </Offcanvas.Body>
                 </Offcanvas>
+
+                <Link href={`/${shopInfo?.domain}`}>
+                  <img
+                    className="multi_page_one_mobile_logo"
+                    src={shopInfo?.shop_logo?.name}
+                    alt=''
+                  />
+                </Link>
               </div>
-            </Col>
-          </Row>
-        </div>
-      </Container>
-    </section>
+            </div>
+
+            <div className='Multipage__1__ManubarItem3'>
+              <ul>
+
+                <li>
+                  <Link href={`/${shopInfo?.domain}/checkout`}> <AiOutlineShoppingCart className="Multipage__1__menuicon"></AiOutlineShoppingCart> </Link>
+                  <div className="Multipage__1__TopNum">{totalItem}</div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </Container>
+      </div>
+    </>
   );
 };
 

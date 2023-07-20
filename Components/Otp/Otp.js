@@ -6,7 +6,6 @@ import {useRouter} from "next/router";
 import {baseUrl} from "../../constant/constant";
 
 const Otp = ({phone}) => {
-
     const router = useRouter()
     const [code, setcode] = useState(new Array(6).fill(""));
 
@@ -37,7 +36,7 @@ const Otp = ({phone}) => {
                 localStorage.setItem('user', JSON.stringify(response.data.data))
                 localStorage.setItem('token', response.data.data.api_token)
 
-                router.replace('http://dashboard.funnelliner.com').then(r => console.log('connected'))
+                router.replace('https://dashboard.funnelliner.com').then(r => console.log('connected'))
             } else {
                 toast.error(response.data.message, {
                     position: toast.POSITION.TOP_RIGHT,
@@ -83,7 +82,7 @@ const Otp = ({phone}) => {
                     <h4>Confirm OTP</h4>
 
                     <div className="OtpCode">
-                        <label>Otp has been send to given number, please enter the otp to verify</label>
+                        <label>OTP has been send to given number, please enter the OTP to verify</label>
 
                         {code.map((data, index) => {
                             return (

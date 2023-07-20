@@ -1,16 +1,12 @@
-import Image from "next/image";
-import Link from "next/link";
-import { Col, Container, Dropdown, Row } from "react-bootstrap";
+
+import { Col, Container, Row } from "react-bootstrap";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 import TextField from "@mui/material/TextField";
 
 import Button from "@mui/material/Button";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import ShippingAddress from "../../../Components/theme_1/ShippingAddress/ShippingAddress";
 import { baseUrl, shopId } from "../../../constant/constant";
-import { TbCurrencyTaka } from "react-icons/tb";
-import Form from 'react-bootstrap/Form';
 import {
 	addToCart,
 	clearCart,
@@ -18,22 +14,22 @@ import {
 	getTotals,
 	removeFromCart,
 } from "../../../redux/stateSlices/CartSlice";
-
 import { MdOutlineClose } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import axios from "axios";
-import swal from "sweetalert";
-import Header from "../Common/Header";
-import Delivary from "../Common/Delivary";
 import Footer from "../Common/Footer";
-import SocialMedia from "../Common/SocialMedia";
-import TinyFooter from "../Common/TinyFooter";
+import OrderOtp from "../../OrderOtp/OrderOtp";
+import { useToast } from "../../../hooks/useToast";
+import Loader from "../../NewLandingPage/CommonLandingComponent/Order/loader";
+import { isOTPStatusActive } from "../../../utils/FakeOrderSolution";
 
-const CheckOut = () => {
+const CheckOut = ({ shopInfo, visitorID }) => {
+	const showToast = useToast()
 	const carts = useSelector((state) => state.cart);
 	const [cart, setCart] = useState([]);
 	const [cartSubTotal, setCartSubTotal] = useState("");
+	const [isLoading, setIsLoading] = useState(false);
 	const dispatch = useDispatch();
 	const router = useRouter();
 
@@ -44,11 +40,55 @@ const CheckOut = () => {
 		setCart(carts?.cartItems);
 		setCartSubTotal(carts.cartTotalAmount);
 		setShopName(localStorage.getItem("shop_name"));
+
+
 	}, [carts]);
+
+
+	//order otp submit
+	const [show, setShow] = useState(false);
+	const handleClose = () => setShow(false);
+	const handleShow = () => setShow(true);
+
+	//shipping cost add
+	const checkDeliveryCharge = cart.length > 0 && cart.find(item => item.delivery_charge === "paid")
+	const [isCheckedInSideDhaka, setIsCheckedInSideDhaka] = useState(true);
+	const [isCheckedInOutSideDhaka, setIsCheckedInOutSideDhaka] = useState(false);
+	const [shippingCost, setShippingCost] = useState()
+	const [selectedDeliveryLocation, setSelectedDeliveryLocation] = useState("inside_dhaka");
+	const [restOtpLoading, setResetOTPLoading] = useState(false);
+	const [customerPhone, setCustomerPhone] = useState()
+
+	const handleChange = e => {
+		if (e.target.id === "insideDhaka" && !isCheckedInSideDhaka) {
+			setIsCheckedInSideDhaka(!isCheckedInSideDhaka);
+			setIsCheckedInOutSideDhaka(false)
+			setShippingCost(e.target.value)
+			setSelectedDeliveryLocation("inside_dhaka")
+		}
+		else if (e.target.id === "outSideDhaka" && !isCheckedInOutSideDhaka) {
+			setIsCheckedInOutSideDhaka(!isCheckedInOutSideDhaka)
+			setIsCheckedInSideDhaka(false)
+			setShippingCost(e.target.value)
+			setSelectedDeliveryLocation("outside_dhaka")
+		}
+	}
+
 
 	useEffect(() => {
 		dispatch(getTotals());
+
+		//shipping cost add
+		if (checkDeliveryCharge !== undefined) {
+			setShippingCost(checkDeliveryCharge?.inside_dhaka)
+		}
+		else if (checkDeliveryCharge === undefined) {
+			setShippingCost(0)
+		}
+		// setShippingCost()
 	}, [cart, dispatch]);
+
+
 
 	const handleAddToCart = (product) => {
 		dispatch(addToCart(product));
@@ -66,6 +106,17 @@ const CheckOut = () => {
 		dispatch(clearCart());
 	};
 
+	//timer setup
+	const [timeLeft, setTimeLeft] = useState();
+	useEffect(() => {
+		if (!timeLeft) return;
+		const intervalId = setInterval(() => {
+			setTimeLeft(timeLeft - 1);
+		}, 1000);
+		return () => clearInterval(intervalId);
+	}, [show, timeLeft]);
+
+
 	//order place
 	const cartQuantitys = [];
 	const productsId = [];
@@ -77,71 +128,117 @@ const CheckOut = () => {
 	const headers = {
 		"shop-id": shopID,
 	};
+
 	const {
 		register,
 		handleSubmit,
 		watch,
 		formState: { errors },
 	} = useForm();
+
 	const handleSubmitOrder = (data) => {
+		setIsLoading(true)
+		setCustomerPhone(data.customerMobile)
 		const postBody = {
 			customer_name: data.customerName,
 			customer_phone: data.customerMobile,
 			customer_address: data.customerAddress,
 			product_id: productsId,
 			product_qty: cartQuantitys,
+			visitor_id: visitorID,
+			delivery_location: selectedDeliveryLocation,
+			order_type: "multiple"
+
 		};
+		if (show !== true) {
+			axios
+				.post(`${baseUrl}/api/v1/customer/order/store`, postBody, {
+					headers: headers,
+				})
+				.then((res) => {
+					setIsLoading(false)
+					if (res.status === 200) {
+						if (res?.data?.data.otp_sent === 1) {
+							setTimeLeft(120)
+							handleShow()
+						}
+						else if (res?.data?.data?.otp_sent === 0) {
+							handleClearCart();
+							router.push(`/${shop_name}/order_successfull/${res?.data?.data?.id}`);
+						}
+					}
+					 if (res.status == 251) {
+						setIsLoading(false)
+						alert("Something went wrong. Please contact us to get connected.")
+						// showToast(`Something went wrong. Please contact us to get connected.`, "error")
+					}
+
+				})
+				.catch((err) => {
+					setIsLoading(false)
+					showToast("Something went wrong. Please contact us to get connected.", "error")
+				});
+		} else if (show) {
+			setIsLoading(false)
+		}
+
+	};
+
+	const handldeResendOTP = () => {
+		// setResetOTPLoading(true)
+		const postBody = {
+			customer_phone: customerPhone
+		}
 		axios
-			.post(`${baseUrl}/api/v1/customer/order/store`, postBody, {
-				headers: headers,
+			.post(`${process.env.API_URL}v1/customer/resend-otp`, postBody, {
+				headers: { "shop-id": shopID },
 			})
 			.then((res) => {
+				setTimeLeft(120)
+				// setResetOTPLoading(false)
 				if (res.status === 200) {
-
-					console.log("res theme one check out", res)
-					router.push(`/${shop_name}/order_successfull/${res?.data?.data?.id}`);
-					// router.push(`/${shop_name}`)
-					handleClearCart();
-
+					if (res?.data?.data?.otp_sent) {
+						showToast("Resend OTP send Success")
+					} else {
+						showToast("Somethig went wrong", "error")
+					}
 				}
 			})
 			.catch((err) => {
-				console.log(err);
-				swal("Something went wrong !", "error");
+				// setResetOTPLoading(false)
+				showToast("Internal server error", "error")
 			});
-	};
-
-	const hanldeChange=(e)=>{
-		console.log('e', e)
 	}
 
+
 	return (<>
-		<Header />
-		<section className='CheckOut'>
+		<section style={{ padding: "0px" }} className='CheckOut'>
 			<Container>
 				<div className='CheckOutContent'>
 					<Row className='justify-content-center mb-5'>
-						<Col xs={6}>
+						<Col xs={12} lg={6}>
 							<div></div>
 						</Col>
 					</Row>
 
 					<Row>
-						<Col xs={6}>
+						<Col xs={12} lg={6}>
 							<div className='Header my-3'>
 								<h2>Shopping cart ({cart.length} Items)</h2>
 							</div>
 						</Col>
 					</Row>
+
+
 					<Row>
 						<Col xs={12} lg={8}>
 							<div className='CheckOutTable'>
-								{cart.length < 1 ? (
+								{cart.length === 0 ? (
 									<h2 className="text-center mt-3 text-warning">Your Cart is empty</h2>
 								) : (
 									<table className='table roundedCorners'>
 										<thead>
-											<tr>
+											<tr className='tablecategoryName'>
 												<th>Product</th>
 												<th>Price</th>
 												<th>Quantity</th>
@@ -150,11 +247,18 @@ const CheckOut = () => {
 										</thead>
 
 										<tbody>
+
 											{cart &&
 												cart.map((item, index) => {
+
 													return (
-														<tr key={index}>
-															<td>
+
+
+
+														<tr key={index} className="ProductFstdBlock">
+
+
+															<td className="ProductFstdBlocktd1">
 																<div className='ProductFst d_flex'>
 																	<div className='svg'>
 																		<MdOutlineClose
@@ -179,7 +283,8 @@ const CheckOut = () => {
 																</div>
 															</td>
 
-															<td>
+
+															<td className="ProductFstdBlocktd2">
 																<p style={{ textAlign: "left" }}>
 																	TK{" "}
 																	<span
@@ -194,7 +299,8 @@ const CheckOut = () => {
 																</p>
 															</td>
 
-															<td>
+
+															<td className="ProductFstdBlocktd3">
 																<div className='PlusMinus'>
 																	<div
 																		onClick={() => handleDecreaseCart(item)}
@@ -218,9 +324,9 @@ const CheckOut = () => {
 																</div>
 															</td>
 
-															<td>
+															<td className="ProductFstdBlocktd4">
 																<h3 style={{ textAlign: "left" }}>
-																	TK {item.price * item.cartQuantity}
+																	৳ {item.price * item.cartQuantity}
 																</h3>
 															</td>
 														</tr>
@@ -231,7 +337,57 @@ const CheckOut = () => {
 								)}
 							</div>
 
-							<section className='CheckOut'>
+
+						</Col>
+
+						<Col xs={12} lg={4}>
+							<div className='product_part'>
+								<ul>
+									<li className='d_flex'>
+										<h3>Product</h3>
+										<h4>Subtotal</h4>
+									</li>
+
+									<li className='d_flex'>
+										<div className='img'>
+											<img src={cart[0]?.main_image?.name} alt='' />
+										</div>
+										<p> ৳ {cartSubTotal}</p>
+									</li>
+
+									<li className='d_flex'>
+										<h5>Total Item</h5>
+										<p>{totalItem}</p>
+									</li>
+
+									<li className='d_flex'>
+										<h5>Shipping</h5>
+										{
+											checkDeliveryCharge !== undefined && cart.length !== 0 ? <div style={{ width: "60%", textAlign: "right" }}>
+												<div> <input style={{ width: "8%" }} type='checkbox' value={checkDeliveryCharge.inside_dhaka} onChange={handleChange} id="insideDhaka" checked={isCheckedInSideDhaka} /> Inside Dhaka ৳ <span style={{ fontWeight: "bold" }}>{checkDeliveryCharge.inside_dhaka}</span></div>
+												<div> <input style={{ width: "8%" }} type='checkbox' value={checkDeliveryCharge.outside_dhaka} onChange={handleChange} id="outSideDhaka" checked={isCheckedInOutSideDhaka} /> Outside Dhaka ৳ <span style={{ fontWeight: "bold" }}>{checkDeliveryCharge.outside_dhaka}</span></div>
+											</div> : <p> {cart.length === 0 ? "0" : "Delivary Charge Free"}</p>
+										}
+
+									</li>
+									<li className='d_flex'>
+										<h3>Grand total</h3>
+										<h4>TK {cart.length < 1 ? 0 : parseInt(cartSubTotal) + parseInt(shippingCost)}</h4>
+									</li>
+								</ul>
+							</div>
+						</Col>
+
+
+
+					</Row>
+
+
+					<Row>
+
+						<Col xs={12} lg={8}>
+
+							<section className='CheckOut ShippingAddressTop'>
 								{/* CheckOutContent */}
 								<div className='CheckOutContent'>
 									<h2>Shipping Address</h2>
@@ -259,8 +415,8 @@ const CheckOut = () => {
 														variant='outlined'
 														{...register(
 															"customerMobile",
-															{ required: true },
-															{ min: 11, max: 15 }
+															{ required: true, pattern: /^(?:\+8801|01)[3-9]\d{8}$/ }
+															
 														)}
 													/>
 													{errors.customerMobile && (
@@ -284,83 +440,28 @@ const CheckOut = () => {
 													)}
 												</div>
 												<div className='ProceedToCheckout'>
-													<Button type='submit' variant='contained'>
-														PLACE ORDER TK {cartSubTotal}
+													<Button disabled={isLoading} style={{ padding: isLoading ? "0 0" : "7px 0px" }} type='submit' variant='contained'>
+														{isLoading ?<> <Loader /></> : <>PLACE ORDER TK  {cart.length < 1 ? 0 : parseInt(cartSubTotal) + parseInt(shippingCost)} </>}
 													</Button>
+													<OrderOtp handldeResendOTP={handldeResendOTP} restOtpLoading={restOtpLoading} timeLeft={timeLeft} shopID={shopID} show={show} handleClose={handleClose} />
+
 												</div>
 											</div>
 										</form>
 									</div>
 								</div>
+
 							</section>
+
 						</Col>
 
-						<Col xs={4}>
-							<div className='product_part'>
-								<ul>
-									<li className='d_flex'>
-										<h3>Product</h3>
-										<h4>Subtotal</h4>
-									</li>
-
-									<li className='d_flex'>
-										<div className='img'>
-											<img src={cart[0]?.main_image?.name} alt='' />
-										</div>
-										<p>TK {cartSubTotal}</p>
-									</li>
-
-									<li className='d_flex'>
-										<h5>Total Item</h5>
-										<p>{totalItem}</p>
-									</li>
-
-									<li className='d_flex'>
-										<h5>Delivery fee</h5>
-										<div>
-											<Form onChange={hanldeChange}>
-												{['radio'].map((type) => (
-													<div key={`inline-${type}`} className="mb-3">
-														<Form.Check
-															// default={true}
-															checked
-															inline
-															label='Inside Dhaka'
-															name="group1"
-															type={type}
-															id={`inline-${type}-1`}
-														/>
-														<br />
-														<Form.Check
-															inline
-															label="Outside Dhaka"
-															name="group1"
-															type={type}
-															id={`inline-${type}-2`}
-														/>
-
-													</div>
-												))}
-											</Form>
-										</div>
-										{/* <p>0</p> */}
-									</li>
-
-									<li className='d_flex'>
-										<h3>Grand total</h3>
-										<h4>TK {cartSubTotal}</h4>
-									</li>
-								</ul>
-							</div>
-						</Col>
 					</Row>
+
+
 				</div>
 			</Container>
 		</section>
-		<Delivary />
-		<Footer />
-		<SocialMedia />
-		<TinyFooter />
+		<Footer shopInfo={shopInfo} />
 	</>
 
 	);

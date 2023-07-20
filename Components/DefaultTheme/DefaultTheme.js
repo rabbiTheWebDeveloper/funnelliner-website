@@ -1,14 +1,13 @@
+import Head from 'next/head';
 import Link from 'next/link';
 import React, { useState } from 'react';
-import { Button, Col, Container, Row } from 'react-bootstrap';
+import { Col, Container, Row } from 'react-bootstrap';
+import Offcanvas from 'react-bootstrap/Offcanvas';
 import { AiOutlineShoppingCart } from 'react-icons/ai';
 import { BiChevronRight } from 'react-icons/bi';
 import { BsSearch } from 'react-icons/bs';
 import { CgArrowLongDownC } from 'react-icons/cg';
-import { HiOutlineUserCircle, HiBars3BottomRight } from 'react-icons/hi';
 import styles from '../../styles/default_theme/default_theme.module.css';
-import Offcanvas from 'react-bootstrap/Offcanvas';
-import Head from 'next/head';
 
 const DefaultTheme = () => {
 
@@ -71,8 +70,8 @@ const DefaultTheme = () => {
 
                                 <div className={styles.Search}>
 
-                                    <Link href=''> <BsSearch/> </Link>
-                                    <Link href=''> <AiOutlineShoppingCart/> </Link>
+                                    <Link href='#'> <BsSearch/> </Link>
+                                    <Link href='#'> <AiOutlineShoppingCart/> </Link>
 
                                 </div>
 
@@ -165,7 +164,7 @@ const DefaultTheme = () => {
 
                     <div className={styles.DownArrow}></div>
 
-                    <Link href='https://dashboard.funnelliner.com/sub-category'>Add Category</Link>
+                    <Link href='https://dashboard.funnelliner.com/add-category'>Add Category</Link>
 
                     <div className={styles.DownArrow2}>
                         <CgArrowLongDownC/>

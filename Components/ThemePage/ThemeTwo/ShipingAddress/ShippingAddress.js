@@ -41,8 +41,34 @@ const CheckOut = () => {
     setCartSubTotal(carts.cartTotalAmount);
   }, [carts]);
 
+//shipping cost add
+const checkDeliveryCharge = cart.length > 0 && cart.find(item => item.delivery_charge === "paid")
+const [isCheckedInSideDhaka, setIsCheckedInSideDhaka] = useState(true);
+const [isCheckedInOutSideDhaka, setIsCheckedInOutSideDhaka] = useState(false);
+const [shippingCost, setShippingCost] = useState()
+
+const handleChange = e => {
+  if (e.target.id === "insideDhaka") {
+    setIsCheckedInSideDhaka(!isCheckedInSideDhaka);
+    setIsCheckedInOutSideDhaka(false)
+    setShippingCost(e.target.value)
+  }
+  else if (e.target.id === "outSideDhaka") {
+    setIsCheckedInOutSideDhaka(!isCheckedInOutSideDhaka)
+    setIsCheckedInSideDhaka(false)
+    setShippingCost(e.target.value)
+  }
+}
+
   useEffect(() => {
     dispatch(getTotals());
+
+    if (checkDeliveryCharge !== undefined) {
+			setShippingCost(checkDeliveryCharge?.inside_dhaka)
+		}
+		else if (checkDeliveryCharge === undefined) {
+			setShippingCost(0)
+		}
   }, [cart, dispatch]);
 
   const handleAddToCart = (product) => {
@@ -273,7 +299,7 @@ const CheckOut = () => {
                         </div>
                         <div className='ProceedToCheckout'>
                           <Button style={{backgroundColor:"#6F533E"}} type='submit' variant='contained'>
-                            PLACE ORDER TK {cartSubTotal}
+                            PLACE ORDER TK  {cart.length<1 ? 0 : parseInt(cartSubTotal) + parseInt(shippingCost)}
                           </Button>
                         </div>
                       </div>
@@ -304,13 +330,18 @@ const CheckOut = () => {
                   </li>
 
                   <li className='d_flex'>
-                    <h5>Delivery fee</h5>
-                    <p>0</p>
+                    <h5>Shipping</h5>
+                    {
+											checkDeliveryCharge !== undefined && cart.length !==0 ? <div>
+											<div> <input type='checkbox' value={checkDeliveryCharge.inside_dhaka} onChange={handleChange} id="insideDhaka" checked={isCheckedInSideDhaka} /> Inside Dhaka ৳ <span style={{ fontWeight: "bold" }}>{checkDeliveryCharge.inside_dhaka}</span></div>
+											<div> <input type='checkbox' value={checkDeliveryCharge.outside_dhaka} onChange={handleChange} id="outSideDhaka" checked={isCheckedInOutSideDhaka} /> Outside Dhaka ৳ <span style={{ fontWeight: "bold" }}>{checkDeliveryCharge.outside_dhaka}</span></div>
+										</div> :<p> {cart.length ===0? "0" : "Delivary Charge Free" }</p>
+										}
                   </li>
 
                   <li className='d_flex'>
                     <h3>Grand total</h3>
-                    <h4>TK {cartSubTotal}</h4>
+                    <h4>TK {cart.length<1 ? 0 : parseInt(cartSubTotal) + parseInt(shippingCost)}</h4>
                   </li>
                 </ul>
               </div>

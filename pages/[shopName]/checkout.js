@@ -1,51 +1,72 @@
 import React, { useEffect, useState } from "react";
+import FingerprintJS from '@fingerprintjs/fingerprintjs';
 
 //theme one components
-import Header from "../../Components/theme_1/Common/Header";
-import MenuBar from "../../Components/theme_1/Common/Menubar";
-import Delivary from "../../Components/theme_1/Common/Delivary";
-import Footer from "../../Components/theme_1/Common/Footer";
-import SocialMedia from "../../Components/theme_1/Common/SocialMedia";
-import TinyFooter from "../../Components/theme_1/Common/TinyFooter";
 import CheckOut from "../../Components/theme_1/CheckOut/CheckOut";
-//theme 2 components
-import Menubar2 from "../../Components/ThemePage/ThemeTwo/Common/Menubar";
-import Footer2 from "../../Components/ThemePage/ThemeTwo/Common/Footer";
-import ShippingAddress2 from "../../Components/ThemePage/ThemeTwo/ShipingAddress/ShippingAddress";
-import Cookies from "js-cookie";
+import Menubar from "../../Components/theme_1/Common/Menubar";
+
 import Head from 'next/head'
+import { useRouter } from "next/router";
+import axios from "axios";
+import PageLoader from "../../Components/Common/PageLoader/PageLoader";
 
 const checkout = () => {
-	const [shopInfo, setShopInfo] =useState();
-	useEffect(()=>{
-		const shop = {
-			theme: localStorage.getItem("theme_id"),
-			landing: null,
-			shop_id: localStorage.getItem("shop_id"),
-		  };
-		  setShopInfo(shop)
-	},[])
-  const shop_meta_title = Cookies.get('shop_title')
-  const shop_meta_description = Cookies.get('shop_meta_description')
-  const shop_logo = Cookies.get('shop_logo')
+  const [loading, setIsLoading] = useState(false)
+  const [shopInfo, setShopInfo] = useState({});
+  const router = useRouter();
+  const { shopName } = router.query;
+  const headers = {
+    domain: shopName,
+  };
+
+  const getShopInfo = async () => {
+    setIsLoading(true)
+    try {
+      const shopInfo = await axios.post(
+        `${process.env.API_URL}v1/shops/info`,
+        {},
+        { headers: headers }
+      );
+      const shopData = shopInfo?.data?.data;
+      setShopInfo(shopData);
+      setIsLoading(false)
+    } catch (err) {
+      console.log("err", err)
+    }
+  };
+  useEffect(() => {
+    if (shopName !== undefined) {
+      getShopInfo();
+    }
+  }, [shopName]);
+
+  //visitor id generate
+  const [visitorID, setVisitorID] = useState('');
+  const setFp = async () => {
+    const fp = await FingerprintJS.load();
+    const { visitorId } = await fp.get();
+    setVisitorID(visitorId);
+  };
+  useEffect(() => {
+    setFp();
+  }, []);
+
   return (
     <>
-     <Head>
-        <title>{shop_meta_title}</title>
-        <meta name="description" content={shop_meta_description} />
+      <Head>
+        <title>{shopInfo?.shop_meta_title}</title>
+        <meta name="description" content={shopInfo?.shop_meta_description} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href={shop_logo} />
+        <link rel="icon" href={shopInfo?.shop_logo?.name} />
       </Head>
+      {
+        loading && <PageLoader />
+      }
+      {shopInfo?.theme_id == 201 && <>
+        <Menubar shopInfo={shopInfo}/>
+        <CheckOut shopInfo={shopInfo} visitorID={visitorID} />
+      </>}
 
-      {shopInfo?.theme == 201  && <CheckOut/>}
-
-      {shopInfo?.theme == 202  && (
-        <div className='ThemeTwo'>
-          <Menubar2 />
-          <ShippingAddress2 />
-          <Footer2 />
-        </div>
-      )}
     </>
   );
 };

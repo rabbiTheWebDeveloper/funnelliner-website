@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { useEffect } from "react";
-import { toast } from "react-toastify";
 import Cookies from 'js-cookie';
+import { useToast } from "../../hooks/useToast";
 
+const showToast  =useToast()
 const initialState = {
   cartItems: Cookies.get('cartItems')
     ? JSON.parse(Cookies.get("cartItems"))
@@ -25,15 +25,17 @@ const cartSlice = createSlice({
           ...state.cartItems[existingIndex],
           cartQuantity: state.cartItems[existingIndex].cartQuantity + 1,
         };
-        toast.info("Increased product quantity", {
-          position: "top-right",
-        });
+        // toast.info("Increased product quantity", {
+        //   position: "top-right",
+        // });
+        showToast("Increased product quantity")
       } else {
         let tempProductItem = { ...action.payload, cartQuantity: 1 };
         state.cartItems.push(tempProductItem);
-        toast.success("Product added to cart", {
-          position: "top-right",
-        });
+        showToast("Product added to cart")
+        // toast.success("Product added to cart", {
+        //   position: "top-right",
+        // });
       }
       Cookies.set("cartItems", JSON.stringify(state.cartItems));
     },
@@ -53,9 +55,9 @@ const cartSlice = createSlice({
           (item) => item.id !== action.payload.id
         );
         state.cartItems = nextCartItems;
-        toast.error("Product removed from cart", {
-          position: "top-right",
-        });
+        // toast.error("Product removed from cart", {
+        //   position: "top-right",
+        // });
       }
 
       Cookies.set("cartItems", JSON.stringify(state.cartItems));
@@ -69,9 +71,9 @@ const cartSlice = createSlice({
 
           state.cartItems = nextCartItems;
 
-          toast.error("Product removed from cart", {
-            position: "top-right",
-          });
+          // toast.error("Product removed from cart", {
+          //   position: "top-right",
+          // });
         }
         Cookies.set("cartItems", JSON.stringify(state.cartItems));
         return state;
@@ -100,7 +102,7 @@ const cartSlice = createSlice({
     clearCart(state, action) {
       state.cartItems = [];
       Cookies.set("cartItems", JSON.stringify(state.cartItems));
-      // toast.error("Cart cleared", { position: "bottom-left" });
+     
     },
   },
 });

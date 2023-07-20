@@ -15,7 +15,7 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../../../redux/stateSlices/CartSlice";
 import Link from "next/link";
-import { ToastContainer } from "react-toastify";
+// import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useRouter } from "next/router";
 
@@ -160,7 +160,7 @@ const ProductListCarousel = () => {
                     );
                   }):null}
                 </Swiper>
-                <ToastContainer />
+                {/* <ToastContainer /> */}
               </div>
             </Col>
           </Row>

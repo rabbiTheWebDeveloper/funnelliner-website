@@ -1,5 +1,4 @@
 import React from 'react';
-import NewPassword from '../../../Components/NewPassword/NewPassword';
 import Otp from '../../../Components/Otp/Otp';
 
 const otp = () => {
@@ -10,7 +9,7 @@ const otp = () => {
         
         <>
 
-            <NewPassword></NewPassword>
+            <h2>Hello</h2>
         
         </>
 

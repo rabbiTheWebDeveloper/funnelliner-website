@@ -1,61 +1,50 @@
-import Image from "next/image";
-import Link from "next/link";
-import { Col, Container, Dropdown, Row } from "react-bootstrap";
-import { BiCategory } from 'react-icons/bi';
 
-
-
-const MiddleBanner = () => {
+import { Col, Container, Row } from "react-bootstrap";
+const MiddleBanner = ({ shopInfo }) => {
 
     return (
-
-        <section className="MiddleBanner">
-
+        <section>
             <Container>
-
                 <Row>
-
-                    {/* item */}
-                    <Col xs={4}>
-
-                        <div className="MiddleBannerItem">
-
-                            <img src="/theme_1/images/banner/banner1.png" alt="" />
-
-                        </div>
-
-                    </Col>
-
-                    {/* item */}
-                    <Col xs={4}>
-
-                        <div className="MiddleBannerItem">
-
-                            <img src="/theme_1/images/banner/banner2.png" alt="" />
-
-                        </div>
-
-                    </Col>
-
-                    {/* item */}
-                    <Col xs={4}>
-
-                        <div className="MiddleBannerItem">
-
-                            <img src="/theme_1/images/banner/banner3.png" alt="" />
-
-                        </div>
-
-                    </Col>
-
+                    {
+                        shopInfo.banner !== null && shopInfo.banner.length > 0 && shopInfo.banner.map((item, index) => <Col key={index} lg={4}>
+                            <div className='Multipage__1__CardDiv'>
+                                <div className='Multipage__1__CardAbs'>
+                                    <img src={item?.image} alt="" />
+                                </div>
+                            </div>
+                        </Col>)
+                    }
+                    {
+                        shopInfo.banner === null || shopInfo.banner.length === 0 && <>
+                            <Col lg={4}>
+                                <div className='Multipage__1__CardDiv'>
+                                    <div className='Multipage__1__CardAbs'>
+                                        <img src="/theme_1/images/banner/NoAdBanner.png" alt="" />
+                                    </div>
+                                </div>
+                            </Col>
+                            <Col lg={4}>
+                                <div className='Multipage__1__CardDiv'>
+                                    <div className='Multipage__1__CardAbs'>
+                                        <img src="/theme_1/images/banner/NoAdBanner.png" alt="" />
+                                    </div>
+                                </div>
+                            </Col>
+                            <Col lg={4}>
+                                <div className='Multipage__1__CardDiv'>
+                                    <div className='Multipage__1__CardAbs'>
+                                        <img src="/theme_1/images/banner/NoAdBanner.png" alt="" />
+                                    </div>
+                                </div>
+                            </Col>
+                        </>
+                    }
                 </Row>
-
             </Container>
 
         </section>
-
     );
-
 };
 
 export default MiddleBanner;

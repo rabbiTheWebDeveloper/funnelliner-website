@@ -1,5 +1,5 @@
 /* OrderConfirmFrom */
-
+/* 
 .OrderConfirmLeft {
   width: 90%;
 }
@@ -57,13 +57,13 @@
   opacity: 0;
 }
 
-.OrderConfirmLeft .Payment .CustomeInput input + label {
+.OrderConfirmLeft .Payment .CustomeInput input+label {
   position: relative;
   cursor: pointer;
   padding: 0;
 }
 
-.OrderConfirmLeft .Payment .CustomeInput input + label:before {
+.OrderConfirmLeft .Payment .CustomeInput input+label:before {
   content: "";
   margin-right: 10px;
   display: inline-block;
@@ -73,29 +73,29 @@
   background: #b8b8b8;
 }
 
-.OrderConfirmLeft .Payment .CustomeInput input:hover + label:before {
+.OrderConfirmLeft .Payment .CustomeInput input:hover+label:before {
   background: #f35429;
 }
 
-.OrderConfirmLeft .Payment .CustomeInput input:focus + label:before {
+.OrderConfirmLeft .Payment .CustomeInput input:focus+label:before {
   box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.12);
 }
 
-.OrderConfirmLeft .Payment .CustomeInput input:checked + label:before {
+.OrderConfirmLeft .Payment .CustomeInput input:checked+label:before {
   background: #f35429;
 }
 
-.OrderConfirmLeft .Payment .CustomeInput input:disabled + label {
+.OrderConfirmLeft .Payment .CustomeInput input:disabled+label {
   color: #b8b8b8;
   cursor: auto;
 }
 
-.OrderConfirmLeft .Payment .CustomeInput input:disabled + label:before {
+.OrderConfirmLeft .Payment .CustomeInput input:disabled+label:before {
   box-shadow: none;
   background: #ddd;
 }
 
-.OrderConfirmLeft .Payment .CustomeInput input:checked + label:after {
+.OrderConfirmLeft .Payment .CustomeInput input:checked+label:after {
   content: "";
   position: absolute;
   left: 5px;
@@ -131,9 +131,10 @@
   margin: 0;
   padding: 0;
   color: #000000;
-}
+} */
 
 /* OrderConfirmRight */
+/* 
 .OrderConfirmRight ul {
   margin-top: 30px !important;
   border-radius: 15px;
@@ -205,7 +206,6 @@
   border-radius: 10px;
   font-size: 18px;
   line-height: 30px;
-  /* color: #fff; */
   margin-top: 20px;
   font-weight: 600;
 }
@@ -213,9 +213,10 @@
 .OrderConfirmRight button svg {
   font-size: 25px;
   margin-right: 10px;
-}
+} */
 
 /* LandingThree */
+/* 
 .LandingThree .OrderConfirmFrom {
   background: #fff5cd;
   padding: 80px 0;
@@ -232,10 +233,10 @@
 .LandingThree .OrderConfirmFrom button:hover {
   background: #092e67;
   color: #fff;
-}
+} */
 
 /* LandingFour */
-
+/* 
 .LandingFour .OrderConfirmFrom {
   background: #071c1f;
   padding: 80px 0;
@@ -262,16 +263,26 @@
   margin-top: 0;
 }
 
+.OrderConfirmRight button.buttonDisabled,
+.OrderConfirmRight button.buttonDisabled[disabled] {
+  border: 1px solid #999999 !important;
+  background-color: #cccccc !important;
+  color: #666666 !important;
+  cursor: not-allowed;
+  pointer-events: none;
+} */
+
 /* ------------------------------------------------------------------------------------------------------
   ------------------------------------------------------------------------------------------------------
       Media
   ------------------------------------------------------------------------------------------------------
   ------------------------------------------------------------------------------------------------------*/
-@media (max-width: 900px) {
+/* @media (max-width: 900px) {
   .OrderConfirmRight {
     margin-top: 50px;
   }
+
   .OrderConfirmLeft {
     width: 100%;
   }
-}
+} */

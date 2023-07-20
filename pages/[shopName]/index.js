@@ -6,22 +6,23 @@ import DefaultTheme from "../../Components/DefaultTheme/DefaultTheme";
 import Cookies from 'js-cookie'
 // Common CSS
 import Theme1 from "../../Components/theme_1/index";
-import Theme2 from "../../Components/ThemePage/ThemeTwo/index";
+import PageLoader from "../../Components/Common/PageLoader/PageLoader";
 
 
 
 const index = () => {
 
 	const [shopInfo, setShopInfo] = useState({});
+	const [isLoading, setIsLoading] = useState(false)
+
 	const router = useRouter();
 	const { shopName } = router.query;
-
-
 	const headers = {
 		domain: shopName,
 	};
 
 	const getShopInfo = async () => {
+		setIsLoading(true)
 		try {
 			const shopInfo = await axios.post(
 				`${process.env.API_URL}v1/shops/info`,
@@ -29,8 +30,6 @@ const index = () => {
 				{ headers: headers }
 			);
 			const shopData = shopInfo?.data?.data;
-			console.log("shopData", shopData)
-
 			localStorage.setItem("shop_id", shopData.shop_id);
 			// localStorage.setItem("shop_name", shopData.name);
 			localStorage.setItem("shop_name", shopData.domain);
@@ -40,13 +39,8 @@ const index = () => {
 			Cookies.set("shop_title", shopData.shop_meta_title);
 			Cookies.set("shop_meta_description", shopData.shop_meta_description);
 			Cookies.set("shop_logo", shopData?.shop_logo?.name);
-
-			const shopI = {
-				theme: shopData.theme_id,
-				landing: shopData.landing,
-				shop_id: shopData.shop_id,
-			}
-			setShopInfo(shopI);
+			setShopInfo(shopData);
+			setIsLoading(false)
 		} catch (err) {
 			router.push("/404");
 		}
@@ -54,21 +48,21 @@ const index = () => {
 
 	useEffect(() => {
 		if (shopName !== undefined) {
-				getShopInfo();
+			getShopInfo();
 		}
 
 	}, [shopName]);
 
 	return (
 		<>
-			{shopInfo.theme == 201  && (
-				<Theme1 />
-			)}
-			{shopInfo.theme == 202  && (
-				<Theme2 />
+			{
+				isLoading  && <PageLoader/>
+			}
+			{shopInfo.theme_id == 201 && (
+				<Theme1 shopInfo={shopInfo} />
 			)}
 
-			{(shopInfo.theme === "null" || shopInfo.theme === null)  && <DefaultTheme />}
+			{(shopInfo.theme_id === "null" || shopInfo.theme_id === null) && <DefaultTheme />}
 		</>
 	);
 };

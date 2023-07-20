@@ -1,63 +1,75 @@
-import Image from "next/image";
+
 import Link from "next/link";
 import { Col, Container, Dropdown, Row } from "react-bootstrap";
-import { AiOutlineHeart, AiOutlineSearch, AiOutlineShoppingCart, AiOutlineUser } from 'react-icons/ai';
-import { FaCentos } from 'react-icons/fa';
+import SocialMedia from "./SocialMedia";
+import TinyFooter from "./TinyFooter";
 
 
 
-const Footer = () => {
+const Footer = ({ shopInfo }) => {
 
     return (
+    
+        <div>
 
-        <section className="Footer">
+            {/* -------------------------------------------------------------------------------------------------------------------------------------------------
+                    Delivary
+              -----------------------------------------------------------------------------------------------------------------------------------------------------*/}
 
-            <Container>
+            <section className="Multipage__1__Delivary">
 
-                <Row className="d_flex">
-                    
-                    {/* item */}
-                    <Col xs={12} lg={4}>
+                <Container>
 
-                        <div className="FooterItem">
+                    <div className="Multipage__1__HrDiv  Multipage__1__HrDivht"></div>
 
-                            <div className="logo">
-                                <img src="/theme_1/images/logo.png" alt="" />
+                    {/* Address */}
+
+                    <div className='Multipage__1__AddressDiv'>
+
+                        <div className="Multipage__1__AddressDivItem ">
+
+                            <div className="Multipage__1__text">
+                            <img src={shopInfo?.shop_logo?.name} alt="" />
+                            </div>
+
+                            <div className="Multipage__1__text2">
+                                <h3>Store Address</h3>
+                                <p>{shopInfo?.address}</p>
+                            </div>
+
+                            <div className="Multipage__1__text2">
+                                <h3>Contact No.</h3>
+                                <p>{shopInfo?.phone}</p>
+                               
                             </div>
 
                         </div>
 
-                    </Col>
+                    </div>
 
-                    {/* item */}
-                    <Col xs={12} lg={4}>
 
-                        <div className="FooterItem">
+                    <div className="Multipage__1__HrDiv  Multipage__1__HrDivht"></div>
 
-                            <h3>Store Address</h3>
-                            <p>4517 Washington Ave. Manchester, Kentucky 39495 soft it care</p>
 
-                        </div>
+                    <SocialMedia shopInfo={shopInfo} />
 
-                    </Col>
 
-                    {/* item */}
-                    <Col xs={12} lg={4}>
+                    {/* Tiney Footer */}
 
-                        <div className="FooterItem">
+                    <div className='Multipage__1__Tiney'>
 
-                            <h3>Contact No.</h3>
-                            <Link href="tel:8802223344">+880 02 223 344 , +880 123 456 789</Link>
+                        <TinyFooter />
 
-                        </div>
+                    </div>
 
-                    </Col>
 
-                </Row>
+                </Container>
 
-            </Container>
+            </section>
 
-        </section>
+
+
+        </div>
 
     );
 

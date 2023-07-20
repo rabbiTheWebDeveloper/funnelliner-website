@@ -1,1349 +1,2041 @@
-import Link from "next/link";
-import React, { useEffect, useState } from "react";
-import { Col, Container, Row } from "react-bootstrap";
-import Accordion from "react-bootstrap/Accordion";
-import styles from "../../styles/main_page/home_page.module.css";
+import React, { useEffect, useRef, useState } from 'react';
+import { Card, Col, Container, Placeholder, Row, Tab, Tabs } from 'react-bootstrap';
+import Link from 'next/link';
 
-import "swiper/css";
-import "swiper/css/grid";
-import "swiper/css/pagination";
+import { BsArrow90DegRight, BsArrowRight, BsEnvelopeAt } from 'react-icons/bs';
+import { FiPhoneCall } from 'react-icons/fi';
+import { MdLocationOn } from 'react-icons/md';
+import { PiArrowBendUpRightBold } from 'react-icons/pi';
+import axios from 'axios';
 
-import {
-  FaFacebookF,
-  FaInstagram,
-  FaWhatsapp,
-  FaYoutube,
-} from "react-icons/fa";
-import { HiOutlineMinus, HiOutlinePlus } from "react-icons/hi";
+import Accordion from 'react-bootstrap/Accordion';
+import { Button } from '@mui/material';
 
-// Import Swiper React components
-import { Swiper, SwiperSlide } from "swiper/react";
-// Import Swiper styles
-import { Autoplay } from "swiper";
-
-// import "swiper/css";
-// import "swiper/css/autoplay"
-import Button from "react-bootstrap/Button";
-import Offcanvas from "react-bootstrap/Offcanvas";
 
 
 const MainPage = () => {
-  const [showMenu, setShowMenu] = useState(false);
 
-  const handleCloseMenu = () => setShowMenu(false);
-  const handleShowMenu = () => setShowMenu(true);
+    const [landingList, setLandingList] = useState([])
+    const [isLoading, setIsLoading] = useState(true);
+
+    const idsToSkip = Array.from({ length: 200 }, (_, i) => (i + 206).toString());
+    const landingThemeFetch = async () => {
+
+        try {
+            let res = await axios({
+                method: 'get',
+                url: `${process.env.API_URL}v1/theme/list`,
+                headers: {
+                    type: "landing"
+                }
+            });
+            let data = res.data.data;
+            const filteredItems = data.filter(item => !idsToSkip.includes(item.name));
+            setLandingList(filteredItems.slice(0, 6))
+            setIsLoading(false)
+
+        } catch (error) {
+            setIsLoading(false)
+            console.log("error", error)
+        }
+    }
+    useEffect(() => {
+        landingThemeFetch()
+    }, []);
 
 
 
-  return (
-    <div className={`${styles.MainPage}`}>
-      {/* -- ---------------------------------------------------------------------------------------------------------------------------------------------------
-            Menubar
-        ------------------------------------------------------------------------------------------------------------------------------------------------------- */}
-      <div className={styles.Menubar}>
-        <Container className={styles.CustomeContainer}>
-          <Row>
-            <Col lg={12}>
 
-              {/* DesktopMenu */}
-              <div
-                className={`${styles.DesktopMenu} ${styles.d_flex} ${styles.d_justify}`}
-              >
-                {/* logo */}
-                <div className={styles.Left}>
-                  <div className={styles.Logo}>
-                    <Link href='/'>
-                      <img src='../images/home_page/logo.svg' alt='' />
-                    </Link>
-                  </div>
+
+    return (
+
+        <>
+
+            <div className="MainLandingPage">
+
+
+                {/* =============================================================================
+                    Start CountDown
+                ===============================================================================*/}
+                <section className="CountDown">
+
+                    <Container>
+
+                        <Row>
+
+                            <Col lg={12}>
+
+                                <div className="CountDownContent">
+
+                                    <div className="left">
+
+                                        <p>আপনার বিজনেসে সর্বোচ্চ সেল বৃদ্ধি ও অটোমেশন করতে মোস্ট ভ্যালুয়েবল ওয়েবিনারে জয়েন করুন</p>
+
+                                        <div className="CountDownBox">
+
+                                            <div className="CountDownItem">
+                                                <h4>10</h4>
+                                                <h6>Days</h6>
+                                            </div>
+
+                                            <div className="CountDownItem">
+                                                <h4>10</h4>
+                                                <h6>Hours</h6>
+                                            </div>
+
+                                            <div className="CountDownItem">
+                                                <h4>10</h4>
+                                                <h6>Min</h6>
+                                            </div>
+
+                                            <div className="CountDownItem">
+                                                <h4>10</h4>
+                                                <h6>Sec</h6>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div className="JoinNow">
+                                        <Link href='https://app.funnelliner.com/join' target='_blank'>Join Now <PiArrowBendUpRightBold /></Link>
+                                    </div>
+
+                                </div>
+
+                            </Col>
+
+                        </Row>
+
+                    </Container>
+
+                </section>
+
+
+                {/* =============================================================================
+                    End CountDown
+                ===============================================================================*/}
+
+                {/* =============================================================================
+                    Start Menubar
+                ===============================================================================*/}
+                <section className="Menubar">
+
+                    <Container>
+
+                        <Row className="d_flex">
+
+                            {/* logo */}
+                            <Col lg={3}>
+
+                                <div className="Logo">
+                                    <img src="/images/home_page/logo-beta.png" alt="" />
+                                </div>
+
+                            </Col>
+
+                            {/* Menu */}
+                            <Col lg={6}>
+
+                                <div className="Menu">
+
+                                    <ul>
+                                        <li><Link className="active" href='#'>Home</Link></li>
+                                        <li><Link href='#'>Feature</Link></li>
+                                        <li><Link href='#'>Theme</Link></li>
+                                        <li><Link href='#'>Pricing</Link></li>
+                                        <li><Link href='#'>FAQ</Link></li>
+                                    </ul>
+
+                                </div>
+
+                            </Col>
+
+                            <Col lg={3}>
+
+                                <div className="Login">
+
+                                    <ul>
+                                        <li> <Link href='https://dashboard.funnelliner.com/' target='_blank'> Login </Link> </li>
+                                        <li> <Link href='/signup' target='_blank' className="bg"> Sign Up </Link> </li>
+                                    </ul>
+
+                                </div>
+
+                            </Col>
+
+                        </Row>
+
+                    </Container>
+
+                </section>
+
+
+                {/* =============================================================================
+                    End Menubar
+                ===============================================================================*/}
+
+
+
+                {/* =============================================================================
+                    Start Banner
+                ===============================================================================*/}
+                <section className="Banner">
+
+                    <img className='OverlayOneImg' src="images/home_page/banner/banner-effect1.png" alt="" />
+                    <img className='OverlayTwoImg' src="images/home_page/banner/banner-effect2.png" alt="" />
+                    <img className='OverlayThreeImg' src="images/home_page/banner/banner-effect3.png" alt="" />
+
+                    <div className="OverlayOne"></div>
+
+
+                    <div className="OverlayOne Two"></div>
+
+
+                    <Container>
+
+                        <Row>
+
+                            <Col lg={12}>
+
+                                <div className="BannerContent">
+                                    <h1>Make your Website, Sales Funnel & Automation your business</h1>
+                                    <h4>Without any Coding skills</h4>
+                                </div>
+
+                            </Col>
+
+                        </Row>
+
+                    </Container>
+
+                </section>
+
+                {/* BannerShop */}
+                <div className="BannerShop">
+                    <Container>
+                        <Row className='justify-content-center'>
+                            <Col lg={12}>
+                                <div className="BannerShopImg">
+                                    <img src="/images/home_page/banner/shop.png" alt="" />
+                                </div>
+                            </Col>
+                        </Row>
+                    </Container>
                 </div>
 
-                {/* MenuItem */}
-                <div className={styles.MenuItem}>
-                  <ul>
-                    <li>
-                      {" "}
-                      <Link href='/' className={styles.active}>
-                        Home
-                      </Link>{" "}
-                    </li>
-                    <li>
-                      {" "}
-                      <Link href='#BestFeatures'>Feature</Link>{" "}
-                    </li>
-                    <li>
-                      {" "}
-                      <Link href='#ShopTheme'>Theme</Link>{" "}
-                    </li>
-                    <li>
-                      {" "}
-                      <Link href='#ChossePackage'>Pricing</Link>{" "}
-                    </li>
-                    <li>
-                      {" "}
-                      <Link href='#FAQ'>FAQ</Link>{" "}
-                    </li>
-                  </ul>
-                </div>
 
-                {/* Login */}
-                <div className={styles.Login}>
-                  <Link href='https://dashboard.funnelliner.com/'>Log In</Link>
-                  <Link href='/signup'>Sign Up</Link>
-                </div>
-              </div>
+                {/* =============================================================================
+                    End Banner
+                ===============================================================================*/}
 
-              {/* MobileMenu */}
-              <div
-                className={`${styles.MobileMenu} ${styles.d_flex} ${styles.d_justify}`}
-              >
-                {/* logo */}
-                <div className={styles.Left}>
-                  <div className={styles.Logo}>
-                    <Link href='/'>
-                      <img src='../images/home_page/logo.svg' alt='' />
-                    </Link>
-                  </div>
-                </div>
+                <div className="SectionGaps"></div>
 
-                {/* MenuItem */}
+                {/* =============================================================================
+                    Start Platform
+                ===============================================================================*/}
+                <section className='Platform'>
 
-                <div className={styles.MenuIcon}>
-                  <Button onClick={handleShowMenu}>
-                    <img src='../images/home_page/menu.png' alt='' />
-                  </Button>
-
-                  <Offcanvas show={showMenu} onHide={handleCloseMenu}>
-                    <Offcanvas.Header closeButton></Offcanvas.Header>
-
-                    <Offcanvas.Body>
-                      <div className={styles.MenuItem}>
-                        <ul>
-                          <li>
-                            {" "}
-                            <Link href='/' className={styles.active}>
-                              Home
-                            </Link>{" "}
-                          </li>
-                          <li>
-                            {" "}
-                            <Link href='#'>Feature</Link>{" "}
-                          </li>
-                          <li>
-                            {" "}
-                            <Link href='#'>Theme</Link>{" "}
-                          </li>
-                          <li>
-                            {" "}
-                            <Link href='#'>Pricing</Link>{" "}
-                          </li>
-                          <li>
-                            {" "}
-                            <Link href='#'>Blogs</Link>{" "}
-                          </li>
-                        </ul>
-
-                        {/* Login */}
-                        <div className={styles.Login}>
-                          <Link href='https://dashboard.funnelliner.com/'>
-                            Log In
-                          </Link>
-                          <Link href='/signup'>
-                            Sign Up
-                          </Link>
-                        </div>
-                      </div>
-                    </Offcanvas.Body>
-                  </Offcanvas>
-                </div>
-              </div>
-            </Col>
-          </Row>
-        </Container>
-      </div>
-
-      {/* -- ---------------------------------------------------------------------------------------------------------------------------------------------------
-            Banner
-        ------------------------------------------------------------------------------------------------------------------------------------------------------- */}
-      <section className={styles.Banner}>
-        <Container className={styles.CustomeContainer}>
-          <Row>
-            <Col lg={12}>
-              <div
-                className={` ${styles.BannerContent} ${styles.d_flex} ${styles.d_justify}`}
-              >
-                {/* left */}
-                <div className={styles.BannerText}>
-                  <h2>
-                    {" "}
-                    <span>Welcome to</span> The First Ever Automated <br />{" "}
-                    E-Commerce Sales Funnel <span>in bangladesh</span>
-                  </h2>
-                </div>
-
-                {/* Img */}
-                <div className={styles.Img}>
-                  <img src='../images/home_page/banner_arrow.png' alt='' />
-                </div>
-
-                {/* right */}
-                <div className={styles.BannerRight}>
-                  <h2>
-                    <span>Create Your</span> Own Online Shop,
-                    <span>Decorate Your Shop,</span> Boost Up Your Sales !
-                  </h2>
-                </div>
-              </div>
-            </Col>
-          </Row>
-        </Container>
-
-        <div className={styles.BannerBg}>
-          <img src='../images/home_page/banner_bg.png' alt='' />
-
-          <div className={styles.overlay}>
-            <Container className={styles.CustomeContainer}>
-              <Row className='justify-content-md-center'>
-                <Col lg={6}>
-                  <img src='../images/home_page/banner_img.png' alt='' />
-                </Col>
-              </Row>
-            </Container>
-          </div>
-        </div>
-      </section>
-      {/* section_gaps */}
-      <div className={styles.section_gaps}></div>
-
-      {/* -- ---------------------------------------------------------------------------------------------------------------------------------------------------
-            HowToSetUp
-        ------------------------------------------------------------------------------------------------------------------------------------------------------- */}
-      <section className={styles.HowToSetUp}>
-        <Container className={styles.CustomeContainer}>
-          <Row className='justify-content-md-center'>
-            <Col lg={10}>
-              <div className={styles.Header}>
-                <h2>How To Set Up Your Online Shop </h2>
-
-                <p>
-                  You must be thinking of setting up the store nicely. If your
-                  answer is yes then follow these five steps.
-                </p>
-              </div>
-
-              <div className={styles.img}>
-                <img src='../images/home_page/how-to-set-up.svg' alt='' />
-              </div>
-
-              <div className={styles.MobileImg}>
-                <img src='../images//home_page/mobshop1.svg' alt='' />
-                <img src='../images//home_page/mobshop2.svg' alt='' />
-                <img src='../images//home_page/mobshop3.svg' alt='' />
-              </div>
-            </Col>
-          </Row>
-        </Container>
-      </section>
-
-      {/* section_gaps */}
-      <div className={styles.section_gaps}></div>
-
-      {/* -- ---------------------------------------------------------------------------------------------------------------------------------------------------
-
-            ------------------------------------------------------------------------------------------------------------------------------------------------------- */}
-      <section id='BestFeatures' className={styles.BestFeatures}>
-        <Row>
-          <Col lg={6}>
-            <div className={styles.BestFeaturesImg}>
-              <img src='../images/home_page/best_feature.png' alt='' />
-            </div>
-          </Col>
-
-          <Col lg={6}>
-            <div className={styles.BestFeaturesText}>
-              <h2>
-                Best Features That Will Make <span>Your Shop Best</span>
-              </h2>
-
-              <ul>
-                <li>Dynamic Dashboard. </li>
-                <li>On-time update system. </li>
-                <li>1-minute shop creation. </li>
-                <li>Modern informative Admin panel. </li>
-                <li>Facility to get all information on one Page. </li>
-                <li>Multilevel Security. </li>
-                <li>Product Inventory. </li>
-                <li>Multiple Payment Method. </li>
-                <li>Many types of couriers. </li>
-                <li>SEO friendly. </li>
-                <li>150+ customizable themes to choose from.</li>
-                <li>Mobile and Tablet friendly Website. </li>
-                <li>Provide all the benefits of E-commerce.</li>
-              </ul>
-            </div>
-          </Col>
-        </Row>
-      </section>
-
-      {/* section_gaps */}
-      <div className={styles.section_gaps}></div>
-
-      {/* -- ---------------------------------------------------------------------------------------------------------------------------------------------------
-               ManageYourShop
-            ------------------------------------------------------------------------------------------------------------------------------------------------------- */}
-      <section className={styles.ManageYourShop}>
-        <Container className={styles.CustomeContainer}>
-          <Row className={styles.d_flex}>
-            <Col lg={7}>
-              <div className={styles.Header}>
-                <h2>
-                  Manage Your Shop On The Go With{" "}
-                  <span>Mobile Friendly Application</span>
-                </h2>
-
-                <p>
-                  If the store can be maintained beautifully on mobile. Then the
-                  store can be easily maintained from anywhere. Funnelliner's
-                  mobile-friendly app works to bring your store completely into
-                  your hands. Your one-touch solution.
-                </p>
-
-                <p>Four main reasons to be mobile-friendly</p>
-                <p>
-                  Smart dashboard: As beautiful as it looks, all the important
-                  information can be easily found in the Funnelliner dashboard
-                </p>
-                <p>
-                  Fast browsing: Browsing with maximum speed will make your shop
-                  supervision faster.
-                </p>
-                <p>
-                  Easy website: You don't have to take any stress to managing.
-                  You can manage your website without stress.
-                </p>
-                <p>
-                  All Device Compatible: You can easily use the internet using
-                  devices in a beautiful and smooth way.
-                </p>
-              </div>
-
-              <div
-                className={` ${styles.SmartDashbord} ${styles.d_flex} ${styles.d_justify}`}
-              >
-                <div className={styles.SmartDashbordItem}>
-                  <div className={styles.img}>
-                    <img src='../images/home_page/home.png' alt='' />
-                  </div>
-
-                  <p>
-                    Smart <br /> Dashboard
-                  </p>
-                </div>
-
-                <div className={styles.SmartDashbordItem}>
-                  <div className={styles.img}>
-                    <img src='../images/home_page/browser.png' alt='' />
-                  </div>
-
-                  <p>
-                    Fast <br /> Browsing
-                  </p>
-                </div>
-
-                <div className={styles.SmartDashbordItem}>
-                  <div className={styles.img}>
-                    <img src='../images/home_page/computer.png' alt='' />
-                  </div>
-
-                  <p>
-                    Easy Website <br /> Management
-                  </p>
-                </div>
-
-                <div className={styles.SmartDashbordItem}>
-                  <div className={styles.img}>
-                    <img src='../images/home_page/mobile.png' alt='' />
-                  </div>
-
-                  <p>
-                    All Device <br /> Compatible
-                  </p>
-                </div>
-              </div>
-            </Col>
-
-            <Col lg={5}>
-              <div className={styles.ManageShop}>
-                <img src='../images/home_page/manageshop.png' alt='' />
-              </div>
-            </Col>
-          </Row>
-        </Container>
-      </section>
-
-      {/* section_gaps */}
-      <div className={styles.section_gaps}></div>
-
-      {/* -- ---------------------------------------------------------------------------------------------------------------------------------------------------
-               OurService
-            ------------------------------------------------------------------------------------------------------------------------------------------------------- */}
-      <section className={styles.OurService}>
-        <Swiper
-          breakpoints={{
-            300: {
-              slidesPerView: 2,
-              spaceBetween: 5,
-            },
-            768: {
-              slidesPerView: 3,
-              spaceBetween: 10,
-            },
-            1024: {
-              slidesPerView: 5,
-              spaceBetween: 10,
-            },
-            1440: {
-              slidesPerView: 6,
-              spaceBetween: 10,
-            },
-          }}
-          autoplay={{
-            delay: 2500,
-            disableOnInteraction: false,
-          }}
-          modules={[Autoplay]}
-          className='mySwiper'
-        >
-          <SwiperSlide>
-            <div className={styles.Item}>
-              <div className={styles.img}>
-                <img src='../images/home_page/service3.png' alt='' />
-              </div>
-
-              <p>Furniture & Household Business</p>
-            </div>
-          </SwiperSlide>
-
-          <SwiperSlide>
-            <div className={styles.Item}>
-              <div className={styles.img}>
-                <img src='../images/home_page/service1.png' alt='' />
-              </div>
-
-              <p>Watch & Clock Shop</p>
-            </div>
-          </SwiperSlide>
-
-          <SwiperSlide>
-            <div className={styles.Item}>
-              <div className={styles.img}>
-                <img src='../images/home_page/service2.png' alt='' />
-              </div>
-
-              <p>Grocery/Organic Foods Farm</p>
-            </div>
-          </SwiperSlide>
-
-          <SwiperSlide>
-            <div className={styles.Item}>
-              <div className={styles.img}>
-                <img src='../images/home_page/service4.png' alt='' />
-              </div>
-
-              <p>Fashion & Clothing Store</p>
-            </div>
-          </SwiperSlide>
-
-          <SwiperSlide>
-            <div className={styles.Item}>
-              <div className={styles.img}>
-                <img src='../images/home_page/service5.png' alt='' />
-              </div>
-
-              <p>Electronics & Smart Gadget Shop</p>
-            </div>
-          </SwiperSlide>
-
-          <SwiperSlide>
-            <div className={styles.Item}>
-              <div className={styles.img}>
-                <img src='../images/home_page/service6.png' alt='' />
-              </div>
-
-              <p>Medical & Hospital Equipment Shop</p>
-            </div>
-          </SwiperSlide>
-
-          <SwiperSlide>
-            <div className={styles.Item}>
-              <div className={styles.img}>
-                <img src='../images/home_page/service7.png' alt='' />
-              </div>
-
-              <p>Perfume & Body Spray Store</p>
-            </div>
-          </SwiperSlide>
-
-          <SwiperSlide>
-            <div className={styles.Item}>
-              <div className={styles.img}>
-                <img src='../images/home_page/service1.png' alt='' />
-              </div>
-
-              <p>Watch & Clock Shop</p>
-            </div>
-          </SwiperSlide>
-
-          <SwiperSlide>
-            <div className={styles.Item}>
-              <div className={styles.img}>
-                <img src='../images/home_page/service2.png' alt='' />
-              </div>
-
-              <p>Grocery/Organic Foods Farm</p>
-            </div>
-          </SwiperSlide>
-
-          <SwiperSlide>
-            <div className={styles.Item}>
-              <div className={styles.img}>
-                <img src='../images/home_page/service3.png' alt='' />
-              </div>
-
-              <p>Furniture & Household Business</p>
-            </div>
-          </SwiperSlide>
-
-          <SwiperSlide>
-            <div className={styles.Item}>
-              <div className={styles.img}>
-                <img src='../images/home_page/service4.png' alt='' />
-              </div>
-
-              <p>Fashion & Clothing Store</p>
-            </div>
-          </SwiperSlide>
-
-          <SwiperSlide>
-            <div className={styles.Item}>
-              <div className={styles.img}>
-                <img src='../images/home_page/service5.png' alt='' />
-              </div>
-
-              <p>Electronics & Smart Gadget Shop</p>
-            </div>
-          </SwiperSlide>
-
-          <SwiperSlide>
-            <div className={styles.Item}>
-              <div className={styles.img}>
-                <img src='../images/home_page/service6.png' alt='' />
-              </div>
-
-              <p>Medical & Hospital Equipment Shop</p>
-            </div>
-          </SwiperSlide>
-
-          <SwiperSlide>
-            <div className={styles.Item}>
-              <div className={styles.img}>
-                <img src='../images/home_page/service7.png' alt='' />
-              </div>
-
-              <p>Perfume & Body Spray Store</p>
-            </div>
-          </SwiperSlide>
-        </Swiper>
-      </section>
-
-
-
-      {/* section_gaps */}
-      <div className={styles.section_gaps}></div>
-
-      {/* -- ---------------------------------------------------------------------------------------------------------------------------------------------------
-               ShopTheme
-            ------------------------------------------------------------------------------------------------------------------------------------------------------- */}
-      <section id='ShopTheme' className={styles.ShopTheme}>
-        <Container className={styles.CustomeContainer}>
-          <Row className='justify-content-md-center'>
-            <Col lg={10}>
-              <div className={styles.Header}>
-                <h2>Choose Your Shop Theme</h2>
-                <p>
-                  All the themes you need are here, choose, select, customize
-                  and build your favorite website in no time.
-                </p>
-              </div>
-            </Col>
-          </Row>
-
-          <div className={styles.ShopThemeContent}>
-            <Row>
-              <Col lg={4} sm={6}>
-                <div className={styles.ShopThemeItem}>
-                  <div className={styles.img}>
-                    <img src='../images/home_page/theme2.png' alt='' />
-                  </div>
-
-                  <div className={styles.text}>
-                    <h3>Furniture & Interior Business</h3>
-
-                    <Link href=''>View Demo</Link>
-                  </div>
-                </div>
-              </Col>
-
-              <Col lg={4} sm={6}>
-                <div className={styles.ShopThemeItem}>
-                  <div className={styles.img}>
-                    <img src='../images/home_page/sobId.png' alt='' />
-                  </div>
-
-                  <div className={styles.text}>
-                    <h3>Electronics And Gadgets Shop</h3>
-
-                    <Link href=''>View Demo</Link>
-                  </div>
-                </div>
-              </Col>
-              
-
-              <Col lg={4} sm={6}>
-                <div className={styles.ShopThemeItem}>
-                  <div className={styles.img}>
-                    <img src='../images/home_page/theme4.png' alt='' />
-                  </div>
-
-                  <div className={styles.text}>
-                    <h3>Restaurant/FoodBusiness</h3>
-
-                    <Link href=''>View Demo</Link>
-                  </div>
-                </div>
-              </Col>
-
-              <Col lg={4} sm={6}>
-                <div className={styles.ShopThemeItem}>
-                  <div className={styles.img}>
-                    <img src='../images/home_page/theme3.png' alt='' />
-                  </div>
-                  <div className={styles.text}>
-                    <h3>Grocery/Organic Foods Farm</h3>
-
-                    <Link href=''>View Demo</Link>
-                  </div>
-                </div>
-              </Col>
-
-              <Col lg={4} sm={6}>
-                <div className={styles.ShopThemeItem}>
-                  <div className={styles.img}>
-                    <img src='../images/home_page/theme5.png' alt='' />
-                  </div>
-
-                  <div className={styles.text}>
-                    <h3>Fancy Watch & Clock Shop</h3>
-
-                    <Link href=''>View Demo</Link>
-                  </div>
-                </div>
-              </Col>
-
-              <Col lg={4} sm={6}>
-                <div className={styles.ShopThemeItem}>
-                  <div className={styles.img}>
-                    <img src='../images/home_page/theme6.png' alt='' />
-                  </div>
-
-                  <div className={styles.text}>
-                    <h3>Jewellery & Ornaments Shop</h3>
-
-                    <Link href=''>View Demo</Link>
-                  </div>
-                </div>
-              </Col>
-
-              <Col lg={12}>
-                <div className={styles.ShowMore}>
-                  <Link href=''>View All Themes</Link>
-                </div>
-              </Col>
-            </Row>
-          </div>
-        </Container>
-      </section>
-
-      {/* section_gaps */}
-      <div className={styles.section_gaps}></div>
-
-      {/* -- ---------------------------------------------------------------------------------------------------------------------------------------------------
-               ShopTheme
-            ------------------------------------------------------------------------------------------------------------------------------------------------------- */}
-      <section className={styles.ShopTheme}>
-        <Container className={styles.CustomeContainer}>
-          <Row className='justify-content-md-center'>
-            <Col lg={10}>
-              <div className={styles.Header}>
-                <h2>Choose Your One Page Funnel Template</h2>
-                <p>
-                  The One Page Panel template is the flagship champion that
-                  combines the sales page and order form into a single page. It
-                  may be a convenient solution for you.
-                </p>
-              </div>
-            </Col>
-          </Row>
-
-          <div className={styles.ShopThemeContent}>
-            <Row>
-              <Col lg={4} sm={6}>
-                <div className={styles.ShopThemeItem}>
-                  <div className={styles.img}>
-                    <img src='../images/home_page/landing1.png' alt='' />
-                  </div>
-
-                  <div className={styles.text}>
-                    <h3>Landing Page 1</h3>
-                    <a target="_blank"  href='https://preview.funnelliner.xyz/landing-eleven'>View Demo</a>
-
-                    {/* <Link ></Link> */}
-                  </div>
-                </div>
-              </Col>
-
-              <Col lg={4} sm={6}>
-                <div className={styles.ShopThemeItem}>
-                  <div className={styles.img}>
-                    <img src='../images/home_page/landing2.png' alt='' />
-                  </div>
-
-                  <div className={styles.text}>
-                    <h3>Landing Page 2</h3>
-                    <a target="_blank"  href='https://preview.funnelliner.xyz/landing-seven'>View Demo</a>
-
-                    {/* <Link href=''>View Demo</Link> */}
-                  </div>
-                </div>
-              </Col>
-
-              <Col lg={4} sm={6}>
-                <div className={styles.ShopThemeItem}>
-                  <div className={styles.img}>
-                    <img src='../images/home_page/landing3.png' alt='' />
-                  </div>
-
-                  <div className={styles.text}>
-                    <h3>Landing Page 3</h3>
-
-                    <a target="_blank"  href='https://preview.funnelliner.xyz/landing-two'>View Demo</a>
-                  </div>
-                </div>
-              </Col>
-
-              <Col lg={4} sm={6}>
-                <div className={styles.ShopThemeItem}>
-                  <div className={styles.img}>
-                    <img src='../images/home_page/landing4.png' alt='' />
-                  </div>
-
-                  <div className={styles.text}>
-                    <h3>Landing Page 4</h3>
-                    <a target="_blank"  href='https://preview.funnelliner.xyz/landing-eight'>View Demo</a>
-                  </div>
-                </div>
-              </Col>
-
-              <Col lg={4} sm={6}>
-                <div className={styles.ShopThemeItem}>
-                  <div className={styles.img}>
-                    <img src='../images/home_page/landing5.png' alt='' />
-                  </div>
-
-                  <div className={styles.text}>
-                    <h3>Landing Page 5</h3>
-
-                    <a target="_blank"  href='https://preview.funnelliner.xyz/landing-six'>View Demo</a>
-                  </div>
-                </div>
-              </Col>
-
-              <Col lg={4} sm={6}>
-                <div className={styles.ShopThemeItem}>
-                  <div className={styles.img}>
-                    <img src='../images/home_page/landing6.png' alt='' />
-                  </div>
-
-                  <div className={styles.text}>
-                    <h3>Landing Page 6</h3>
-
-                    <a target="_blank"  href='https://preview.funnelliner.xyz/landing-ten'>View Demo</a>
-                  </div>
-                </div>
-              </Col>
-              <Col lg={4} sm={6}>
-                <div className={styles.ShopThemeItem}>
-                  <div className={styles.img}>
-                    <img src='../images/home_page/landing-7.png' alt='' />
-                  </div>
-
-                  <div className={styles.text}>
-                    <h3>Landing Page 7</h3>
-
-                    <a target="_blank"  href='https://preview.funnelliner.xyz/landing-three'>View Demo</a>
-                  </div>
-                </div>
-              </Col>
-
-              <Col lg={4} sm={6}>
-                <div className={styles.ShopThemeItem}>
-                  <div className={styles.img}>
-                    <img src='../images/home_page/landing-8.png' alt='' />
-                  </div>
-
-                  <div className={styles.text}>
-                    <h3>Landing Page 8</h3>
-
-                    <a target="_blank"  href='https://preview.funnelliner.xyz/landing-four'>View Demo</a>
-                  </div>
-                </div>
-              </Col>
-
-              <Col lg={4} sm={6}>
-                <div className={styles.ShopThemeItem}>
-                  <div className={styles.img}>
-                    <img src='../images/home_page/landing-9.jpg' alt='' />
-                  </div>
-
-                  <div className={styles.text}>
-                    <h3>Landing Page 9</h3>
-
-                    <a target="_blank"  href='https://preview.funnelliner.xyz/landing-five'>View Demo</a>
-                  </div>
-                </div>
-              </Col>
-
-              <Col lg={4} sm={6}>
-                <div className={styles.ShopThemeItem}>
-                  <div className={styles.img}>
-                    <img src='../images/home_page/landing-10.jpg' alt='' />
-                  </div>
-
-                  <div className={styles.text}>
-                    <h3>Landing Page 10</h3>
-
-                    <a target="_blank"  href='https://preview.funnelliner.xyz/landing-nine'>View Demo</a>
-                  </div>
-                </div>
-              </Col>
-
-              <Col lg={4} sm={6}>
-                <div className={styles.ShopThemeItem}>
-                  <div className={styles.img}>
-                    <img src='../images/home_page/electic.jpg' alt='' />
-                  </div>
-
-                  <div className={styles.text}>
-                    <h3>Landing Page 11</h3>
-
-                    <a target="_blank"  href='https://preview.funnelliner.xyz/landing-twelve'>View Demo</a>
-                  </div>
-                </div>
-              </Col>
-              <Col lg={4} sm={6}>
-                <div className={styles.ShopThemeItem}>
-                  <div className={styles.img}>
-                    <img src='../images/home_page/gift.png' alt='' />
-                  </div>
-
-                  <div className={styles.text}>
-                    <h3>Landing Page 12</h3>
-
-                    <a target="_blank"  href='https://preview.funnelliner.xyz/landing-one'>View Demo</a>
-                  </div>
-                </div>
-              </Col>
-              <Col lg={4} sm={6}>
-                <div className={styles.ShopThemeItem}>
-                  <div className={styles.img}>
-                    <img src='../images/home_page/babyMilkFood.jpg' alt='' />
-                  </div>
-
-                  <div className={styles.text}>
-                    <h3>Landing Page 13</h3>
-
-                    <a target="_blank"  href='https://preview.funnelliner.xyz/landing-thirteen'>View Demo</a>
-                  </div>
-                </div>
-              </Col>
-
-              <Col lg={12}>
-                <div className={styles.ShowMore}>
-                  <Link href=''>View All Themes</Link>
-                </div>
-              </Col>
-            </Row>
-          </div>
-        </Container>
-      </section>
-
-      {/* section_gaps */}
-      <div className={styles.section_gaps}></div>
-
-      {/* -- ---------------------------------------------------------------------------------------------------------------------------------------------------
-        ChossePackage
-        ------------------------------------------------------------------------------------------------------------------------------------------------------- */}
-      <section id='ChossePackage' className={styles.ChossePackage}>
-        <Container className={styles.CustomeContainer}>
-          <Row className='justify-content-md-center'>
-            <Col lg={10}>
-              <div className={styles.Header}>
-                <h2>Choose Your Subscription Package</h2>
-                <p>
-                  A convenient subscription package for you with all the
-                  benefits of professional templates plus customer response
-                  order maintenance with store layout in mind.
-                </p>
-              </div>
-            </Col>
-          </Row>
-
-          {/* <!-- ChossePackageConent --> */}
-          <div className={styles.ChossePackageConent}>
-            <Row className='justify-content-md-center'>
-              <Col lg={4} sm={6}>
-                <div className={styles.ChossePackageItem}>
-                  <div className={styles.PackageImg}>
-                    <img src='../images/home_page/package_img.png' alt='' />
-                  </div>
-
-                  <h4>Basic</h4>
-                  <h3>BDT 5000</h3>
-                  <h5>Every Month</h5>
-
-                  <ul>
-                    <li>
-                      {" "}
-                      <img src='../images/home_page/sign.svg' alt='' /> 1 online
-                      store
-                    </li>
-                    <li>
-                      {" "}
-                      <img src='../images/home_page/sign.svg' alt='' />{" "}
-                      Unlimited products
-                    </li>
-                    <li>
-                      {" "}
-                      <img src='../images/home_page/sign.svg' alt='' />{" "}
-                      Unlimited Order Monthly
-                    </li>
-                    <li>
-                      {" "}
-                      <img src='../images/home_page/sign.svg' alt='' /> Payment
-                      gateway integration
-                    </li>
-                    <li>
-                      {" "}
-                      <img src='../images/home_page/sign.svg' alt='' />{" "}
-                      Marketing tools
-                    </li>
-                    <li>
-                      {" "}
-                      <img src='../images/home_page/sign.svg' alt='' /> Free SSL
-                      certificate
-                    </li>
-                    <li>
-                      {" "}
-                      <img src='../images/home_page/sign.svg' alt='' /> Discount
-                      codes
-                    </li>
-                    <li>
-                      {" "}
-                      <img src='../images/home_page/sign.svg' alt='' /> Themes
-                    </li>
-                    <li>
-                      {" "}
-                      <img src='../images/home_page/sign.svg' alt='' /> Plugins
-                    </li>
-                    <li>
-                      {" "}
-                      <img src='../images/home_page/sign.svg' alt='' /> 24/7
-                      support
-                    </li>
-                  </ul>
-
-                  <Link href='/signup'>
-                    Subscribe
-                  </Link>
-                </div>
-              </Col>
-            </Row>
-          </div>
-        </Container>
-      </section>
-
-      {/* section_gaps */}
-      <div className={styles.section_gaps}></div>
-
-      {/* -- ---------------------------------------------------------------------------------------------------------------------------------------------------
-            AskQustion
-        ------------------------------------------------------------------------------------------------------------------------------------------------------- */}
-      <section id='FAQ' className={styles.AskQustion}>
-        <Container className={styles.CustomeContainer}>
-          <Row className='justify-content-md-center'>
-            <Col lg={10}>
-              <div className={styles.Header}>
-                <h2>Frequently Asked Questions</h2>
-                <p>
-                  If You spend a lot of your time answering emails or social
-                  media queries, an FAQ can be a real timesaver.
-                </p>
-              </div>
-            </Col>
-          </Row>
-
-          <div className={styles.AskQusContent}>
-            <Row className={styles.d_flex}>
-              <Col lg={6} className={styles.first}>
-                <Accordion defaultActiveKey={["0", "1", "2", "3", "4"]}>
-                  <Accordion.Item eventKey='0'>
-                    <Accordion.Header>
-                      <h3>What is a Funnelliner and how does it work?</h3>
-
-                      <div className='plus'>
-                        {" "}
-                        <HiOutlinePlus />{" "}
-                      </div>
-                      <div className='minus'>
-                        {" "}
-                        <HiOutlineMinus />{" "}
-                      </div>
-                    </Accordion.Header>
-
-                    <Accordion.Body>
-                      <p>
-                        Funnel liner is an easy-to-use platform to run, manage
-                        and grow your business online from desktop and mobile.
-                        You can create your online store, add products, manage
-                        inventory, accept online payments, and do much more.
-                        It’s the simplest and fastest way to take your business
-                        to the next level.
-                      </p>
-                    </Accordion.Body>
-                  </Accordion.Item>
-
-                  <Accordion.Item eventKey='1'>
-                    <Accordion.Header>
-                      <h3>
-                        Do I need to be technically savvy to use Funnelliner?
-                      </h3>
-
-                      <div className='plus'>
-                        {" "}
-                        <HiOutlinePlus />{" "}
-                      </div>
-                      <div className='minus'>
-                        {" "}
-                        <HiOutlineMinus />{" "}
-                      </div>
-                    </Accordion.Header>
-
-                    <Accordion.Body>
-                      <p>
-                        No, you don’t need to be technically skilled to run an
-                        online business on Funnelliner. Funnelliner makes it
-                        easy for you to launch an online business and grow it
-                        using a suite of marketing tools and plugins.
-                      </p>
-                    </Accordion.Body>
-                  </Accordion.Item>
-
-                  <Accordion.Item eventKey='2'>
-                    <Accordion.Header>
-                      <h3>Can I accept online payments?</h3>
-
-                      <div className='plus'>
-                        {" "}
-                        <HiOutlinePlus />{" "}
-                      </div>
-                      <div className='minus'>
-                        {" "}
-                        <HiOutlineMinus />{" "}
-                      </div>
-                    </Accordion.Header>
-
-                    <Accordion.Body>
-                      <p>
-                        Yes, you can accept online payments from your customers.
-                        Funnelliner also allows you to integrate with Bkash,
-                        Nagad and Sslcommerz to accept online payments..
-                      </p>
-                    </Accordion.Body>
-                  </Accordion.Item>
-
-                  <Accordion.Item eventKey='3'>
-                    <Accordion.Header>
-                      <h3>Can I customise my online store?</h3>
-
-                      <div className='plus'>
-                        {" "}
-                        <HiOutlinePlus />{" "}
-                      </div>
-                      <div className='minus'>
-                        {" "}
-                        <HiOutlineMinus />{" "}
-                      </div>
-                    </Accordion.Header>
-
-                    <Accordion.Body>
-                      <p>
-                        Yes, you can customise your online store. You can choose
-                        from a range of themes that match your brand and make
-                        your store stand out.
-                      </p>
-                    </Accordion.Body>
-                  </Accordion.Item>
-
-                  <Accordion.Item eventKey='4'>
-                    <Accordion.Header>
-                      <h3>Can I pay my fee every Month-end?</h3>
-
-                      <div className='plus'>
-                        {" "}
-                        <HiOutlinePlus />{" "}
-                      </div>
-                      <div className='minus'>
-                        {" "}
-                        <HiOutlineMinus />{" "}
-                      </div>
-                    </Accordion.Header>
-
-                    <Accordion.Body>
-                      <p>Yes, you can pay a fee at the end of the month..</p>
-                    </Accordion.Body>
-                  </Accordion.Item>
-
-                  <Accordion.Item eventKey='5'>
-                    <Accordion.Header>
-                      <h3>What about 3rd party payment gateway?</h3>
-
-                      <div className='plus'>
-                        {" "}
-                        <HiOutlinePlus />{" "}
-                      </div>
-                      <div className='minus'>
-                        {" "}
-                        <HiOutlineMinus />{" "}
-                      </div>
-                    </Accordion.Header>
-
-                    <Accordion.Body>
-                      <p>
-                        If you want to use a third party payment gateway then
-                        you have to purchase a 3rd party payment gateway from a
-                        corresponding authority like Sslcommerz , bKash, Nagad
-                        and we will integrate in your system.
-                      </p>
-                    </Accordion.Body>
-                  </Accordion.Item>
-
-                  <Accordion.Item eventKey='6'>
-                    <Accordion.Header>
-                      <h3>Can I use my own domain with Funnelliner?</h3>
-
-                      <div className='plus'>
-                        {" "}
-                        <HiOutlinePlus />{" "}
-                      </div>
-                      <div className='minus'>
-                        {" "}
-                        <HiOutlineMinus />{" "}
-                      </div>
-                    </Accordion.Header>
-
-                    <Accordion.Body>
-                      <p>
-                        Yes, you can connect your domain name with Funnelliner.
-                        You can also purchase premium domain names by paying
-                        additional fees.
-                      </p>
-                    </Accordion.Body>
-                  </Accordion.Item>
-                </Accordion>
-
-              </Col>
-
-              <Col lg={6} className={styles.last}>
-                <div className={styles.AskQustionImg}>
-                  <img src='../images/home_page/qus.png' alt='' />
-                </div>
-              </Col>
-            </Row>
-          </div>
-        </Container>
-      </section>
-
-      {/* section_gaps */}
-      <div className={styles.section_gaps}></div>
-
-      {/* -- ---------------------------------------------------------------------------------------------------------------------------------------------------
-            JoinUs
-            ------------------------------------------------------------------------------------------------------------------------------------------------------- */}
-      <section className={styles.JoinUs}>
-        <Container className={styles.CustomeContainer}>
-          <Row className='justify-content-md-center'>
-            <Col lg={10}>
-              <div className={styles.Header}>
-                <h2>Join Us On Social Media</h2>
-                <p>
-                  Join our funnel liner community for e-commerce and marketing
-                  tips and tricks, where we help solo business owners like you
-                  save time and grow with better content strategies.
-                </p>
-              </div>
-
-              <div className={` ${styles.SocialIcon} ${styles.d_flex} `}>
-                <a
-                  href='https://www.facebook.com/funnelliner'
-                  className={styles.fb}
-                >
-                  {" "}
-                  <FaFacebookF />{" "}
-                </a>
-                <a
-                  href='https://www.facebook.com/funnelliner'
-                  className={styles.ins}
-                >
-                  <FaInstagram />
-                </a>
-                <a
-                  href='https://www.facebook.com/funnelliner'
-                  className={styles.youtube}
-                >
-                  <FaYoutube />
-                </a>
-                <a
-                  href='https://api.whatsapp.com/send/?phone=8801799733234&text&type=phone_number&app_absent=0'
-                  className={styles.whats}
-                >
-                  <FaWhatsapp />
-                </a>
-              </div>
-            </Col>
-          </Row>
-        </Container>
-      </section>
-
-      {/* section_gaps */}
-      <div className={styles.section_gaps}></div>
-
-      {/* -- ---------------------------------------------------------------------------------------------------------------------------------------------------
-            Footer
-            ------------------------------------------------------------------------------------------------------------------------------------------------------- */}
-      <footer className={styles.Footer}>
-        <Container className={styles.CustomeContainer}>
-          <Row>
-            <Col lg={6} sm={12}>
-              <Row>
-                <Col lg={6} sm={6}>
-                  <div className={styles.Address}>
-                    <h4>Address</h4>
-                    <p>
-                      SAR Bhaban, Level-5 , Ka-78, Progoti Sarani, Kuril,
-                      Vatara, Dhaka-1229, Bangladesh
-                    </p>
-                  </div>
-
-                  <div className={styles.Address}>
-                    <h4>Contact No.</h4>
-                    <a href='tel:0123456789'>+8801894844452</a>
-                    {/* <a href="tel:0123456789">+880 123 456 789</a> */}
-                  </div>
-
-                  <div className={styles.Address}>
-                    <h4>E-mail Address</h4>
-                    <a href='mailto:support@funnelliner.com'>
-                      support@funnelliner.com
-                    </a>
-                  </div>
-
-                  <div className={styles.Logo}>
-                    <img src='../images/home_page/logo.svg' alt='' />
-                  </div>
-                </Col>
-
-                <Col lg={6} sm={6}>
-                  <div className={styles.Address}>
-                    <h4>Quick Links</h4>
-
-                    <div className={styles.FooterMenubar}>
-                      <ul>
-                        <li>
-                          <Link href=''>Home</Link>
-                        </li>
-                        <li>
-                          <Link href=''>Feature</Link>
-                        </li>
-                        <li>
-                          <Link href=''>Themes</Link>
-                        </li>
-                        <li>
-                          <Link href=''>Pricing</Link>
-                        </li>
-                        <li>
-                          <Link href=''>Blogs</Link>
-                        </li>
-                      </ul>
+                    <div className="overlayOne"></div>
+                    <div className="overlayTwo"></div>
+                    <div className="overlayThree">
+                        <img src="/images/home_page/platform-arrow.png" alt="" />
                     </div>
-                  </div>
-                </Col>
-              </Row>
-            </Col>
 
-            <Col lg={6} sm={12}>
-              <div className={styles.FormPart}>
-                <form action='' method='post'>
-                  <div className={styles.CustomeInput}>
-                    <input type='text' name='' placeholder='Full Name' />
-                  </div>
+                    <Container>
 
-                  <div className={styles.CustomeInput}>
-                    <input type='text' name='' placeholder='Contact Number' />
-                  </div>
+                        <Row>
 
-                  <div className={styles.CustomeInput}>
-                    <input type='text' name='' placeholder='E-mail Address' />
-                  </div>
+                            <Col lg={6}>
 
-                  <div className={styles.CustomeInput}>
-                    <textarea
-                      name=''
-                      id=''
-                      rows='5'
-                      placeholder='Enter Your Message'
-                    ></textarea>
-                  </div>
+                                <div className="Video">
 
-                  <div className={styles.CustomeInput}>
-                    <button type='submit'>Submit</button>
-                  </div>
-                </form>
-              </div>
-            </Col>
-          </Row>
-        </Container>
-      </footer>
+                                    <video playing autoPlay loop muted>
+                                        <source src="https://funnelliner.s3.ap-southeast-1.amazonaws.com/media/Video/01.mp4" type="video/mp4" />
+                                        Your browser does not support the video tag.
+                                    </video>
 
-      {/* section_gaps */}
-      {/* <div className={styles.section_gaps}></div> */}
+                                </div>
 
-      {/* -- ---------------------------------------------------------------------------------------------------------------------------------------------------
 
-      ------------------------------------------------------------------------------------------------------------------------------------------------------- */}
 
-      {/* <Container className={styles.CustomeContainer}> */}
-    </div>
-  );
-};
+                            </Col>
 
-export default MainPage;
+                            <Col lg={6}>
+
+                                <div className="PlatformRight">
+
+                                    <h4>Funnel Liner platform</h4>
+                                    <h2>Infinite possibilities grow your business.</h2>
+
+                                    <ul>
+                                        <li> <BsArrow90DegRight /> Unlimited Website & Landing  page creation </li>
+                                        <li> <BsArrow90DegRight /> The place for your business growth </li>
+                                        <li> <BsArrow90DegRight /> Sales Galore </li>
+                                        <li> <BsArrow90DegRight /> Powerful super fast  Application </li>
+                                        <li> <BsArrow90DegRight /> ​Simple Buying Process </li>
+                                    </ul>
+
+                                    {/* Call */}
+                                    <div className="Call">
+                                        <div className="img">
+                                            <img src="/images/home_page/support.png" alt="" />
+                                        </div>
+                                        <div className="text">
+                                            <h3>0963-888-8881</h3>
+                                            <p>Need Customer Care Help? </p>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </Col>
+
+                        </Row>
+
+                    </Container>
+
+                </section>
+
+
+                {/* =============================================================================
+                    End Platform
+                ===============================================================================*/}
+
+
+                {/* =============================================================================
+                    Start SetUpOnlineShop
+                ===============================================================================*/}
+
+                <section className='SetUpOnlineShop'>
+
+                    <div className="overlayOne"></div>
+                    <div className="overlayTwo"></div>
+                    <div className="overlayThree">
+                        <img src="/images/home_page/squar-fram.png" alt="" />
+                    </div>
+
+                    <Container>
+
+                        <Row className='justify-content-center'>
+
+                            <Col lg={8}>
+
+                                <div className="Header">
+                                    <h2>How To Set Up Your Online Shop</h2>
+                                    <p>You must be thinking of setting up the store nicely. If your answer is yes then follow these five steps.</p>
+                                </div>
+
+                            </Col>
+
+                        </Row>
+
+                        {/* SetUpOnlineShopContent */}
+                        <div className="SetUpOnlineShopContent">
+
+                            <Row>
+
+                                <Col lg={12}>
+
+                                    <div className="SetUpOnlineShopFlex">
+
+                                        {/* item */}
+                                        <div className="SetUpOnlineShopItem">
+
+                                            <div className="SetUpOnlineShopText">
+
+                                                <div className="img">
+                                                    <img src="/images/home_page/SetUpOnlineShop1.png" alt="" />
+                                                </div>
+
+                                                <h4>Open Account</h4>
+
+                                            </div>
+
+                                        </div>
+
+                                        {/* item */}
+                                        <div className="SetUpOnlineShopItem">
+
+                                            <div className="SetUpOnlineShopText">
+
+                                                <div className="img">
+                                                    <img src="/images/home_page/SetUpOnlineShop2.png" alt="" />
+                                                </div>
+
+                                                <h4>Select Theme</h4>
+
+                                            </div>
+
+                                        </div>
+
+                                        {/* item */}
+                                        <div className="SetUpOnlineShopItem">
+
+                                            <div className="SetUpOnlineShopText">
+
+                                                <div className="img">
+                                                    <img src="/images/home_page/SetUpOnlineShop3.png" alt="" />
+                                                </div>
+
+                                                <h4>Upload Product</h4>
+
+                                            </div>
+
+                                        </div>
+
+                                        {/* item */}
+                                        <div className="SetUpOnlineShopItem">
+
+                                            <div className="SetUpOnlineShopText">
+
+                                                <div className="img">
+                                                    <img src="/images/home_page/SetUpOnlineShop4.png" alt="" />
+                                                </div>
+
+                                                <h4>Delivery Service</h4>
+
+                                            </div>
+
+                                        </div>
+
+                                        {/* item */}
+                                        <div className="SetUpOnlineShopItem">
+
+                                            <div className="SetUpOnlineShopText">
+
+                                                <div className="img">
+                                                    <img src="/images/home_page/SetUpOnlineShop5.png" alt="" />
+                                                </div>
+
+                                                <h4>Ready To Start</h4>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <Link href='/signup' className='bg'>Get Started <BsArrowRight /> </Link>
+
+                                </Col>
+
+                            </Row>
+
+                        </div>
+
+                    </Container>
+
+                </section>
+
+
+                {/* =============================================================================
+                    End SetUpOnlineShop
+                ===============================================================================*/}
+
+
+                {/* =============================================================================
+                    Start BuiltForEveryone
+                ===============================================================================*/}
+                <section className='BuiltForEveryone'>
+
+                    <Container>
+
+                        <Row className='justify-content-center'>
+
+                            <Col lg={10}>
+
+                                <div className="Header">
+                                    <h4>Built For Everyone</h4>
+                                    <h2>We funnel liners are built for the way you work</h2>
+                                </div>
+
+                            </Col>
+
+                        </Row>
+
+                        <div className="BuiltForEveryoneTabs">
+
+                            <Tabs
+                                defaultActiveKey="Editor"
+                                id="uncontrolled-tab-example"
+                                className="mb-3"
+                            >
+
+                                {/* Editor */}
+                                <Tab eventKey="Editor" title="Funnel Liner Editor">
+
+                                    <div className="BuiltTabsContent">
+
+                                        {/* Left */}
+                                        <div className="Left">
+
+                                            <h3>Work easy and do more with Funnel Liner.</h3>
+                                            <p>Test our Easy And Powerful Drag & Drop Page Builder editing experience & make...</p>
+
+                                            <div className="Replace d_flex">
+                                                <h4>REPLACES:</h4>
+                                                <img src="/images/home_page/wordpress.png" alt="" />
+                                            </div>
+
+                                            <Link href='/signup' className='bg'>Get Started <BsArrowRight /> </Link>
+
+                                        </div>
+
+                                        {/* Right */}
+                                        <div className="Right">
+
+                                            <div className="Video">
+
+                                                <video playing autoPlay loop muted>
+                                                    <source src="https://funnelliner.s3.ap-southeast-1.amazonaws.com/media/Video/editor.mp4" type="video/mp4" />
+                                                    Your browser does not support the video tag.
+                                                </video>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </Tab>
+
+                                {/* Orders */}
+                                <Tab eventKey="Orders" title="Orders Management">
+
+                                    <div className="BuiltTabsContent">
+
+                                        {/* Right */}
+                                        <div className="Right">
+
+                                            <div className="Video">
+                                                <img src="/images/home_page/Order.jpg" alt="" />
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </Tab>
+
+                                {/* Account */}
+                                <Tab eventKey="Account" title="Accounting Modules">
+
+                                    <div className="BuiltTabsContent">
+
+                                        {/* Right */}
+                                        <div className="Right">
+
+                                            <div className="Video">
+                                                <img src="/images/home_page/Accounting Modules.jpg" alt="" />
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </Tab>
+
+                                {/* Bulk */}
+                                <Tab eventKey="Bulk" title="Bulk Sms">
+
+                                    <div className="BuiltTabsContent">
+
+                                        {/* Right */}
+                                        <div className="Right">
+
+                                            <div className="Video">
+                                                <img src="/images/home_page/Bulk-SMS.jpg" alt="" />
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </Tab>
+
+                                {/* Stock */}
+                                <Tab eventKey="Stock" title="Stock">
+
+                                    <div className="BuiltTabsContent">
+
+                                        {/* Right */}
+                                        <div className="Right">
+
+                                            <div className="Video">
+                                                <img src="/images/home_page/Stock.jpg" alt="" />
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </Tab>
+
+                            </Tabs>
+
+                        </div>
+
+                    </Container>
+
+                </section>
+
+
+                {/* =============================================================================
+                    End BuiltForEveryone
+                ===============================================================================*/}
+
+
+                <div className="SectionGaps"></div>
+
+
+                {/* =============================================================================
+                    Start PowerfulFunnel
+                ===============================================================================*/}
+
+                <section className='PowerfulFunnel'>
+
+                    <div className="Frame">
+                        <img src="/images/home_page/Frame3.png" alt="" />
+                    </div>
+
+                    <Container>
+
+                        <Row className='justify-content-center'>
+
+                            <Col lg={10}>
+                                <h2>Attract customers will make your online business the best with powerful funnel.</h2>
+                            </Col>
+
+                        </Row>
+
+                        {/* PowerfulFunnelContent */}
+                        <div className="PowerfulFunnelContent">
+
+                            <Row>
+
+                                {/* item */}
+                                <Col lg={3}>
+
+                                    <div className="PowerfulFunnelItem">
+
+                                        <div className="Image">
+                                            <img className='Img' src="/images/home_page/icons/icon1.png" alt="" />
+                                            {/* overlay */}
+                                            <img className='overlay' src="/images/home_page/icons/hover.png" alt="" />
+                                        </div>
+
+                                        <div className="text">
+                                            <h4>Funnel Liner Editor</h4>
+                                            <p>Test our Easy And Powerful Drag & Drop Page Builder editing experience & make...</p>
+                                        </div>
+
+                                        <img className="HoverOverlayOne" src="/images/home_page/icons/hover-vector.png" alt="" />
+
+                                        <img className="HoverOverlayTwo" src="/images/home_page/icons/hover-vector.png" alt="" />
+
+                                        <Link href='#' className='bg'>Read More<BsArrowRight /> </Link>
+
+                                    </div>
+
+                                </Col>
+
+                                {/* item */}
+                                <Col lg={3}>
+
+                                    <div className="PowerfulFunnelItem">
+
+                                        <div className="Image">
+                                            <img className='Img' src="/images/home_page/icons/icon2.png" alt="" />
+                                            {/* overlay */}
+                                            <img className='overlay' src="/images/home_page/icons/hover.png" alt="" />
+                                        </div>
+
+                                        <div className="text">
+                                            <h4>Order Management Solution</h4>
+                                            <p>Easily manage orders from your Facebook page inbox, manual orders, landing page...</p>
+                                        </div>
+
+                                        <img className="HoverOverlayOne" src="/images/home_page/icons/hover-vector.png" alt="" />
+
+                                        <img className="HoverOverlayTwo" src="/images/home_page/icons/hover-vector.png" alt="" />
+
+                                        <Link href='#' className='bg'>Read More<BsArrowRight /> </Link>
+
+                                    </div>
+
+                                </Col>
+
+                                {/* item */}
+                                <Col lg={3}>
+
+                                    <div className="PowerfulFunnelItem">
+
+                                        <div className="Image">
+                                            <img className='Img' src="/images/home_page/icons/icon3.png" alt="" />
+                                            {/* overlay */}
+                                            <img className='overlay' src="/images/home_page/icons/hover.png" alt="" />
+                                        </div>
+
+                                        <div className="text">
+                                            <h4>Super Fast Hosting</h4>
+                                            <p>Experience lightning-fast page delivery with our powerful CDN hosting, ensuring accele...</p>
+                                        </div>
+
+                                        <img className="HoverOverlayOne" src="/images/home_page/icons/hover-vector.png" alt="" />
+
+                                        <img className="HoverOverlayTwo" src="/images/home_page/icons/hover-vector.png" alt="" />
+
+                                        <Link href='#' className='bg'>Read More<BsArrowRight /> </Link>
+
+                                    </div>
+
+                                </Col>
+
+                                {/* item */}
+                                <Col lg={3}>
+
+                                    <div className="PowerfulFunnelItem">
+
+                                        <div className="Image">
+                                            <img className='Img' src="/images/home_page/icons/icon4.png" alt="" />
+                                            {/* overlay */}
+                                            <img className='overlay' src="/images/home_page/icons/hover.png" alt="" />
+                                        </div>
+
+                                        <div className="text">
+                                            <h4>Ready Landing Page</h4>
+                                            <p>Unlock instant success with our collection of ready-to-use landing page templates...</p>
+                                        </div>
+
+                                        <img className="HoverOverlayOne" src="/images/home_page/icons/hover-vector.png" alt="" />
+
+                                        <img className="HoverOverlayTwo" src="/images/home_page/icons/hover-vector.png" alt="" />
+
+                                        <Link href='#' className='bg'>Read More<BsArrowRight /> </Link>
+
+                                    </div>
+
+                                </Col>
+
+                                {/* item */}
+                                <Col lg={3}>
+
+                                    <div className="PowerfulFunnelItem">
+
+                                        <div className="Image">
+                                            <img className='Img' src="/images/home_page/icons/icon5.png" alt="" />
+                                            {/* overlay */}
+                                            <img className='overlay' src="/images/home_page/icons/hover.png" alt="" />
+                                        </div>
+
+                                        <div className="text">
+                                            <h4>Auto Invoice Making</h4>
+                                            <p>Simplify your business operations with our automated invoice generation, ensuring seam...</p>
+                                        </div>
+
+                                        <img className="HoverOverlayOne" src="/images/home_page/icons/hover-vector.png" alt="" />
+
+                                        <img className="HoverOverlayTwo" src="/images/home_page/icons/hover-vector.png" alt="" />
+
+                                        <Link href='#' className='bg'>Read More<BsArrowRight /> </Link>
+
+                                    </div>
+
+                                </Col>
+
+                                {/* item */}
+                                <Col lg={3}>
+
+                                    <div className="PowerfulFunnelItem">
+
+                                        <div className="Image">
+                                            <img className='Img' src="/images/home_page/icons/icon6.png" alt="" />
+                                            {/* overlay */}
+                                            <img className='overlay' src="/images/home_page/icons/hover.png" alt="" />
+                                        </div>
+
+                                        <div className="text">
+                                            <h4>Courier Entry</h4>
+                                            <p>Streamline your order processing with our one-click order entry feature, allowing you...</p>
+                                        </div>
+
+                                        <img className="HoverOverlayOne" src="/images/home_page/icons/hover-vector.png" alt="" />
+
+                                        <img className="HoverOverlayTwo" src="/images/home_page/icons/hover-vector.png" alt="" />
+
+                                        <Link href='#' className='bg'>Read More<BsArrowRight /> </Link>
+
+                                    </div>
+
+                                </Col>
+
+                                {/* item */}
+                                <Col lg={3}>
+
+                                    <div className="PowerfulFunnelItem">
+
+                                        <div className="Image">
+                                            <img className='Img' src="/images/home_page/icons/icon7.png" alt="" />
+                                            {/* overlay */}
+                                            <img className='overlay' src="/images/home_page/icons/hover.png" alt="" />
+                                        </div>
+
+                                        <div className="text">
+                                            <h4>Stock Management</h4>
+                                            <p>Automatically reduce stock quantities upon order confirmation, and effortlessly...</p>
+                                        </div>
+
+                                        <img className="HoverOverlayOne" src="/images/home_page/icons/hover-vector.png" alt="" />
+
+                                        <img className="HoverOverlayTwo" src="/images/home_page/icons/hover-vector.png" alt="" />
+
+                                        <Link href='#' className='bg'>Read More<BsArrowRight /> </Link>
+
+                                    </div>
+
+                                </Col>
+
+                                {/* item */}
+                                <Col lg={3}>
+
+                                    <div className="PowerfulFunnelItem">
+
+                                        <div className="Image">
+                                            <img className='Img' src="/images/home_page/icons/icon8.png" alt="" />
+                                            {/* overlay */}
+                                            <img className='overlay' src="/images/home_page/icons/hover.png" alt="" />
+                                        </div>
+
+                                        <div className="text">
+                                            <h4>SMS Marketing</h4>
+                                            <p>Amplify your marketing efforts with our bulk SMS marketing tool, allowing you to reach...</p>
+                                        </div>
+
+                                        <img className="HoverOverlayOne" src="/images/home_page/icons/hover-vector.png" alt="" />
+
+                                        <img className="HoverOverlayTwo" src="/images/home_page/icons/hover-vector.png" alt="" />
+
+                                        <Link href='#' className='bg'>Read More<BsArrowRight /> </Link>
+
+                                    </div>
+
+                                </Col>
+
+                                {/* item */}
+                                <Col lg={3}>
+
+                                    <div className="PowerfulFunnelItem">
+
+                                        <div className="Image">
+                                            <img className='Img' src="/images/home_page/icons/icon9.png" alt="" />
+                                            {/* overlay */}
+                                            <img className='overlay' src="/images/home_page/icons/hover.png" alt="" />
+                                        </div>
+
+                                        <div className="text">
+                                            <h4>Accounting Module</h4>
+                                            <p>Simplify your accounting tasks with our intuitive and user-friendly accounting mod...</p>
+                                        </div>
+
+                                        <img className="HoverOverlayOne" src="/images/home_page/icons/hover-vector.png" alt="" />
+
+                                        <img className="HoverOverlayTwo" src="/images/home_page/icons/hover-vector.png" alt="" />
+
+                                        <Link href='#' className='bg'>Read More<BsArrowRight /> </Link>
+
+                                    </div>
+
+                                </Col>
+
+                                {/* item */}
+                                <Col lg={3}>
+
+                                    <div className="PowerfulFunnelItem">
+
+                                        <div className="Image">
+                                            <img className='Img' src="/images/home_page/icons/icon10.png" alt="" />
+                                            {/* overlay */}
+                                            <img className='overlay' src="/images/home_page/icons/hover.png" alt="" />
+                                        </div>
+
+                                        <div className="text">
+                                            <h4>Easy Checkout Pages</h4>
+                                            <p>Enhance your customers' shopping experience with our convenient one-page che...</p>
+                                        </div>
+
+                                        <img className="HoverOverlayOne" src="/images/home_page/icons/hover-vector.png" alt="" />
+
+                                        <img className="HoverOverlayTwo" src="/images/home_page/icons/hover-vector.png" alt="" />
+
+                                        <Link href='#' className='bg'>Read More<BsArrowRight /> </Link>
+
+                                    </div>
+
+                                </Col>
+
+                                {/* item */}
+                                <Col lg={3}>
+
+                                    <div className="PowerfulFunnelItem">
+
+                                        <div className="Image">
+                                            <img className='Img' src="/images/home_page/icons/icon11.png" alt="" />
+                                            {/* overlay */}
+                                            <img className='overlay' src="/images/home_page/icons/hover.png" alt="" />
+                                        </div>
+
+                                        <div className="text">
+                                            <h4>Marketing Tools</h4>
+                                            <p>Empower your marketing efforts with our comprehensive suite of powerful marketing tools.</p>
+                                        </div>
+
+                                        <img className="HoverOverlayOne" src="/images/home_page/icons/hover-vector.png" alt="" />
+
+                                        <img className="HoverOverlayTwo" src="/images/home_page/icons/hover-vector.png" alt="" />
+
+                                        <Link href='#' className='bg'>Read More<BsArrowRight /> </Link>
+
+                                    </div>
+
+                                </Col>
+
+                                {/* item */}
+                                <Col lg={3}>
+
+                                    <div className="PowerfulFunnelItem">
+
+                                        <div className="Image">
+                                            <img className='Img' src="/images/home_page/icons/icon12.png" alt="" />
+                                            {/* overlay */}
+                                            <img className='overlay' src="/images/home_page/icons/hover.png" alt="" />
+                                        </div>
+
+                                        <div className="text">
+                                            <h4>Orders, Sales & Delivery Reporting Dashboard</h4>
+                                            <p>Gain valuable insights into your orders, sales, and delivery data with our comprehensive re...</p>
+                                        </div>
+
+                                        <img className="HoverOverlayOne" src="/images/home_page/icons/hover-vector.png" alt="" />
+
+                                        <img className="HoverOverlayTwo" src="/images/home_page/icons/hover-vector.png" alt="" />
+
+                                        <Link href='#' className='bg'>Read More<BsArrowRight /> </Link>
+
+                                    </div>
+
+                                </Col>
+
+                                {/* item */}
+                                <Col lg={3}>
+
+                                    <div className="PowerfulFunnelItem">
+
+                                        <div className="Image">
+                                            <img className='Img' src="/images/home_page/icons/icon13.png" alt="" />
+                                            {/* overlay */}
+                                            <img className='overlay' src="/images/home_page/icons/hover.png" alt="" />
+                                        </div>
+
+                                        <div className="text">
+                                            <h4>Sales Target</h4>
+                                            <p>Set and track your sales targets effortlessly with our intuitive tool, allowing you to monitor pro...</p>
+                                        </div>
+
+                                        <img className="HoverOverlayOne" src="/images/home_page/icons/hover-vector.png" alt="" />
+
+                                        <img className="HoverOverlayTwo" src="/images/home_page/icons/hover-vector.png" alt="" />
+
+                                        <Link href='#' className='bg'>Read More<BsArrowRight /> </Link>
+
+                                    </div>
+
+                                </Col>
+
+                                {/* item */}
+                                <Col lg={3}>
+
+                                    <div className="PowerfulFunnelItem">
+
+                                        <div className="Image">
+                                            <img className='Img' src="/images/home_page/icons/icon14.png" alt="" />
+                                            {/* overlay */}
+                                            <img className='overlay' src="/images/home_page/icons/hover.png" alt="" />
+                                        </div>
+
+                                        <div className="text">
+                                            <h4>Custom Domain</h4>
+                                            <p>Funnel Liner  allows you to easily set up and customize your own domain, giving your bran...</p>
+                                        </div>
+
+                                        <img className="HoverOverlayOne" src="/images/home_page/icons/hover-vector.png" alt="" />
+
+                                        <img className="HoverOverlayTwo" src="/images/home_page/icons/hover-vector.png" alt="" />
+
+                                        <Link href='#' className='bg'>Read More<BsArrowRight /> </Link>
+
+                                    </div>
+
+                                </Col>
+
+                                {/* item */}
+                                <Col lg={3}>
+
+                                    <div className="PowerfulFunnelItem">
+
+                                        <div className="Image">
+                                            <img className='Img' src="/images/home_page/icons/icon15.png" alt="" />
+                                            {/* overlay */}
+                                            <img className='overlay' src="/images/home_page/icons/hover.png" alt="" />
+                                        </div>
+
+                                        <div className="text">
+                                            <h4>Auto SSL Certificate</h4>
+                                            <p>Your website and landing pages will be automatically secured with SSL encryption, provid...</p>
+                                        </div>
+
+                                        <img className="HoverOverlayOne" src="/images/home_page/icons/hover-vector.png" alt="" />
+
+                                        <img className="HoverOverlayTwo" src="/images/home_page/icons/hover-vector.png" alt="" />
+
+                                        <Link href='#' className='bg'>Read More<BsArrowRight /> </Link>
+
+                                    </div>
+
+                                </Col>
+
+                                {/* item */}
+                                <Col lg={3}>
+
+                                    <div className="PowerfulFunnelItem">
+
+                                        <div className="Image">
+                                            <img className='Img' src="/images/home_page/icons/icon16.png" alt="" />
+                                            {/* overlay */}
+                                            <img className='overlay' src="/images/home_page/icons/hover.png" alt="" />
+                                        </div>
+
+                                        <div className="text">
+                                            <h4>Auto Scaling Feature (No Data Loss)</h4>
+                                            <p>Funnel Liner incorporates automatic scaling capabilities, ensuring that your system...</p>
+                                        </div>
+
+                                        <img className="HoverOverlayOne" src="/images/home_page/icons/hover-vector.png" alt="" />
+
+                                        <img className="HoverOverlayTwo" src="/images/home_page/icons/hover-vector.png" alt="" />
+
+                                        <Link href='#' className='bg'>Read More<BsArrowRight /> </Link>
+
+                                    </div>
+
+                                </Col>
+
+                                {/* item */}
+                                <Col lg={3}>
+
+                                    <div className="PowerfulFunnelItem">
+
+                                        <div className="Image">
+                                            <img className='Img' src="/images/home_page/icons/icon17.png" alt="" />
+                                            {/* overlay */}
+                                            <img className='overlay' src="/images/home_page/icons/hover.png" alt="" />
+                                        </div>
+
+                                        <div className="text">
+                                            <h4>Call Center Solution</h4>
+                                            <img src="/images/home_page/icons/coming-soon.png" alt="" />
+                                        </div>
+
+                                        <img className="HoverOverlayOne" src="/images/home_page/icons/hover-vector.png" alt="" />
+
+                                        <img className="HoverOverlayTwo" src="/images/home_page/icons/hover-vector.png" alt="" />
+
+                                        <Link href='#' className='bg'>Read More<BsArrowRight /> </Link>
+
+                                    </div>
+
+                                </Col>
+
+                                {/* item */}
+                                <Col lg={3}>
+
+                                    <div className="PowerfulFunnelItem">
+
+                                        <div className="Image">
+                                            <img className='Img' src="/images/home_page/icons/icon18.png" alt="" />
+                                            {/* overlay */}
+                                            <img className='overlay' src="/images/home_page/icons/hover.png" alt="" />
+                                        </div>
+
+                                        <div className="text">
+                                            <h4>User Role</h4>
+                                            <img src="/images/home_page/icons/coming-soon.png" alt="" />
+                                        </div>
+
+                                        <img className="HoverOverlayOne" src="/images/home_page/icons/hover-vector.png" alt="" />
+
+                                        <img className="HoverOverlayTwo" src="/images/home_page/icons/hover-vector.png" alt="" />
+
+                                        <Link href='#' className='bg'>Read More<BsArrowRight /> </Link>
+
+                                    </div>
+
+                                </Col>
+
+                                {/* item */}
+                                <Col lg={3}>
+
+                                    <div className="PowerfulFunnelItem">
+
+                                        <div className="Image">
+                                            <img className='Img' src="/images/home_page/icons/icon19.png" alt="" />
+                                            {/* overlay */}
+                                            <img className='overlay' src="/images/home_page/icons/hover.png" alt="" />
+                                        </div>
+
+                                        <div className="text">
+                                            <h4>Business Email Add</h4>
+                                            <img src="/images/home_page/icons/coming-soon.png" alt="" />
+                                        </div>
+
+                                        <img className="HoverOverlayOne" src="/images/home_page/icons/hover-vector.png" alt="" />
+
+                                        <img className="HoverOverlayTwo" src="/images/home_page/icons/hover-vector.png" alt="" />
+
+                                        <Link href='#' className='bg'>Read More<BsArrowRight /> </Link>
+
+                                    </div>
+
+                                </Col>
+
+                                {/* item */}
+                                <Col lg={3}>
+
+                                    <div className="PowerfulFunnelItem">
+
+                                        <div className="Image">
+                                            <img className='Img' src="/images/home_page/icons/icon20.png" alt="" />
+                                            {/* overlay */}
+                                            <img className='overlay' src="/images/home_page/icons/hover.png" alt="" />
+                                        </div>
+
+                                        <div className="text">
+                                            <h4>Fb Page Inbox Integration with AI Chatbot</h4>
+                                            <img src="/images/home_page/icons/coming-soon.png" alt="" />
+                                        </div>
+
+                                        <img className="HoverOverlayOne" src="/images/home_page/icons/hover-vector.png" alt="" />
+
+                                        <img className="HoverOverlayTwo" src="/images/home_page/icons/hover-vector.png" alt="" />
+
+                                        <Link href='#' className='bg'>Read More <BsArrowRight /> </Link>
+
+                                    </div>
+
+                                </Col>
+
+                            </Row>
+
+                        </div>
+
+                    </Container>
+
+                </section>
+
+                {/* =============================================================================
+                    End PowerfulFunnel
+                ===============================================================================*/}
+
+
+                <div className="SectionGaps"></div>
+
+
+                {/* =============================================================================
+                    Start IfHaveFunnelLiner
+                ===============================================================================*/}
+                <section className='IfHaveFunnelLiner'>
+
+                    <div className="overlayOne"></div>
+                    <div className="overlayTwo"></div>
+
+                    <img className='Frame1' src="/images/home_page/frame1.png" alt="" />
+                    <img className='Frame2' src="/images/home_page/frame2.png" alt="" />
+
+                    <Container>
+
+                        <Row className='justify-content-center'>
+
+                            <Col lg={6}>
+                                <h2>If you have Funnel Liner you don't need</h2>
+                            </Col>
+
+                        </Row>
+
+                        <Row>
+                            <Col lg={12}>
+
+                                <div className="Video">
+
+                                    <video playing autoPlay loop muted>
+                                        <source src="https://funnelliner.s3.ap-southeast-1.amazonaws.com/media/Video/02.mp4" type="video/mp4" />
+                                        Your browser does not support the video tag.
+                                    </video>
+
+                                </div>
+                            </Col>
+                        </Row>
+
+                    </Container>
+
+                </section>
+
+
+                {/* =============================================================================
+                    End IfHaveFunnelLiner
+                ===============================================================================*/}
+
+
+                {/* =============================================================================
+                    Start SingleLanding
+                ===============================================================================*/}
+                <section className='SingleLanding'>
+
+                    <Container>
+
+                        <Row className='justify-content-center'>
+
+                            <Col lg={10}>
+
+                                <div className="Header">
+                                    <h2>One Page Funnel Template</h2>
+                                    <p>Simply Drag & Drop, Customize, and Achieve Maximum Conversions with Our Sales, Marketing, and Conversion Hacks & Create High-Converting Pages in Minutes with Funnel Liner. </p>
+                                </div>
+
+                            </Col>
+
+                        </Row>
+
+                        {/* SingleLandingContent */}
+                        <div className="SingleLandingContent">
+
+                            <Row>
+
+                                {
+                                    isLoading === true && <>
+                                        <Col lg={4} sm={6}>
+                                            <div className="ShopThemeItem">
+                                                <div className="img">
+                                                    <Placeholder as={Card.Img} xs={12} animation="wave" />
+                                                </div>
+                                                <div className="text">
+                                                    <Placeholder xs={12} bg="secondary" />
+                                                    <Placeholder xs={12} bg="secondary" />
+                                                </div>
+                                            </div>
+                                        </Col>
+
+                                        <Col lg={4} sm={6}>
+                                            <div className="ShopThemeItem">
+                                                <div className="img">
+                                                    <Placeholder as={Card.Img} xs={12} animation="wave" />
+                                                </div>
+                                                <div className="text">
+                                                    <Placeholder xs={12} bg="secondary" />
+                                                    <Placeholder xs={12} bg="secondary" />
+                                                </div>
+                                            </div>
+                                        </Col>
+                                        <Col lg={4} sm={6}>
+                                            <div className="ShopThemeItem">
+                                                <div className="img">
+                                                    <Placeholder as={Card.Img} xs={12} animation="wave" />
+                                                </div>
+                                                <div className="text">
+                                                    <Placeholder xs={12} bg="secondary" />
+                                                    <Placeholder xs={12} bg="secondary" />
+                                                </div>
+                                            </div>
+                                        </Col>
+
+                                    </>
+                                }
+
+
+                                {
+                                    landingList && isLoading === false && landingList.map((item) => (
+                                        <Col lg={4} sm={6}>
+                                            <div className="SingleLandingItem">
+                                                <div className="img">
+                                                    <img src={item?.media?.name} alt='' />
+                                                </div>
+                                                <div className="text">
+                                                    <h4>{item?.theme_name}</h4>
+                                                    <Link target="_blank" href={item?.url} className='bg'>View Demo</Link>
+                                                </div>
+                                            </div>
+                                        </Col>
+                                    ))
+                                }
+
+                            </Row>
+
+                            <div className="ViewAll">
+                                <Link href='/shop-theme' target='_blank' className='bg LandingAll'>View All <BsArrowRight /></Link>
+                            </div>
+
+                        </div>
+
+                    </Container>
+
+                </section>
+
+
+                {/* =============================================================================
+                    End SingleLanding
+                ===============================================================================*/}
+
+
+                <div className="SectionGaps"></div>
+
+
+                {/* =============================================================================
+                    Start MultiLanding
+                ===============================================================================*/}
+
+                <section className='SingleLanding MultiLanding'>
+
+                    <img className='FrameFour' src="/images/home_page/frame4.png" alt="" />
+                    <img className='FrameFive' src="/images/home_page/frame5.png" alt="" />
+                    <img className='FrameSix' src="/images/home_page/frame6.png" alt="" />
+                    <img className='MultiLandingBg' src="/images/home_page/multi-landing-bg.png" alt="" />
+
+                    <Container>
+
+                        <Row className='justify-content-center'>
+
+                            <Col lg={10}>
+
+                                <div className="Header">
+                                    <h2>Choose Your Website Theme</h2>
+                                    <p>All the themes you need are here, choose, select, customise and build your favourite website in no time. </p>
+                                </div>
+
+                            </Col>
+
+                        </Row>
+
+                        {/* SingleLandingContent */}
+                        <div className="SingleLandingContent">
+
+                            <Row>
+
+                                {
+                                    isLoading === true && <>
+                                        <Col lg={4} sm={6}>
+                                            <div className="ShopThemeItem">
+                                                <div className="img">
+                                                    <Placeholder as={Card.Img} xs={12} animation="wave" />
+                                                </div>
+                                                <div className="text">
+                                                    <Placeholder xs={12} bg="secondary" />
+                                                    <Placeholder xs={12} bg="secondary" />
+                                                </div>
+                                            </div>
+                                        </Col>
+
+                                        <Col lg={4} sm={6}>
+                                            <div className="ShopThemeItem">
+                                                <div className="img">
+                                                    <Placeholder as={Card.Img} xs={12} animation="wave" />
+                                                </div>
+                                                <div className="text">
+                                                    <Placeholder xs={12} bg="secondary" />
+                                                    <Placeholder xs={12} bg="secondary" />
+                                                </div>
+                                            </div>
+                                        </Col>
+                                        <Col lg={4} sm={6}>
+                                            <div className="ShopThemeItem">
+                                                <div className="img">
+                                                    <Placeholder as={Card.Img} xs={12} animation="wave" />
+                                                </div>
+                                                <div className="text">
+                                                    <Placeholder xs={12} bg="secondary" />
+                                                    <Placeholder xs={12} bg="secondary" />
+                                                </div>
+                                            </div>
+                                        </Col>
+
+                                    </>
+                                }
+
+
+                                <Col lg={4} sm={6}>
+                                    <div className="SingleLandingItem">
+                                        <div className="img">
+                                            <img src="/images/home_page/theme1.png" alt='' />
+                                        </div>
+                                        <div className="text">
+                                            <h4>Grocery/Organic Foods</h4>
+                                            <Link target="_blank" href="https://preview.funnelliner.xyz/multipage-1" className='bg'>View Demo</Link>
+                                        </div>
+                                    </div>
+                                </Col>
+
+                                <Col lg={4} sm={6}>
+                                    <div className="SingleLandingItem">
+                                        <div className="img">
+                                            <img src="/images/home_page/theme2.png" alt='' />
+                                            {/* ComingSoon */}
+                                            <div className="ComingSoon">
+                                                <h4>Coming Soon...</h4>
+                                            </div>
+                                        </div>
+                                        <div className="text">
+                                            <h4>Iconic E-commerce</h4>
+                                            <Link target="_blank" href="#" className='bg'>View Demo</Link>
+                                        </div>
+
+                                    </div>
+                                </Col>
+
+                                <Col lg={4} sm={6}>
+                                    <div className="SingleLandingItem">
+                                        <div className="img">
+                                            <img src="/images/home_page/theme3.png" alt='' />
+                                            {/* ComingSoon */}
+                                            <div className="ComingSoon">
+                                                <h4>Coming Soon...</h4>
+                                            </div>
+                                        </div>
+                                        <div className="text">
+                                            <h4>Electronics And Gadgets Shop</h4>
+                                            <Link target="_blank" href="#" className='bg'>View Demo</Link>
+                                        </div>
+
+                                    </div>
+                                </Col>
+
+                            </Row>
+
+                            <div className="ViewAll">
+                                <Link href='#' className='bg'>View All <BsArrowRight /></Link>
+                            </div>
+
+                        </div>
+
+                    </Container>
+
+                </section>
+
+                {/* =============================================================================
+                    End MultiLanding
+                ===============================================================================*/}
+
+                <div className="SectionGaps"></div>
+
+                {/* =============================================================================
+                    Start MobileFriendly
+                ===============================================================================*/}
+                <section className='MobileFriendly'>
+
+                    <img className='Frame7' src="/images/home_page/frame7.png" alt="" />
+                    <img className='Frame8' src="/images/home_page/frame8.png" alt="" />
+                    <img className='Frame9' src="/images/home_page/squar-fram.png" alt="" />
+
+                    <Container>
+
+                        <Row className='d_flex'>
+
+                            <Col lg={6}>
+
+                                <div className="MobileFriendlyLeft">
+
+                                    <h4>Mobile friendly</h4>
+                                    <h2>Manage Your Shop On The Go With Funnel Liner</h2>
+
+                                    <div className="MobileFriendlyLeftBox">
+
+                                        {/* item */}
+                                        <div className="MobileFriendlyItem">
+
+                                            <div className="img">
+                                                <img src="/images/home_page/mobile-friendly1.png" alt="" />
+                                            </div>
+
+                                            <h4>Easy Website Builder</h4>
+
+                                        </div>
+
+                                        {/* item */}
+                                        <div className="MobileFriendlyItem">
+
+                                            <div className="img">
+                                                <img src="/images/home_page/mobile-friendly2.png" alt="" />
+                                            </div>
+
+                                            <h4>Smart Dashboard</h4>
+
+                                        </div>
+
+                                        {/* item */}
+                                        <div className="MobileFriendlyItem">
+
+                                            <div className="img">
+                                                <img src="/images/home_page/mobile-friendly3.png" alt="" />
+                                            </div>
+
+                                            <h4>All Device Compatible</h4>
+
+                                        </div>
+
+                                        {/* item */}
+                                        <div className="MobileFriendlyItem">
+
+                                            <div className="img">
+                                                <img src="/images/home_page/mobile-friendly4.png" alt="" />
+                                            </div>
+
+                                            <h4>Fast Browsing</h4>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </Col>
+
+                            <Col lg={6}>
+
+                                <div className="Video">
+
+                                    <video playing autoPlay loop muted>
+                                        <source src="https://funnelliner.s3.ap-southeast-1.amazonaws.com/media/Video/04.mp4" type="video/mp4" />
+                                        Your browser does not support the video tag.
+                                    </video>
+
+                                </div>
+
+                            </Col>
+
+                        </Row>
+
+                    </Container>
+
+                </section>
+
+
+                {/* =============================================================================
+                    End MobileFriendly
+                ===============================================================================*/}
+
+
+                <div className="SectionGaps"></div>
+
+
+                {/* =============================================================================
+                    Start PersonalPlan
+                ===============================================================================*/}
+                <section className='PersonalPlan'>
+
+                    <Container>
+
+                        <Row className='justify-content-center'>
+
+                            <Col lg={8}>
+
+                                <div className="Header">
+
+                                    <h4>Subscription Package</h4>
+                                    <h2>Choose your personal plan</h2>
+
+                                </div>
+
+                            </Col>
+
+                            <Col lg={12}>
+
+                                <div className="PersonalPlanContent">
+
+                                    {/* left */}
+                                    <div className="left">
+
+                                        <ul>
+
+                                            <li>
+                                                <img src="/images/home_page/check.png" alt="" />
+                                                1 Online Store
+                                            </li>
+
+                                            <li>
+                                                <img src="/images/home_page/check.png" alt="" />
+                                                Custom Domain
+                                            </li>
+
+                                            <li>
+                                                <img src="/images/home_page/check.png" alt="" />
+                                                Drag & Drop, No Code Editor
+                                            </li>
+
+                                            <li>
+                                                <img src="/images/home_page/check.png" alt="" />
+                                                Auto Invoice Making
+                                            </li>
+
+                                            <li>
+                                                <img src="/images/home_page/check.png" alt="" />
+                                                Super Fast CDN Hosting
+                                            </li>
+
+                                            <li>
+                                                <img src="/images/home_page/check.png" alt="" />
+                                                Auto Courier Entry
+                                            </li>
+
+                                            <li>
+                                                <img src="/images/home_page/check.png" alt="" />
+                                                Super Fast CDN Hosting
+                                            </li>
+
+                                            <li>
+                                                <img src="/images/home_page/check.png" alt="" />
+                                                Auto Courier Entry
+                                            </li>
+
+                                            <li>
+                                                <img src="/images/home_page/check.png" alt="" />
+                                                Unlimited Products
+                                            </li>
+
+                                            <li>
+                                                <img src="/images/home_page/check.png" alt="" />
+                                                Inventory Management
+                                            </li>
+
+                                            <li>
+                                                <img src="/images/home_page/check.png" alt="" />
+                                                Multi Page Themes
+                                            </li>
+
+                                            <li>
+                                                <img src="/images/home_page/check.png" alt="" />
+                                                Bulk SMS Marketing Features
+                                            </li>
+
+                                            <li>
+                                                <img src="/images/home_page/check.png" alt="" />
+                                                Landing Page Templates
+                                            </li>
+
+                                            <li>
+                                                <img src="/images/home_page/check.png" alt="" />
+                                                Marketing Tools
+                                            </li>
+
+                                            <li>
+                                                <img src="/images/home_page/check.png" alt="" />
+                                                Business Reports
+                                            </li>
+
+                                            <li>
+                                                <img src="/images/home_page/check.png" alt="" />
+                                                Business Reports
+                                            </li>
+
+                                            <li>
+                                                <Link href='/signup' className='bg'>Get Started <BsArrowRight /> </Link>
+                                            </li>
+
+                                        </ul>
+
+                                    </div>
+
+                                    {/* right */}
+                                    <div className="right">
+
+                                        <div className="img">
+                                            <img src="/images/home_page/priceing-text-bg.png" alt="" />
+
+                                            <div className="text">
+
+                                                <h4>TK</h4>
+                                                <h2>2999</h2>
+                                                <h4>Per Month</h4>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </Col>
+
+                        </Row>
+
+                    </Container>
+
+                </section>
+
+
+                {/* =============================================================================
+                    End PersonalPlan
+                ===============================================================================*/}
+
+
+                {/* =============================================================================
+                    Start AskQuestion
+                ===============================================================================*/}
+                <section className='AskQuestion'>
+
+                    <Container>
+
+                        <Row className='justify-content-center'>
+
+                            <Col lg={8}>
+                                <h2>Frequently Asked Questions?</h2>
+                            </Col>
+
+                        </Row>
+
+                        <Row>
+
+                            <Col lg={12}>
+
+                                <div className="AskQuestionTabs">
+
+                                    <Accordion defaultActiveKey="0">
+
+                                        <Accordion.Item eventKey="0">
+
+                                            <Accordion.Header>
+                                                Is it easy to build a website?
+
+                                                <div className="img">
+                                                    <img className='plus' src="/images/home_page/plus.png" alt="" />
+                                                    <img className='minus' src="/images/home_page/minus.png" alt="" />
+                                                </div>
+
+                                            </Accordion.Header>
+
+                                            <Accordion.Body>
+                                                <p>Absolutely. Funnelliner is for everyone and makes it possible to create a high-quality website without knowing how to code. In the Funnelliner Editor, you can drag and drop any feature you want and customize it to match the look and feel of your site. Of course, if you do know how to code, you can add advanced functionality to your site with Velo.</p>
+                                            </Accordion.Body>
+
+                                        </Accordion.Item>
+
+                                        <Accordion.Item eventKey="1">
+
+                                            <Accordion.Header>
+                                                Can I create a website without knowing how to code?
+
+                                                <div className="img">
+                                                    <img className='plus' src="/images/home_page/plus.png" alt="" />
+                                                    <img className='minus' src="/images/home_page/minus.png" alt="" />
+                                                </div>
+
+                                            </Accordion.Header>
+
+                                            <Accordion.Body>
+                                                <p>Absolutely. Funnelliner is for everyone and makes it possible to create a high-quality website without knowing how to code. In the Funnelliner Editor, you can drag and drop any feature you want and customize it to match the look and feel of your site. Of course, if you do know how to code, you can add advanced functionality to your site with Velo.</p>
+                                            </Accordion.Body>
+
+                                        </Accordion.Item>
+
+                                        <Accordion.Item eventKey="2">
+
+                                            <Accordion.Header>
+                                                Can I create a website without knowing how to code?
+
+                                                <div className="img">
+                                                    <img className='plus' src="/images/home_page/plus.png" alt="" />
+                                                    <img className='minus' src="/images/home_page/minus.png" alt="" />
+                                                </div>
+
+                                            </Accordion.Header>
+
+                                            <Accordion.Body>
+                                                <p>Absolutely. Funnelliner is for everyone and makes it possible to create a high-quality website without knowing how to code. In the Funnelliner Editor, you can drag and drop any feature you want and customize it to match the look and feel of your site. Of course, if you do know how to code, you can add advanced functionality to your site with Velo.</p>
+                                            </Accordion.Body>
+
+                                        </Accordion.Item>
+
+                                        <Accordion.Item eventKey="3">
+
+                                            <Accordion.Header>
+                                                Can I create a website without knowing how to code?
+
+                                                <div className="img">
+                                                    <img className='plus' src="/images/home_page/plus.png" alt="" />
+                                                    <img className='minus' src="/images/home_page/minus.png" alt="" />
+                                                </div>
+
+                                            </Accordion.Header>
+
+                                            <Accordion.Body>
+                                                <p>Absolutely. Funnelliner is for everyone and makes it possible to create a high-quality website without knowing how to code. In the Funnelliner Editor, you can drag and drop any feature you want and customize it to match the look and feel of your site. Of course, if you do know how to code, you can add advanced functionality to your site with Velo.</p>
+                                            </Accordion.Body>
+
+                                        </Accordion.Item>
+
+                                    </Accordion>
+
+                                </div>
+
+                            </Col>
+
+                        </Row>
+
+                    </Container>
+
+                </section>
+
+
+                {/* =============================================================================
+                    End AskQuestion
+                ===============================================================================*/}
+
+
+
+                <div className="SectionGaps"></div>
+
+
+                {/* =============================================================================
+                    Start 24/7 RealtimeSupport
+                ===============================================================================*/}
+                <section className='RealtimeSupport'>
+
+                    <Container>
+
+                        <Row>
+
+                            <Col lg={6}>
+
+                                <div className="Video">
+
+                                    <video playing autoPlay loop muted>
+                                        <source src="https://funnelliner.s3.ap-southeast-1.amazonaws.com/media/Video/Support.mp4" type="video/mp4" />
+                                        Your browser does not support the video tag.
+                                    </video>
+
+                                </div>
+
+                            </Col>
+
+                            <Col lg={6}>
+
+                                <div className="PlatformRight">
+
+                                    <h2>24/7 real <br /> time support.</h2>
+
+                                    <ul>
+                                        <li> <BsArrow90DegRight /> Email Support </li>
+                                        <li> <BsArrow90DegRight /> Live Chat for Unlimited Plan </li>
+                                        <li> <BsArrow90DegRight /> Frequent Webinars</li>
+                                        <li> <BsArrow90DegRight /> All-time support for any problem with the website </li>
+                                    </ul>
+
+                                    {/* Call */}
+                                    <div className="Call">
+                                        <div className="img">
+                                            <img src="/images/home_page/support.png" alt="" />
+                                        </div>
+                                        <div className="text">
+                                            <h3>0963-888-8881</h3>
+                                            <p>Need Customer Care Help? </p>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </Col>
+
+                        </Row>
+
+                    </Container>
+
+                </section>
+
+
+                {/* =============================================================================
+                    End 24/7 RealtimeSupport
+                ===============================================================================*/}
+
+
+                <div className="SectionGaps"></div>
+
+
+                {/* =============================================================================
+                    Start StartSelling
+                ===============================================================================*/}
+                <section className='StartSelling'>
+
+                    <Container>
+
+                        <Row>
+
+                            <Col lg={12}>
+
+                                <div className="StartSellingBox">
+
+                                    <h2>Start selling online through the funnel.</h2>
+                                    <p>Build your business with Funnel Liner to sell online products and everywhere in between.</p>
+
+                                    <div className="customInput">
+                                        <input type="text" placeholder='Enter your Work Email' />
+                                        <Button type='submit' className='bg'>Get Started <BsArrowRight /> </Button>
+                                    </div>
+
+                                </div>
+
+                            </Col>
+
+                        </Row>
+
+                    </Container>
+
+                </section>
+
+
+                {/* =============================================================================
+                    End StartSelling
+                ===============================================================================*/}
+
+
+                {/* =============================================================================
+                    Start Footer
+                ===============================================================================*/}
+                <section className='Footer'>
+
+                    <Container>
+
+                        <Row>
+
+                            <Col lg={5}>
+
+                                <div className="FooterLogo">
+
+                                    <img src="/images/home_page/logo-beta.png" alt="" />
+                                    <p>The First Ever AutomatedE-Commerce Sales Funnel. Create Your Own Online Shop,Decorate Your Shop, Boost Up Your Sales !</p>
+
+                                    <div className="socialIcon">
+
+                                        <Link href=""><img src="/images/home_page/facebook.png" alt="" /></Link>
+                                        <Link href=""><img src="/images/home_page/instagram.png" alt="" /></Link>
+                                        <Link href=""><img src="/images/home_page/whatsapp.png" alt="" /></Link>
+                                        <Link href=""><img src="/images/home_page/youtube.png" alt="" /></Link>
+
+                                    </div>
+
+                                </div>
+
+                            </Col>
+
+                            <Col lg={7}>
+
+                                <Row>
+
+                                    <Col lg={4}>
+
+                                        <div className="FooterItem">
+
+                                            <h3>Product</h3>
+
+                                            <ul>
+                                                <li> <Link href=''>Website Theme</Link> </li>
+                                                <li> <Link href=''>Website Builder</Link> </li>
+                                                <li> <Link href=''>Landing Page </Link> </li>
+                                            </ul>
+
+                                        </div>
+
+                                    </Col>
+
+                                    <Col lg={4}>
+
+                                        <div className="FooterItem">
+
+                                            <h3>About</h3>
+
+                                            <ul>
+                                                <li> <Link href=''>Terms & Conditions</Link> </li>
+                                                <li> <Link href=''>Privacy Policy</Link> </li>
+                                                <li> <Link href=''>Contact </Link> </li>
+                                                <li> <Link href=''>FAQ </Link> </li>
+                                            </ul>
+
+                                        </div>
+
+                                    </Col>
+
+                                    <Col lg={4}>
+
+                                        <div className="FooterItem">
+
+                                            <h3>Contact Us</h3>
+
+                                            <ul>
+
+                                                <li>
+                                                    <div className="svg"> <FiPhoneCall /> </div>
+                                                    <Link href='tel:0963-888-8881'> 0963-888-8881 </Link>
+                                                </li>
+
+                                                <li>
+                                                    <div className="svg"> <BsEnvelopeAt /> </div>
+                                                    <Link href='mailto:support@funnelliner.com'>support@funnelliner.com</Link>
+                                                </li>
+
+                                                <li>
+                                                    <div className="svg"> <MdLocationOn /> </div>
+                                                    <p>SAR Bhaban, Level-5 , Ka-78, Progoti Sarani, Kuril, Vatara, Dhaka-1229, Bangladesh</p>
+                                                </li>
+
+                                            </ul>
+
+                                        </div>
+
+                                    </Col>
+
+                                </Row>
+
+                            </Col>
+
+                            <Col lg={12}>
+                                <div className="copyRight"> Copyright 2023 <Link href=''>Funnel Liner</Link>. All Rights Reserved </div>
+                            </Col>
+
+                        </Row>
+
+                    </Container>
+
+                </section>
+
+
+                {/* =============================================================================
+                    End Footer
+                ===============================================================================*/}
+
+
+                {/* =============================================================================
+                    Start 
+                ===============================================================================*/}
+
+
+
+                {/* =============================================================================
+                    End 
+                ===============================================================================*/}
+
+
+
+            </div>
+
+        </>
+
+    )
+}
+
+export default MainPage

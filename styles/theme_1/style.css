@@ -9,12 +9,18 @@ body {
 } */
 
 /* =============== COMMON CSS FOR WEB SITE =============== */
-:root {
+.Theme__1 :root {
   --main_color: #3bb77e;
   --header_color: #253d4e;
   --text_color: #ababab;
   --white_color: #fff;
   --border_color: #dfdfdf;
+}
+.buttonDisabled:disabled,
+.buttonDisabled[disabled]{
+  border: 1px solid #999999 !important;
+  background-color: #cccccc !important;
+  color: #666666 !important;
 }
 
 .d_flex {
@@ -50,11 +56,12 @@ button:hover {
   color: var(--main_color);
 }
 
+
 /* =======================================================================================================================================
     Header
 ========================================================================================================================================= */
 
-.Header {
+.Theme__1 .Header {
   padding: 15px 0;
   border-bottom: 1px solid var(--border_color);
 }
@@ -133,7 +140,7 @@ button:hover {
     Header
 ========================================================================================================================================= */
 
-.MenubarLeftLogo button {
+.Theme__1 .MenubarLeftLogo button {
   background: var(--main_color);
   font-size: 20px;
   border: none;
@@ -141,7 +148,7 @@ button:hover {
   margin-top: 0;
 }
 
-.MenubarLeftLogo .dropdown-menu.show {
+.Theme__1 .MenubarLeftLogo .dropdown-menu.show {
   background: #fff;
   border: 1px solid var(--border_color);
   box-shadow: none;
@@ -155,19 +162,19 @@ button:hover {
   width: 100%;
 }
 
-.MenubarLeftLogo .dropdown-menu.show a {
+.Theme__1 .MenubarLeftLogo .dropdown-menu.show a {
   padding: 10px 20px;
 }
 
-.MenubarMiddle {
+.Theme__1 .MenubarMiddle {
   text-align: center;
 }
 
-.MenubarMiddle li {
+.Theme__1 .MenubarMiddle li {
   display: inline-block;
 }
 
-.MenubarMiddle li a {
+.Theme__1 .MenubarMiddle li a {
   padding: 10px 20px;
   font-size: 16px;
   font-weight: 500;
@@ -175,26 +182,26 @@ button:hover {
   color: var(--header_color);
 }
 
-.MenubarMiddle li a.active {
+.Theme__1 .MenubarMiddle li a.active {
   color: var(--main_color);
 }
 
-.Menubar {
+.Theme__1 .Menubar {
   padding: 15px 0;
-  border-bottom: 1px solid var(--border_color);
+  
 }
 
 .SocailIcon {
   text-align: right;
 }
 
-.SocailIcon a {
+.Theme__1 .SocailIcon a {
   font-size: 25px;
   color: var(--text_color);
   margin-left: 20px;
 }
 
-.SocailIcon a:hover {
+.Theme__1  .SocailIcon a:hover {
   color: var(--main_color);
   transform: translateY(-2px);
 }
@@ -211,7 +218,7 @@ button:hover {
     BannerItem
 ========================================================================================================================================= */
 
-.Banner {
+.Theme__1  .Banner {
   padding: 30px 0;
 }
 
@@ -422,27 +429,27 @@ span.swiper-pagination-bullet.swiper-pagination-bullet-active.swiper-pagination-
 /* =======================================================================================================================================
     Delivary
 ========================================================================================================================================= */
-.Delivary {
+.Theme__1 .Delivary {
   padding: 30px 0;
   border-bottom: 1px solid var(--border_color);
 }
 
-.DelivaryItem .img {
+.Theme__1 .DelivaryItem .img {
   margin-right: 20px;
 }
 
-.DelivaryItem img {
+.Theme__1 .DelivaryItem img {
   height: 65px;
 }
 
-.DelivaryItem h4 {
+.Theme__1 .DelivaryItem h4 {
   font-size: 16px;
   color: var(--header_color);
   font-weight: 24px;
   font-weight: 700;
 }
 
-.DelivaryItem p {
+.Theme__1 .DelivaryItem p {
   font-size: 14px;
   line-height: 18px;
   margin-top: 5px;
@@ -452,29 +459,29 @@ span.swiper-pagination-bullet.swiper-pagination-bullet-active.swiper-pagination-
     Footer
 ========================================================================================================================================= */
 
-.Footer {
+.Theme__1 .Footer {
   padding: 30px 0;
   border-bottom: 1px solid var(--border_color);
 }
 
-.Footer .logo img {
+.Theme__1  .Footer .logo img {
   height: 50px;
 }
 
-.FooterItem h3 {
+.Theme__1 .FooterItem h3 {
   font-size: 20px;
   font-weight: 700;
   line-height: 28px;
   color: var(--header_color);
 }
 
-.FooterItem p,
+.Theme__1 .FooterItem p,
 .FooterItem a {
   margin-top: 10px;
   color: var(--text_color);
 }
 
-.FooterItem p {
+.Theme__1 .FooterItem p {
   margin-top: 0;
 }
 
@@ -482,12 +489,12 @@ span.swiper-pagination-bullet.swiper-pagination-bullet-active.swiper-pagination-
     SocialMedia
 ========================================================================================================================================= */
 
-.SocialMedia {
+.Theme__1 .SocialMedia {
   padding: 20px 0;
   border-bottom: 1px solid var(--border_color);
 }
 
-.SocialMediaContent .SocailIcon {
+.Theme__1 .SocialMediaContent .SocailIcon {
   text-align: center;
   margin-top: 20px;
 }
@@ -495,7 +502,7 @@ span.swiper-pagination-bullet.swiper-pagination-bullet-active.swiper-pagination-
 /* =======================================================================================================================================
     TinyFooterItem
 ========================================================================================================================================= */
-.TinyFooterItem {
+.Theme__1  .TinyFooterItem {
   text-align: center;
   padding: 20px 0;
 }
@@ -700,7 +707,7 @@ span.swiper-pagination-bullet.swiper-pagination-bullet-active.swiper-pagination-
   border-radius: 10px;
 }
 
-.CheckOutContent td {
+ .CheckOutContent td {
   text-align: center;
   vertical-align: middle;
   padding: 15px 0;
@@ -1014,7 +1021,7 @@ span.swiper-pagination-bullet.swiper-pagination-bullet-active.swiper-pagination-
 /* =======================================================================================================================================
   ProductDetails
 ========================================================================================================================================= */
-.ProductDetails {
+.Theme__1 .ProductDetails {
   margin-top: 80px;
 }
 
@@ -1282,7 +1289,7 @@ span.swiper-pagination-bullet.swiper-pagination-bullet-active.swiper-pagination-
 
 /* // X-Large devices (large desktops, less than 1400px) */
 @media (max-width: 1440px) {
-  .container {
+  .Theme__1 .container {
     max-width: 85%;
   }
 
@@ -1309,7 +1316,7 @@ span.swiper-pagination-bullet.swiper-pagination-bullet-active.swiper-pagination-
     font-size: 14px;
     line-height: 20px;
   }
-  .SocailIcon a {
+  .Theme__1 .SocailIcon a {
     font-size: 20px;
   }
   .CategoryItem img {
@@ -1405,10 +1412,10 @@ span.swiper-pagination-bullet.swiper-pagination-bullet-active.swiper-pagination-
 
 /* // X-Large devices (large desktops, less than 1400px) */
 @media (max-width: 1110px) {
-  .DesktopMenu {
+  .Theme__1 .DesktopMenu {
     display: none;
   }
-  .MobileMenu {
+  .Theme__1 .MobileMenu {
     display: block;
   }
   .MobileMenuItem {
@@ -1495,7 +1502,7 @@ span.swiper-pagination-bullet.swiper-pagination-bullet-active.swiper-pagination-
   .DelivaryItem {
     margin-bottom: 30px;
   }
-  .FooterItem {
+  .Theme__1 .FooterItem {
     text-align: center;
     margin-bottom: 30px;
   }
@@ -1506,7 +1513,7 @@ span.swiper-pagination-bullet.swiper-pagination-bullet-active.swiper-pagination-
 
 /* // X-Large devices (large desktops, less than 1400px) */
 @media (max-width: 500px) {
-  .container {
+  .Theme__1 .container {
     max-width: 90%;
   }
 

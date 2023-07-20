@@ -8,54 +8,56 @@ import React, { useRef, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css/pagination";
 import "swiper/css";
-import { Autoplay, Pagination, Navigation } from "swiper";
+import { Autoplay, Pagination, Navigation, } from "swiper";
 
-const Banner = () => {
+const Banner = ({ shopInfo }) => {
   return (
-    <section className='Banner'>
-      <Container>
-        <Row>
-          <Col xs={12}>
-            <div className='BannerSlider'>
-              <Swiper
-                pagination={{
-                  clickable: true,
-                  dynamicBullets: true,
-                }}
-                centeredSlides={true}
-                autoplay={{
-                  delay: 100,
-                  disableOnInteraction: true,
-                }}
-                modules={[Pagination]}
-                className='mySwiper'
-              >
-                {/* item */}
-                <SwiperSlide>
-                  <div className='BannerItem'>
-                    <img src='/theme_1/images/slider.png' alt='' />
-                  </div>
-                </SwiperSlide>
+    <section >
+      <div className='Multipage__1__SwiperDiv'>
+        <Container>
+          <Row>
+            <Col xs={12}>
+              <div className='BannerSlider'>
+                <Swiper
+                  pagination={{
+                    clickable: true,
+                    dynamicBullets: true,
+                  }}
+                  centeredSlides={true}
+                  autoplay={{
+                    delay: 100,
+                    disableOnInteraction: true,
+                  }}
+                  modules={[Pagination]}
+                  className='mySwiper'
+                >
+                  {
+                    shopInfo?.slider != null && shopInfo?.slider?.length > 0 && shopInfo?.slider?.map((item, index) => <SwiperSlide key={index}>
+                      <div className='BannerItem'>
+                        <img src={item?.image} alt='Banner' />
+                      </div>
+                    </SwiperSlide>)
+                  }
 
-                {/* item */}
-                <SwiperSlide>
-                  <div className='BannerItem'>
-                    <img src='/theme_1/images/slider.png' alt='' />
-                  </div>
-                </SwiperSlide>
+                  {
+                    shopInfo?.slider.length === 0 && <SwiperSlide>
+                      <div className='BannerItem'>
+                        <img src='/images/multipage-1/banner.png' alt='Banner' />
+                      </div>
+                    </SwiperSlide>
+                  }
 
-                {/* item */}
-                <SwiperSlide>
-                  <div className='BannerItem'>
-                    <img src='/theme_1/images/slider.png' alt='' />
-                  </div>
-                </SwiperSlide>
-              </Swiper>
-            </div>
-          </Col>
-        </Row>
-      </Container>
+                  
+                </Swiper>
+              </div>
+            </Col>
+          </Row>
+        </Container>
+      </div>
+
     </section>
+
+
   );
 };
 
