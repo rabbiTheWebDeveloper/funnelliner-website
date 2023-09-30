@@ -10,33 +10,25 @@ import "swiper/css/navigation";
 import "swiper/css/grid";
 import { Autoplay, Pagination, Grid, Navigation } from "swiper";
 import { BsCart3, BsChevronRight } from "react-icons/bs";
-import { baseUrl } from "../../../../constant/constant";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../../../redux/stateSlices/CartSlice";
 import Link from "next/link";
-// import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useRouter } from "next/router";
 
 const ProductListCarousel = () => {
-  // const router = useRouter()
   const [allProducts, setAllProducts] = useState([]);
   const [shopId, setShopId] = useState();
   const [shop_name, setShop_name] = useState("");
   const dispatch = useDispatch();
   const handleFetchProduct =async (headers) => {
-    // axios
-    //   .get(`${process.env.API_URL}v1/customer/products`, { headers: headers })
-    //   .then((res) => {
-    //     // console.log("res", res);
-    //     setAllProducts(res?.data?.data);
-    //   });
+   
 
     try {
       let res = await axios({
         method: "get",
-        url: `${process.env.API_URL}v1/customer/products`,
+        url: `${process.env.API_URL}/customer/products`,
         headers: headers,
       });
       setAllProducts(res.data.data);
@@ -55,11 +47,7 @@ const ProductListCarousel = () => {
   }, []);
   const handleAddToCart = (product) => {
     dispatch(addToCart(product));
-  };
-  // const handleBuyNow = (product) => {
-  //   dispatch(addToCart(product));
-  //   router.push("/theme_1/check_out");
-  // };
+  }; 
   return (
     <>
       <section id='product-list-carousel'>

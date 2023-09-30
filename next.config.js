@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   env: {
-    API_URL: "https://web.funnelliner.com/api/",
+    API_URL: "https://staging.funnelliner.com/api/v1",
   },
 
 };

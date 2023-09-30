@@ -16,13 +16,9 @@ import {
 } from "react-icons/fa";
 import { HiOutlineMinus, HiOutlinePlus } from "react-icons/hi";
 
-// Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
-// Import Swiper styles
 import { Autoplay } from "swiper";
 
-// import "swiper/css";
-// import "swiper/css/autoplay"
 import Button from "react-bootstrap/Button";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import axios from "axios";
@@ -41,7 +37,7 @@ const MainPage = () => {
     try {
       let res = await axios({
         method: 'get',
-        url: `${process.env.API_URL}v1/theme/list`,
+        url: `${process.env.API_URL}/theme/list`,
         headers: {
           type: "landing"
         }
@@ -1173,8 +1169,7 @@ const MainPage = () => {
 
                   <div className={styles.Address}>
                     <h4>Contact No.</h4>
-                    <a href='tel:0123456789'>+8801894844452</a>
-                    {/* <a href="tel:0123456789">+880 123 456 789</a> */}
+                    <a href='tel:0123456789'>+8801894844452</a>                 
                   </div>
 
                   <div className={styles.Address}>
@@ -1250,15 +1245,6 @@ const MainPage = () => {
           </Row>
         </Container>
       </footer>
-
-      {/* section_gaps */}
-      {/* <div className={styles.section_gaps}></div> */}
-
-      {/* -- ---------------------------------------------------------------------------------------------------------------------------------------------------
-
-      ------------------------------------------------------------------------------------------------------------------------------------------------------- */}
-
-      {/* <Container className={styles.CustomeContainer}> */}
     </div>
   );
 };
@@ -1280,54 +1266,3 @@ export default MainPage;
 
 
 
-
-
-
-< !DOCTYPE html >
-  <html>
-    <head>
-      <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale = 1">
-        <title>CSS Card Flip</title>
-        <link href="style.css" type="text/css" rel="stylesheet">
-        </head>
-
-        <body>
-          <div class="maincontainer">
-            <div class="back">
-              <h2>Copywriting</h2>
-              <p>Introduction to Copywriting’ workshop focuses on the theory and processes of professional copywriting as applied to persuasion, reasoning, and rhetoric. This workshop is best-suited to learning how to write and think about consumer-driven functions.</p>
-            </div>
-            <div class="front">
-              <div class="image">
-                <img src="https://i.postimg.cc/nhG8H3X6/copywriting.jpg">
-                  <h2>Copywriting</h2>
-              </div>
-            </div>
-          </div>
-          <div class="maincontainer">
-            <div class="back">
-              <h2>Content Marketing</h2>
-              <p>Introduction to Content Marketing workshop focuses on building content frameworks that are designed for and directed at communication engagement. This interdisciplinary workshop is best-suited to learning visual and written communication strategies.</p>
-            </div>
-            <div class="front">
-              <div class="image">
-                <img src="https://i.postimg.cc/ydrv1ZXq/contentmarketing.jpg">
-                  <h2>Content Marketing</h2>
-              </div>
-            </div>
-          </div>
-          <div class="maincontainer">
-            <div class="back">
-              <h2>Web Writing</h2>
-              <p>Introduction to Web-Writing workshop focuses on building creative and systemic digital content through online user experiences that benefit people and robots. This workshop is best-suited to creating content for digital platforms and devices — websites, mobile, game consoles, and virtual reality engines.</p>
-            </div>
-            <div class="front">
-              <div class="image">
-                <img src="https://i.postimg.cc/ZqbG0630/webwriting.jpg">
-                  <h2>Web Writing</h2>
-              </div>
-            </div>
-          </div>
-
-        </body>
-      </html>

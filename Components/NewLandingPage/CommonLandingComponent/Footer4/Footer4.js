@@ -35,7 +35,7 @@ const Footer4 = ({ pageInfo, domainName }) => {
 
                                     <Link href="#">
 
-                                        <h4> <MdLocationOn />{address} Kuril, Vatara, Dhaka-1229, Bangladesh</h4>
+                                        <h4> <MdLocationOn />{address}</h4>
 
                                     </Link>
 

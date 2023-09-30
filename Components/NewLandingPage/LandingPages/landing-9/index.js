@@ -42,8 +42,8 @@ import Footer3 from '../../CommonLandingComponent/Footer3/Footer3';
 import Footer4 from '../../CommonLandingComponent/Footer4/Footer4';
 
 
-const Landing_9 = ({ shop_info, pageInfo, product, visitorID }) => {
-  const { checkout_b_color, checkout_button_color, checkout_button_text_color, checkout_text_color, footer } = pageInfo
+const Landing_9 = ({ shop_info, pageInfo, product, visitorID, }) => {
+  const { checkout_b_color, checkout_button_color, checkout_button_text_color, checkout_text_color, footer, order_title, checkout_button_text } = pageInfo
   const today = new Date();
   const year = today.getFullYear();
   const swiperRef = useRef();
@@ -728,9 +728,6 @@ const Landing_9 = ({ shop_info, pageInfo, product, visitorID }) => {
 
       <section className="OrderBg" >
 
-        <img className='FooterAbs1' src="/images/landing-9/img20.png" alt="img" />
-
-        <img className='FooterAbs2' src="/images/landing-9/img20.png" alt="img" />
 
         {/* ================================================================================================
              Order Comfirm 
@@ -738,7 +735,7 @@ const Landing_9 = ({ shop_info, pageInfo, product, visitorID }) => {
 
         <section id="placeAnOrder">
 
-          <Order backgroundColor={checkout_b_color} fontColor={checkout_text_color} btnColor={checkout_button_color} btnTextColor={checkout_button_text_color}
+          <Order default_delivery_location={shop_info?.default_delivery_location} checkout_button_text={checkout_button_text} order_title={order_title} backgroundColor={checkout_b_color} fontColor={checkout_text_color} btnColor={checkout_button_color} btnTextColor={checkout_button_text_color}
             product={product} visitorID={visitorID}></Order>
 
         </section>

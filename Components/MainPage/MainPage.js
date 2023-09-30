@@ -3,13 +3,28 @@ import { Card, Col, Container, Placeholder, Row, Tab, Tabs } from 'react-bootstr
 import Link from 'next/link';
 
 import { BsArrow90DegRight, BsArrowRight, BsEnvelopeAt } from 'react-icons/bs';
-import { FiPhoneCall } from 'react-icons/fi';
-import { MdLocationOn } from 'react-icons/md';
-import { PiArrowBendUpRightBold } from 'react-icons/pi';
+import { TbCurrencyTaka } from 'react-icons/tb';
 import axios from 'axios';
 
 import Accordion from 'react-bootstrap/Accordion';
 import { Button } from '@mui/material';
+
+import Offcanvas from 'react-bootstrap/Offcanvas';
+
+
+// Import Swiper React components
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import { Autoplay, Navigation } from 'swiper';
+import CountDown from './CountDown';
+import OurMenubar from './OurMenubar';
+import OurFooter from './OurFooter';
+import StartSelling from './StartSelling';
+import { FiPhoneCall } from 'react-icons/fi';
+import { MdLocationOn } from 'react-icons/md';
+// import 'swiper/css/navigation';
+
+// import required modules
 
 
 
@@ -24,7 +39,7 @@ const MainPage = () => {
         try {
             let res = await axios({
                 method: 'get',
-                url: `${process.env.API_URL}v1/theme/list`,
+                url: `${process.env.API_URL}/theme/list`,
                 headers: {
                     type: "landing"
                 }
@@ -36,7 +51,6 @@ const MainPage = () => {
 
         } catch (error) {
             setIsLoading(false)
-            console.log("error", error)
         }
     }
     useEffect(() => {
@@ -47,139 +61,15 @@ const MainPage = () => {
 
 
 
+
+
+
     return (
-
         <>
-
             <div className="MainLandingPage">
 
-
-                {/* =============================================================================
-                    Start CountDown
-                ===============================================================================*/}
-                <section className="CountDown">
-
-                    <Container>
-
-                        <Row>
-
-                            <Col lg={12}>
-
-                                <div className="CountDownContent">
-
-                                    <div className="left">
-
-                                        <p>আপনার বিজনেসে সর্বোচ্চ সেল বৃদ্ধি ও অটোমেশন করতে মোস্ট ভ্যালুয়েবল ওয়েবিনারে জয়েন করুন</p>
-
-                                        <div className="CountDownBox">
-
-                                            <div className="CountDownItem">
-                                                <h4>10</h4>
-                                                <h6>Days</h6>
-                                            </div>
-
-                                            <div className="CountDownItem">
-                                                <h4>10</h4>
-                                                <h6>Hours</h6>
-                                            </div>
-
-                                            <div className="CountDownItem">
-                                                <h4>10</h4>
-                                                <h6>Min</h6>
-                                            </div>
-
-                                            <div className="CountDownItem">
-                                                <h4>10</h4>
-                                                <h6>Sec</h6>
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-
-                                    <div className="JoinNow">
-                                        <Link href='https://app.funnelliner.com/join' target='_blank'>Join Now <PiArrowBendUpRightBold /></Link>
-                                    </div>
-
-                                </div>
-
-                            </Col>
-
-                        </Row>
-
-                    </Container>
-
-                </section>
-
-
-                {/* =============================================================================
-                    End CountDown
-                ===============================================================================*/}
-
-                {/* =============================================================================
-                    Start Menubar
-                ===============================================================================*/}
-                <section className="Menubar">
-
-                    <Container>
-
-                        <Row className="d_flex">
-
-                            {/* logo */}
-                            <Col lg={3}>
-
-                                <div className="Logo">
-                                    <img src="/images/home_page/logo-beta.png" alt="" />
-                                </div>
-
-                            </Col>
-
-                            {/* Menu */}
-                            <Col lg={6}>
-
-                                <div className="Menu">
-
-                                    <ul>
-                                        <li><Link className="active" href='#'>Home</Link></li>
-                                        <li><Link href='#'>Feature</Link></li>
-                                        <li><Link href='#'>Theme</Link></li>
-                                        <li><Link href='#'>Pricing</Link></li>
-                                        <li><Link href='#'>FAQ</Link></li>
-                                    </ul>
-
-                                </div>
-
-                            </Col>
-
-                            <Col lg={3}>
-
-                                <div className="Login">
-
-                                    <ul>
-                                        <li> <Link href='https://dashboard.funnelliner.com/' target='_blank'> Login </Link> </li>
-                                        <li> <Link href='/signup' target='_blank' className="bg"> Sign Up </Link> </li>
-                                    </ul>
-
-                                </div>
-
-                            </Col>
-
-                        </Row>
-
-                    </Container>
-
-                </section>
-
-
-                {/* =============================================================================
-                    End Menubar
-                ===============================================================================*/}
-
-
-
-                {/* =============================================================================
-                    Start Banner
-                ===============================================================================*/}
+                <CountDown />
+                <OurMenubar />
                 <section className="Banner">
 
                     <img className='OverlayOneImg' src="images/home_page/banner/banner-effect1.png" alt="" />
@@ -188,14 +78,9 @@ const MainPage = () => {
 
                     <div className="OverlayOne"></div>
 
-
                     <div className="OverlayOne Two"></div>
-
-
                     <Container>
-
                         <Row>
-
                             <Col lg={12}>
 
                                 <div className="BannerContent">
@@ -360,10 +245,10 @@ const MainPage = () => {
                                             <div className="SetUpOnlineShopText">
 
                                                 <div className="img">
-                                                    <img src="/images/home_page/SetUpOnlineShop2.png" alt="" />
+                                                    <img src="/images/home_page/SetUpOnlineShop3.png" alt="" />
                                                 </div>
 
-                                                <h4>Select Theme</h4>
+                                                <h4>Upload Product</h4>
 
                                             </div>
 
@@ -375,10 +260,10 @@ const MainPage = () => {
                                             <div className="SetUpOnlineShopText">
 
                                                 <div className="img">
-                                                    <img src="/images/home_page/SetUpOnlineShop3.png" alt="" />
+                                                    <img src="/images/home_page/SetUpOnlineShop2.png" alt="" />
                                                 </div>
 
-                                                <h4>Upload Product</h4>
+                                                <h4>Select Theme</h4>
 
                                             </div>
 
@@ -416,7 +301,7 @@ const MainPage = () => {
 
                                     </div>
 
-                                    <Link href='/signup' className='bg'>Get Started <BsArrowRight /> </Link>
+                                    <Link href='https://app.funnelliner.com/offer' className='bg'>Get Started <BsArrowRight /> </Link>
 
                                 </Col>
 
@@ -470,11 +355,11 @@ const MainPage = () => {
                                         {/* Left */}
                                         <div className="Left">
 
-                                            <h3>Work easy and do more with Funnel Liner.</h3>
-                                            <p>Test our Easy And Powerful Drag & Drop Page Builder editing experience & make...</p>
+                                            <h3>Build Website, Sales Funnel & Automation Business</h3>
+                                            <p>Zero Technical Knowledge Needed - Works For Every Type Of Business - Market, Sell and Deliver Like A Pro</p>
 
                                             <div className="Replace d_flex">
-                                                <h4>REPLACES:</h4>
+                                                <h4>Substitute For:</h4>
                                                 <img src="/images/home_page/wordpress.png" alt="" />
                                             </div>
 
@@ -505,6 +390,16 @@ const MainPage = () => {
 
                                     <div className="BuiltTabsContent">
 
+                                        {/* Left */}
+                                        <div className="Left">
+
+                                            <h3>Automate your orders with our smooth order management system.</h3>
+                                            <p>No more order-checking hassles! You can track your order from processing to shipping with a few clicks. Funnel Liner's smooth solution improves customer satisfaction, delays, and productivity.</p>
+
+                                            <Link href='/signup' className='bg'>Get Started <BsArrowRight /> </Link>
+
+                                        </div>
+
                                         {/* Right */}
                                         <div className="Right">
 
@@ -519,9 +414,19 @@ const MainPage = () => {
                                 </Tab>
 
                                 {/* Account */}
-                                <Tab eventKey="Account" title="Accounting Modules">
+                                <Tab eventKey="Account" title="Account Management">
 
                                     <div className="BuiltTabsContent">
+
+                                        {/* Left */}
+                                        <div className="Left">
+
+                                            <h3>Discover the wonders of our effortless account management</h3>
+                                            <p>Don't let old methods hold you back anymore! Optimize the future of account management, and your business will grow like never before.</p>
+
+                                            <Link href='/signup' className='bg'>Get Started <BsArrowRight /> </Link>
+
+                                        </div>
 
                                         {/* Right */}
                                         <div className="Right">
@@ -541,6 +446,16 @@ const MainPage = () => {
 
                                     <div className="BuiltTabsContent">
 
+                                        {/* Left */}
+                                        <div className="Left">
+
+                                            <h3>Connect, Convert, and Overcome with our Bulk SMS System</h3>
+                                            <p>The Bulk SMS System enables corporate communication! This flexible automation replaces manual engagement. With one click, send promotional offers, announcements, and updates to all your clients. Transform your communication approach immediately!</p>
+
+                                            <Link href='/signup' className='bg'>Get Started <BsArrowRight /> </Link>
+
+                                        </div>
+
                                         {/* Right */}
                                         <div className="Right">
 
@@ -555,9 +470,19 @@ const MainPage = () => {
                                 </Tab>
 
                                 {/* Stock */}
-                                <Tab eventKey="Stock" title="Stock">
+                                <Tab eventKey="Stock" title="Inventory Management">
 
                                     <div className="BuiltTabsContent">
+
+                                        {/* Left */}
+                                        <div className="Left">
+
+                                            <h3>Stay One Step Ahead in Business: Utilise Our Extraordinary Inventory Management & Expertise!</h3>
+                                            <p>Our advanced technology ensures you have the right items in stock at the right time and reduces stock outs to make your customers happier. Our simple interface lets you track your products so you can focus on growing your business.</p>
+
+                                            <Link href='https://app.funnelliner.com/offer' className='bg'>Get Started <BsArrowRight /> </Link>
+
+                                        </div>
 
                                         {/* Right */}
                                         <div className="Right">
@@ -593,7 +518,8 @@ const MainPage = () => {
                     Start PowerfulFunnel
                 ===============================================================================*/}
 
-                <section className='PowerfulFunnel'>
+                <section id='PowerfulFunnel' className='PowerfulFunnel'
+                >
 
                     <div className="Frame">
                         <img src="/images/home_page/Frame3.png" alt="" />
@@ -615,7 +541,7 @@ const MainPage = () => {
                             <Row>
 
                                 {/* item */}
-                                <Col lg={3}>
+                                <Col lg={3} sm={6}>
 
                                     <div className="PowerfulFunnelItem">
 
@@ -641,7 +567,7 @@ const MainPage = () => {
                                 </Col>
 
                                 {/* item */}
-                                <Col lg={3}>
+                                <Col lg={3} sm={6}>
 
                                     <div className="PowerfulFunnelItem">
 
@@ -667,7 +593,7 @@ const MainPage = () => {
                                 </Col>
 
                                 {/* item */}
-                                <Col lg={3}>
+                                <Col lg={3} sm={6}>
 
                                     <div className="PowerfulFunnelItem">
 
@@ -693,7 +619,7 @@ const MainPage = () => {
                                 </Col>
 
                                 {/* item */}
-                                <Col lg={3}>
+                                <Col lg={3} sm={6}>
 
                                     <div className="PowerfulFunnelItem">
 
@@ -719,7 +645,7 @@ const MainPage = () => {
                                 </Col>
 
                                 {/* item */}
-                                <Col lg={3}>
+                                <Col lg={3} sm={6}>
 
                                     <div className="PowerfulFunnelItem">
 
@@ -745,7 +671,7 @@ const MainPage = () => {
                                 </Col>
 
                                 {/* item */}
-                                <Col lg={3}>
+                                <Col lg={3} sm={6}>
 
                                     <div className="PowerfulFunnelItem">
 
@@ -771,7 +697,7 @@ const MainPage = () => {
                                 </Col>
 
                                 {/* item */}
-                                <Col lg={3}>
+                                <Col lg={3} sm={6}>
 
                                     <div className="PowerfulFunnelItem">
 
@@ -797,7 +723,7 @@ const MainPage = () => {
                                 </Col>
 
                                 {/* item */}
-                                <Col lg={3}>
+                                <Col lg={3} sm={6}>
 
                                     <div className="PowerfulFunnelItem">
 
@@ -823,7 +749,7 @@ const MainPage = () => {
                                 </Col>
 
                                 {/* item */}
-                                <Col lg={3}>
+                                <Col lg={3} sm={6}>
 
                                     <div className="PowerfulFunnelItem">
 
@@ -849,7 +775,7 @@ const MainPage = () => {
                                 </Col>
 
                                 {/* item */}
-                                <Col lg={3}>
+                                <Col lg={3} sm={6}>
 
                                     <div className="PowerfulFunnelItem">
 
@@ -875,7 +801,7 @@ const MainPage = () => {
                                 </Col>
 
                                 {/* item */}
-                                <Col lg={3}>
+                                <Col lg={3} sm={6}>
 
                                     <div className="PowerfulFunnelItem">
 
@@ -901,7 +827,7 @@ const MainPage = () => {
                                 </Col>
 
                                 {/* item */}
-                                <Col lg={3}>
+                                <Col lg={3} sm={6}>
 
                                     <div className="PowerfulFunnelItem">
 
@@ -927,7 +853,7 @@ const MainPage = () => {
                                 </Col>
 
                                 {/* item */}
-                                <Col lg={3}>
+                                <Col lg={3} sm={6}>
 
                                     <div className="PowerfulFunnelItem">
 
@@ -953,7 +879,7 @@ const MainPage = () => {
                                 </Col>
 
                                 {/* item */}
-                                <Col lg={3}>
+                                <Col lg={3} sm={6}>
 
                                     <div className="PowerfulFunnelItem">
 
@@ -979,7 +905,7 @@ const MainPage = () => {
                                 </Col>
 
                                 {/* item */}
-                                <Col lg={3}>
+                                <Col lg={3} sm={6}>
 
                                     <div className="PowerfulFunnelItem">
 
@@ -1005,7 +931,7 @@ const MainPage = () => {
                                 </Col>
 
                                 {/* item */}
-                                <Col lg={3}>
+                                <Col lg={3} sm={6}>
 
                                     <div className="PowerfulFunnelItem">
 
@@ -1031,7 +957,7 @@ const MainPage = () => {
                                 </Col>
 
                                 {/* item */}
-                                <Col lg={3}>
+                                <Col lg={3} sm={6}>
 
                                     <div className="PowerfulFunnelItem">
 
@@ -1057,7 +983,7 @@ const MainPage = () => {
                                 </Col>
 
                                 {/* item */}
-                                <Col lg={3}>
+                                <Col lg={3} sm={6}>
 
                                     <div className="PowerfulFunnelItem">
 
@@ -1083,7 +1009,7 @@ const MainPage = () => {
                                 </Col>
 
                                 {/* item */}
-                                <Col lg={3}>
+                                <Col lg={3} sm={6}>
 
                                     <div className="PowerfulFunnelItem">
 
@@ -1109,7 +1035,7 @@ const MainPage = () => {
                                 </Col>
 
                                 {/* item */}
-                                <Col lg={3}>
+                                <Col lg={3} sm={6}>
 
                                     <div className="PowerfulFunnelItem">
 
@@ -1198,7 +1124,7 @@ const MainPage = () => {
                 {/* =============================================================================
                     Start SingleLanding
                 ===============================================================================*/}
-                <section className='SingleLanding'>
+                <section className='SingleLanding' id='SingleLanding'>
 
                     <Container>
 
@@ -1263,10 +1189,10 @@ const MainPage = () => {
 
                                 {
                                     landingList && isLoading === false && landingList.map((item) => (
-                                        <Col lg={4} sm={6}>
+                                        <Col lg={4} sm={6} key={item?.id}>
                                             <div className="SingleLandingItem">
                                                 <div className="img">
-                                                    <img src={item?.media?.name} alt='' />
+                                                    <img src={item?.media} alt={item?.theme_name}/>
                                                 </div>
                                                 <div className="text">
                                                     <h4>{item?.theme_name}</h4>
@@ -1280,7 +1206,7 @@ const MainPage = () => {
                             </Row>
 
                             <div className="ViewAll">
-                                <Link href='/shop-theme' target='_blank' className='bg LandingAll'>View All <BsArrowRight /></Link>
+                                <Link href='/shop-theme' className='bg LandingAll'>View All <BsArrowRight /></Link>
                             </div>
 
                         </div>
@@ -1537,7 +1463,7 @@ const MainPage = () => {
                 {/* =============================================================================
                     Start PersonalPlan
                 ===============================================================================*/}
-                <section className='PersonalPlan'>
+                <section className='PersonalPlan' id='PersonalPlan'>
 
                     <Container>
 
@@ -1558,116 +1484,507 @@ const MainPage = () => {
 
                                 <div className="PersonalPlanContent">
 
-                                    {/* left */}
-                                    <div className="left">
-
-                                        <ul>
-
-                                            <li>
-                                                <img src="/images/home_page/check.png" alt="" />
-                                                1 Online Store
-                                            </li>
-
-                                            <li>
-                                                <img src="/images/home_page/check.png" alt="" />
-                                                Custom Domain
-                                            </li>
-
-                                            <li>
-                                                <img src="/images/home_page/check.png" alt="" />
-                                                Drag & Drop, No Code Editor
-                                            </li>
-
-                                            <li>
-                                                <img src="/images/home_page/check.png" alt="" />
-                                                Auto Invoice Making
-                                            </li>
-
-                                            <li>
-                                                <img src="/images/home_page/check.png" alt="" />
-                                                Super Fast CDN Hosting
-                                            </li>
-
-                                            <li>
-                                                <img src="/images/home_page/check.png" alt="" />
-                                                Auto Courier Entry
-                                            </li>
-
-                                            <li>
-                                                <img src="/images/home_page/check.png" alt="" />
-                                                Super Fast CDN Hosting
-                                            </li>
-
-                                            <li>
-                                                <img src="/images/home_page/check.png" alt="" />
-                                                Auto Courier Entry
-                                            </li>
-
-                                            <li>
-                                                <img src="/images/home_page/check.png" alt="" />
-                                                Unlimited Products
-                                            </li>
-
-                                            <li>
-                                                <img src="/images/home_page/check.png" alt="" />
-                                                Inventory Management
-                                            </li>
-
-                                            <li>
-                                                <img src="/images/home_page/check.png" alt="" />
-                                                Multi Page Themes
-                                            </li>
-
-                                            <li>
-                                                <img src="/images/home_page/check.png" alt="" />
-                                                Bulk SMS Marketing Features
-                                            </li>
-
-                                            <li>
-                                                <img src="/images/home_page/check.png" alt="" />
-                                                Landing Page Templates
-                                            </li>
-
-                                            <li>
-                                                <img src="/images/home_page/check.png" alt="" />
-                                                Marketing Tools
-                                            </li>
-
-                                            <li>
-                                                <img src="/images/home_page/check.png" alt="" />
-                                                Business Reports
-                                            </li>
-
-                                            <li>
-                                                <img src="/images/home_page/check.png" alt="" />
-                                                Business Reports
-                                            </li>
-
-                                            <li>
-                                                <Link href='/signup' className='bg'>Get Started <BsArrowRight /> </Link>
-                                            </li>
-
-                                        </ul>
-
-                                    </div>
-
-                                    {/* right */}
-                                    <div className="right">
+                                    {/* item */}
+                                    <div className="PersonalPlanItem">
 
                                         <div className="img">
-                                            <img src="/images/home_page/priceing-text-bg.png" alt="" />
+                                            <img src="/images/home_page/package1.svg" alt="" />
 
-                                            <div className="text">
+                                            <div className="price">
+                                                <div className="">
+                                                    <h4>Startup</h4>
+                                                    <h3>900 <TbCurrencyTaka /> </h3>
+                                                </div>
+                                            </div>
 
-                                                <h4>TK</h4>
-                                                <h2>2999</h2>
-                                                <h4>Per Month</h4>
-
+                                            <div className="Monthly">
+                                                <h6>Monthly</h6>
                                             </div>
 
                                         </div>
 
+                                        <div className="text">
+
+                                            <h5> <span>Under 500 Order</span> </h5>
+
+                                            <ul>
+                                                <li>1 Online Store</li>
+                                                <li>Custom Domain</li>
+                                                <li>Drag & Drop, No Code Editor</li>
+                                                <li>Auto Invoice Making</li>
+                                                <li>Super Fast CDN Hosting</li>
+                                                <li>Auto Courier Entry</li>
+                                                <li>Unlimited Products</li>
+                                                <li>Inventory Management</li>
+                                                <li>Multi Page Themes</li>
+                                                <li>Bulk SMS Marketing Features</li>
+                                                <li>Landing Page Templates</li>
+                                                <li>Marketing Tools</li>
+                                                <li>Business Reports</li>
+                                            </ul>
+
+                                        </div>
+
+                                        <div className="GetStart">
+                                            <Link href='https://app.funnelliner.com/offer' target='_blank'>Get Started</Link>
+                                        </div>
+
                                     </div>
+
+                                    {/* item */}
+                                    <div className="PersonalPlanItem">
+
+                                        <div className="img">
+                                            <img src="/images/home_page/package2.svg" alt="" />
+
+                                            <div className="price">
+                                                <div className="">
+                                                    <h4>Business</h4>
+                                                    <h3>2000 <TbCurrencyTaka /> </h3>
+                                                </div>
+                                            </div>
+
+                                            <div className="Monthly two">
+                                                <h6>Monthly</h6>
+                                            </div>
+
+                                        </div>
+
+                                        <div className="text">
+
+                                            <h5 className='two'> <span>501 - 1000 Order</span> </h5>
+
+                                            <ul>
+                                                <li>1 Online Store</li>
+                                                <li>Custom Domain</li>
+                                                <li>Drag & Drop, No Code Editor</li>
+                                                <li>Auto Invoice Making</li>
+                                                <li>Super Fast CDN Hosting</li>
+                                                <li>Auto Courier Entry</li>
+                                                <li>Unlimited Products</li>
+                                                <li>Inventory Management</li>
+                                                <li>Multi Page Themes</li>
+                                                <li>Bulk SMS Marketing Features</li>
+                                                <li>Landing Page Templates</li>
+                                                <li>Marketing Tools</li>
+                                                <li>Business Reports</li>
+                                            </ul>
+
+                                        </div>
+
+                                        <div className="GetStart two">
+                                            <Link href='https://app.funnelliner.com/offer' target='_blank'>Get Started</Link>
+                                        </div>
+
+                                    </div>
+
+                                    {/* item */}
+                                    <div className="PersonalPlanItem">
+
+                                        <div className="img">
+                                            <img src="/images/home_page/package3.svg" alt="" />
+
+                                            <div className="price">
+                                                <div className="">
+                                                    <h4>Business Plus</h4>
+                                                    <h3>3000 <TbCurrencyTaka /> </h3>
+                                                </div>
+                                            </div>
+
+                                            <div className="Monthly three">
+                                                <h6>Monthly</h6>
+                                            </div>
+
+                                        </div>
+
+                                        <div className="text">
+
+                                            <h5 className='three'> <span>1001 - 1500 Order</span> </h5>
+
+                                            <ul>
+                                                <li>1 Online Store</li>
+                                                <li>Custom Domain</li>
+                                                <li>Drag & Drop, No Code Editor</li>
+                                                <li>Auto Invoice Making</li>
+                                                <li>Super Fast CDN Hosting</li>
+                                                <li>Auto Courier Entry</li>
+                                                <li>Unlimited Products</li>
+                                                <li>Inventory Management</li>
+                                                <li>Multi Page Themes</li>
+                                                <li>Bulk SMS Marketing Features</li>
+                                                <li>Landing Page Templates</li>
+                                                <li>Marketing Tools</li>
+                                                <li>Business Reports</li>
+                                            </ul>
+
+                                        </div>
+
+                                        <div className="GetStart three">
+                                            <Link href='https://app.funnelliner.com/offer' target='_blank'>Get Started</Link>
+                                        </div>
+
+                                    </div>
+
+                                    {/* item */}
+                                    <div className="PersonalPlanItem">
+
+                                        <div className="img">
+                                            <img src="/images/home_page/package4.svg" alt="" />
+
+                                            <div className="price">
+                                                <div className="">
+                                                    <h4>Entrepreneur </h4>
+                                                    <h3>4000 <TbCurrencyTaka /> </h3>
+                                                </div>
+                                            </div>
+
+                                            <div className="Monthly four">
+                                                <h6>Monthly</h6>
+                                            </div>
+
+                                        </div>
+
+                                        <div className="text">
+
+                                            <h5 className='four'> <span>1501 - 2000 Order</span> </h5>
+
+                                            <ul>
+                                                <li>1 Online Store</li>
+                                                <li>Custom Domain</li>
+                                                <li>Drag & Drop, No Code Editor</li>
+                                                <li>Auto Invoice Making</li>
+                                                <li>Super Fast CDN Hosting</li>
+                                                <li>Auto Courier Entry</li>
+                                                <li>Unlimited Products</li>
+                                                <li>Inventory Management</li>
+                                                <li>Multi Page Themes</li>
+                                                <li>Bulk SMS Marketing Features</li>
+                                                <li>Landing Page Templates</li>
+                                                <li>Marketing Tools</li>
+                                                <li>Business Reports</li>
+                                            </ul>
+
+                                        </div>
+
+                                        <div className="GetStart four">
+                                            <Link href='https://app.funnelliner.com/offer' target='_blank'>Get Started</Link>
+                                        </div>
+
+                                    </div>
+
+                                    {/* item */}
+                                    <div className="PersonalPlanItem">
+
+                                        <div className="img">
+                                            <img src="/images/home_page/package5.svg" alt="" />
+
+                                            <div className="price">
+                                                <div className="">
+                                                    <h4>Enterprise </h4>
+                                                    <Link href='https://m.me/Funneliner' target='_blank'>
+                                                        <h3 style={{fontSize: '20px', backgroundColor: '#8e59e5', borderRadius: '10px', padding: '8px 15px', lineHeight: '24px', marginTop: '15px', cursor: 'pointer'}}>Contact Sales</h3>
+                                                        </Link>
+                                                    
+                                                    {/* <h3> <img src="/images/home_page/enterprise.png" alt="" /> </h3> */}
+                                                </div>
+                                            </div>
+
+                                            <div className="Monthly five">
+                                                <h6>Monthly</h6>
+                                            </div>
+
+                                        </div>
+
+                                        <div className="text">
+
+                                            <h5 className='five'> <span>2000+ Order</span> </h5>
+
+                                            <ul>
+                                                <li>1 Online Store</li>
+                                                <li>Custom Domain</li>
+                                                <li>Drag & Drop, No Code Editor</li>
+                                                <li>Auto Invoice Making</li>
+                                                <li>Super Fast CDN Hosting</li>
+                                                <li>Auto Courier Entry</li>
+                                                <li>Unlimited Products</li>
+                                                <li>Inventory Management</li>
+                                                <li>Multi Page Themes</li>
+                                                <li>Bulk SMS Marketing Features</li>
+                                                <li>Landing Page Templates</li>
+                                                <li>Marketing Tools</li>
+                                                <li>Business Reports</li>
+                                            </ul>
+
+                                        </div>
+
+                                        <div className="GetStart five">
+                                            <Link href='https://m.me/Funneliner' target='_blank'>Contact Sales</Link>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                <div className="PersonalPlanContent Mobile">
+
+                                    <Swiper navigation={true}
+                                        slidesPerView={1.1}
+                                        modules={[Autoplay, Navigation]} autoplay={{
+                                            delay: 2500,
+                                            disableOnInteraction: false,
+                                        }} className="mySwiper">
+
+                                        <SwiperSlide>
+
+                                            <div className="PersonalPlanItem">
+
+                                                <div className="img">
+                                                    <img src="/images/home_page/package1.svg" alt="" />
+
+                                                    <div className="price">
+                                                        <div className="">
+                                                            <h4>Startup</h4>
+                                                            <h3>900 <TbCurrencyTaka /> </h3>
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="Monthly">
+                                                        <h6>Monthly</h6>
+                                                    </div>
+
+                                                </div>
+
+                                                <div className="text">
+
+                                                    <h5> <span>Under 500 Order</span> </h5>
+
+                                                    <ul>
+                                                        <li>1 Online Store</li>
+                                                        <li>Custom Domain</li>
+                                                        <li>Drag & Drop, No Code Editor</li>
+                                                        <li>Auto Invoice Making</li>
+                                                        <li>Super Fast CDN Hosting</li>
+                                                        <li>Auto Courier Entry</li>
+                                                        <li>Unlimited Products</li>
+                                                        <li>Inventory Management</li>
+                                                        <li>Multi Page Themes</li>
+                                                        <li>Bulk SMS Marketing Features</li>
+                                                        <li>Landing Page Templates</li>
+                                                        <li>Marketing Tools</li>
+                                                        <li>Business Reports</li>
+                                                    </ul>
+
+                                                </div>
+
+                                                <div className="GetStart">
+                                                <Link href='https://app.funnelliner.com/offer' target='_blank'>Get Started</Link>
+                                                </div>
+
+                                            </div>
+
+                                        </SwiperSlide>
+
+                                        <SwiperSlide>
+
+                                            <div className="PersonalPlanItem">
+
+                                                <div className="img">
+                                                    <img src="/images/home_page/package2.svg" alt="" />
+
+                                                    <div className="price">
+                                                        <div className="">
+                                                            <h4>Business</h4>
+                                                            <h3>2000 <TbCurrencyTaka /> </h3>
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="Monthly two">
+                                                        <h6>Monthly</h6>
+                                                    </div>
+
+                                                </div>
+
+                                                <div className="text">
+
+                                                    <h5 className='two'> <span>501 - 1000 Order</span> </h5>
+
+                                                    <ul>
+                                                        <li>1 Online Store</li>
+                                                        <li>Custom Domain</li>
+                                                        <li>Drag & Drop, No Code Editor</li>
+                                                        <li>Auto Invoice Making</li>
+                                                        <li>Super Fast CDN Hosting</li>
+                                                        <li>Auto Courier Entry</li>
+                                                        <li>Unlimited Products</li>
+                                                        <li>Inventory Management</li>
+                                                        <li>Multi Page Themes</li>
+                                                        <li>Bulk SMS Marketing Features</li>
+                                                        <li>Landing Page Templates</li>
+                                                        <li>Marketing Tools</li>
+                                                        <li>Business Reports</li>
+                                                    </ul>
+
+                                                </div>
+
+                                                <div className="GetStart two">
+                                                <Link href='https://app.funnelliner.com/offer' target='_blank'>Get Started</Link>
+                                                </div>
+
+                                            </div>
+
+                                        </SwiperSlide>
+
+                                        <SwiperSlide>
+
+                                            <div className="PersonalPlanItem">
+
+                                                <div className="img">
+                                                    <img src="/images/home_page/package3.svg" alt="" />
+
+                                                    <div className="price">
+                                                        <div className="">
+                                                            <h4>Business Plus</h4>
+                                                            <h3>3000 <TbCurrencyTaka /> </h3>
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="Monthly three">
+                                                        <h6>Monthly</h6>
+                                                    </div>
+
+                                                </div>
+
+                                                <div className="text">
+
+                                                    <h5 className='three'> <span>1001 - 1500 Order</span> </h5>
+
+                                                    <ul>
+                                                        <li>1 Online Store</li>
+                                                        <li>Custom Domain</li>
+                                                        <li>Drag & Drop, No Code Editor</li>
+                                                        <li>Auto Invoice Making</li>
+                                                        <li>Super Fast CDN Hosting</li>
+                                                        <li>Auto Courier Entry</li>
+                                                        <li>Unlimited Products</li>
+                                                        <li>Inventory Management</li>
+                                                        <li>Multi Page Themes</li>
+                                                        <li>Bulk SMS Marketing Features</li>
+                                                        <li>Landing Page Templates</li>
+                                                        <li>Marketing Tools</li>
+                                                        <li>Business Reports</li>
+                                                    </ul>
+
+                                                </div>
+
+                                                <div className="GetStart three">
+                                                <Link href='https://app.funnelliner.com/offer' target='_blank'>Get Started</Link>
+                                                </div>
+
+                                            </div>
+
+                                        </SwiperSlide>
+
+                                        <SwiperSlide>
+
+                                            <div className="PersonalPlanItem">
+
+                                                <div className="img">
+                                                    <img src="/images/home_page/package4.svg" alt="" />
+
+                                                    <div className="price">
+                                                        <div className="">
+                                                            <h4>Entrepreneur </h4>
+                                                            <h3>4000 <TbCurrencyTaka /> </h3>
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="Monthly four">
+                                                        <h6>Monthly</h6>
+                                                    </div>
+
+                                                </div>
+
+                                                <div className="text">
+
+                                                    <h5 className='four'> <span>1501 - 2000 Order</span> </h5>
+
+                                                    <ul>
+                                                        <li>1 Online Store</li>
+                                                        <li>Custom Domain</li>
+                                                        <li>Drag & Drop, No Code Editor</li>
+                                                        <li>Auto Invoice Making</li>
+                                                        <li>Super Fast CDN Hosting</li>
+                                                        <li>Auto Courier Entry</li>
+                                                        <li>Unlimited Products</li>
+                                                        <li>Inventory Management</li>
+                                                        <li>Multi Page Themes</li>
+                                                        <li>Bulk SMS Marketing Features</li>
+                                                        <li>Landing Page Templates</li>
+                                                        <li>Marketing Tools</li>
+                                                        <li>Business Reports</li>
+                                                    </ul>
+
+                                                </div>
+
+                                                <div className="GetStart four">
+                                                <Link href='https://app.funnelliner.com/offer' target='_blank'>Get Started</Link>
+                                                </div>
+
+                                            </div>
+
+                                        </SwiperSlide>
+
+                                        <SwiperSlide>
+
+                                            <div className="PersonalPlanItem">
+
+                                                <div className="img">
+                                                    <img src="/images/home_page/package5.svg" alt="" />
+
+                                                    <div className="price">
+                                                        <div className="">
+                                                            <h4>Enterprise </h4>
+                                                            <Link href='https://m.me/Funneliner' target='_blank'><h3 style={{fontSize: '20px', backgroundColor: '#8e59e5', borderRadius: '10px', padding: '8px 15px', lineHeight: '24px', marginTop: '15px', cursor: 'pointer'}}>Contact Sales</h3></Link>
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="Monthly five">
+                                                        <h6>Monthly</h6>
+                                                    </div>
+
+                                                </div>
+
+                                                <div className="text">
+
+                                                    <h5 className='five'> <span>2000+ Order</span> </h5>
+
+                                                    <ul>
+                                                        <li>1 Online Store</li>
+                                                        <li>Custom Domain</li>
+                                                        <li>Drag & Drop, No Code Editor</li>
+                                                        <li>Auto Invoice Making</li>
+                                                        <li>Super Fast CDN Hosting</li>
+                                                        <li>Auto Courier Entry</li>
+                                                        <li>Unlimited Products</li>
+                                                        <li>Inventory Management</li>
+                                                        <li>Multi Page Themes</li>
+                                                        <li>Bulk SMS Marketing Features</li>
+                                                        <li>Landing Page Templates</li>
+                                                        <li>Marketing Tools</li>
+                                                        <li>Business Reports</li>
+                                                    </ul>
+
+                                                </div>
+
+                                                <div className="GetStart five">
+                                                    <Link href=''>Contact Sales</Link>
+                                                </div>
+
+                                            </div>
+
+                                        </SwiperSlide>
+
+                                    </Swiper>
 
                                 </div>
 
@@ -1688,7 +2005,7 @@ const MainPage = () => {
                 {/* =============================================================================
                     Start AskQuestion
                 ===============================================================================*/}
-                <section className='AskQuestion'>
+                <section className='AskQuestion' id='AskQuestion'>
 
                     <Container>
 
@@ -1870,55 +2187,29 @@ const MainPage = () => {
                 {/* =============================================================================
                     Start StartSelling
                 ===============================================================================*/}
-                <section className='StartSelling'>
 
-                    <Container>
-
-                        <Row>
-
-                            <Col lg={12}>
-
-                                <div className="StartSellingBox">
-
-                                    <h2>Start selling online through the funnel.</h2>
-                                    <p>Build your business with Funnel Liner to sell online products and everywhere in between.</p>
-
-                                    <div className="customInput">
-                                        <input type="text" placeholder='Enter your Work Email' />
-                                        <Button type='submit' className='bg'>Get Started <BsArrowRight /> </Button>
-                                    </div>
-
-                                </div>
-
-                            </Col>
-
-                        </Row>
-
-                    </Container>
-
-                </section>
 
 
                 {/* =============================================================================
                     End StartSelling
                 ===============================================================================*/}
-
+                <StartSelling />
 
                 {/* =============================================================================
                     Start Footer
                 ===============================================================================*/}
-                <section className='Footer'>
+                {/* <section className='Footer'>
 
                     <Container>
 
                         <Row>
 
-                            <Col lg={5}>
+                            <Col lg={4}>
 
                                 <div className="FooterLogo">
 
                                     <img src="/images/home_page/logo-beta.png" alt="" />
-                                    <p>The First Ever AutomatedE-Commerce Sales Funnel. Create Your Own Online Shop,Decorate Your Shop, Boost Up Your Sales !</p>
+                                    <p>The First Ever Automated E-Commerce Sales Funnel. Create Your Own Online Shop,Decorate Your Shop, Boost Up Your Sales !</p>
 
                                     <div className="socialIcon">
 
@@ -1933,11 +2224,11 @@ const MainPage = () => {
 
                             </Col>
 
-                            <Col lg={7}>
+                            <Col lg={8}>
 
                                 <Row>
 
-                                    <Col lg={4}>
+                                    <Col lg={4} sm={3} xs={6}>
 
                                         <div className="FooterItem">
 
@@ -1947,13 +2238,14 @@ const MainPage = () => {
                                                 <li> <Link href=''>Website Theme</Link> </li>
                                                 <li> <Link href=''>Website Builder</Link> </li>
                                                 <li> <Link href=''>Landing Page </Link> </li>
+                                                <li> <Link href=''>Road Map </Link> </li>
                                             </ul>
 
                                         </div>
 
                                     </Col>
 
-                                    <Col lg={4}>
+                                    <Col lg={4} sm={3} xs={6}>
 
                                         <div className="FooterItem">
 
@@ -1970,7 +2262,7 @@ const MainPage = () => {
 
                                     </Col>
 
-                                    <Col lg={4}>
+                                    <Col lg={4} sm={6}>
 
                                         <div className="FooterItem">
 
@@ -2011,7 +2303,9 @@ const MainPage = () => {
 
                     </Container>
 
-                </section>
+                </section> */}
+
+                <OurFooter />
 
 
                 {/* =============================================================================

@@ -19,7 +19,7 @@ const ProductCarousel = () => {
     try {
       let res = await axios({
         method: "get",
-        url: `${process.env.API_URL}v1/customer/top-selling-product`,
+        url: `${process.env.API_URL}/customer/top-selling-product`,
         headers: headers,
       });
       setPopularProducts(res.data.data);

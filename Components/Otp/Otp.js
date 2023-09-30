@@ -1,13 +1,15 @@
 import { Link } from '@mui/material';
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import axios from "axios";
-import {toast} from "react-toastify";
-import {useRouter} from "next/router";
-import {baseUrl} from "../../constant/constant";
+import { useRouter } from "next/router";
+import { useToast } from '../../hooks/useToast';
+import Loader from '../NewLandingPage/CommonLandingComponent/Order/loader';
 
-const Otp = ({phone}) => {
+const Otp = ({ phone }) => {
     const router = useRouter()
+    const showToast = useToast()
     const [code, setcode] = useState(new Array(6).fill(""));
+    const [verifyOTPLoading, setVerifyOTPLoading] = useState(false);
 
     const handleChange = (element, index) => {
         if (isNaN(element.value)) return false;
@@ -21,49 +23,47 @@ const Otp = ({phone}) => {
     };
 
     const verifyOtp = () => {
-
+        const areAllItemsNotEmpty = Object.values(code).every(item => item !== "");
+        if (verifyOTPLoading) {
+            return
+        }
+        if (areAllItemsNotEmpty === false) {
+            showToast("6 digit OTP code required", "error")
+            return
+        }
+        setVerifyOTPLoading(true)
         const data = {
             otp: code.toString().replaceAll(',', ''),
             phone: phone
         }
-        axios.post(baseUrl+'/api/v1/auth/verify', data).then((response) => {
+        axios.post(process.env.API_URL + '/auth/verify', data).then((response) => {
             if (response.data.success === true) {
-                toast.success(response.data.message, {
-                    position: toast.POSITION.TOP_CENTER,
-                });
-
+                showToast(response.data.message)
                 localStorage.clear()
                 localStorage.setItem('user', JSON.stringify(response.data.data))
                 localStorage.setItem('token', response.data.data.api_token)
-
                 router.replace('https://dashboard.funnelliner.com').then(r => console.log('connected'))
+                setVerifyOTPLoading(false)
             } else {
-                toast.error(response.data.message, {
-                    position: toast.POSITION.TOP_RIGHT,
-                });
+                showToast(response.data.message, "error")
+                setVerifyOTPLoading(false)
             }
         }).catch(errors => {
-            toast.error('Something went wrong', {
-                position: toast.POSITION.TOP_CENTER,
-            });
+            setVerifyOTPLoading(false)
+            showToast("Something went wrong", "error")
         })
+
     }
 
     const resendOtp = () => {
-        axios.post(baseUrl+'/api/v1/resend/otp', {phone:phone}).then((response) => {
+        axios.post(process.env.API_URL + '/resend/otp', { phone: phone }).then((response) => {
             if (response.data.success === true) {
-                toast.success(response.data.message, {
-                    position: toast.POSITION.TOP_CENTER,
-                });
+                showToast(response.data.message)
             } else {
-                toast.error(response.data.message, {
-                    position: toast.POSITION.TOP_RIGHT,
-                });
+                showToast(response.data.message, "error")
             }
         }).catch(errors => {
-            toast.error('Something went wrong', {
-                position: toast.POSITION.TOP_CENTER,
-            });
+            showToast("Something went wrong", "error")
         })
     }
 
@@ -71,7 +71,7 @@ const Otp = ({phone}) => {
 
         <>
 
-            <div className="Otp">
+            <div style={{ background: "#f6f6f6" }} className="Otp">
 
                 <div className="OtpContent">
 
@@ -101,14 +101,19 @@ const Otp = ({phone}) => {
                             );
                         })}
                     </div>
-
                     <p>Did you get the code? <Link onClick={resendOtp}>Resend Code</Link></p>
-                    <button type="submit" onClick={verifyOtp}>Submit</button>
-
+                    {
+                        verifyOTPLoading ? <button key="otp_loader" className="sign_up_otp_submit_btn" type="submit" disabled>
+                            <Loader key="user_verify_loading" color="#fff" />
+                            Submit
+                        </button> : <button key="user_otp_submit_btn" className="sign_up_otp_submit_btn" type="submit" onClick={verifyOtp}>                         
+                            Submit
+                        </button>
+                    }
                 </div>
 
             </div>
-        
+
         </>
 
     )

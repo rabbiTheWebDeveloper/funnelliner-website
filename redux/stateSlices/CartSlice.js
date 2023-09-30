@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import Cookies from 'js-cookie';
 import { useToast } from "../../hooks/useToast";
 
-const showToast  =useToast()
+const showToast = useToast()
 const initialState = {
   cartItems: Cookies.get('cartItems')
     ? JSON.parse(Cookies.get("cartItems"))
@@ -82,12 +82,11 @@ const cartSlice = createSlice({
     getTotals(state, action) {
       let { total, quantity } = state?.cartItems?.reduce(
         (cartTotal, cartItem) => {
-          const { price, cartQuantity } = cartItem;
-          const itemTotal = price * cartQuantity;
-
+          const { discounted_price, cartQuantity } = cartItem;
+          const productPrice = discounted_price;
+          const itemTotal = productPrice * cartQuantity;
           cartTotal.total += itemTotal;
           cartTotal.quantity += cartQuantity;
-
           return cartTotal;
         },
         {
@@ -102,7 +101,7 @@ const cartSlice = createSlice({
     clearCart(state, action) {
       state.cartItems = [];
       Cookies.set("cartItems", JSON.stringify(state.cartItems));
-     
+
     },
   },
 });

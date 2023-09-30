@@ -14,7 +14,6 @@ import {  BsGoogle } from "react-icons/bs";
 import { FaFacebookF, FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
-import { baseUrl } from "../../constant/constant";
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
@@ -33,14 +32,12 @@ const Login = () => {
     shop_id: "337551",
   };
   const onSubmit = (data) => {
-    console.log(data)
     setLoading(true);
     axios
-      .post(`${baseUrl}/api/v1/customer/register`, {
+      .post(`${process.env.API_URL}/customer/register`, {
        credentials: data.email,
       }, {headers:headers})
       .then((res) => {
-        console.log(res)
         setLoading(false);
         if (res.status === 200) {
           alert("Login Success")

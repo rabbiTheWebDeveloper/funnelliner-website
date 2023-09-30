@@ -33,21 +33,16 @@ const Header = ({shopInfo}) => {
 
   const [searchString, setSearchString] = useState("");
   const handleChange = (e) => {
-    // console.log(e.target.value)
     setSearchString(e.target.value);
     store.dispatch(SetSearchInput(searchString));
   };
   const handleSearchBtn = () => {
     router.push({
       pathname: `/${shop_name}/shop`,
-      // query: { data: searchString}
     });
-
   };
   const searchText = useSelector((state) => state.searchInput.searchString);
  
- 
-
   //add to cart total item count
   const [cart1, setCart1] = useState([]);
   const carts = useSelector((state) => state.cart);
@@ -82,7 +77,7 @@ const Header = ({shopInfo}) => {
                 defaultValue={searchText}
                 onChange={handleChange}
                 type='text'
-                name=''
+                name='search'
                 placeholder='Search here...'
               />
               <div

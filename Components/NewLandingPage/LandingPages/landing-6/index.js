@@ -26,8 +26,8 @@ import Footer1 from "../../CommonLandingComponent/Footer1/Footer1";
 import Footer2 from "../../CommonLandingComponent/Footer2/Footer2";
 import Footer3 from "../../CommonLandingComponent/Footer3/Footer3";
 import Footer4 from "../../CommonLandingComponent/Footer4/Footer4";
-export default function Landing_6({ shop_info, pageInfo, product, visitorID }) {
-  const { checkout_b_color, checkout_button_color, checkout_button_text_color, checkout_text_color, footer } = pageInfo
+export default function Landing_6({ shop_info, pageInfo, product, visitorID, }) {
+  const { checkout_b_color, checkout_button_color, checkout_button_text_color, checkout_text_color, order_title, checkout_button_text } = pageInfo
   const today = new Date();
 
   const year = today.getFullYear();
@@ -498,7 +498,7 @@ export default function Landing_6({ shop_info, pageInfo, product, visitorID }) {
 
       <section id="placeAnOrder">
 
-        <Order backgroundColor={checkout_b_color} fontColor={checkout_text_color} btnColor={checkout_button_color} btnTextColor={checkout_button_text_color}
+        <Order default_delivery_location={shop_info?.default_delivery_location} checkout_button_text={checkout_button_text} order_title={order_title} backgroundColor={checkout_b_color} fontColor={checkout_text_color} btnColor={checkout_button_color} btnTextColor={checkout_button_text_color}
           product={product} visitorID={visitorID}></Order>
 
       </section>

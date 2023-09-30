@@ -48,7 +48,7 @@ import Footer4 from '../../CommonLandingComponent/Footer4/Footer4';
 
 
 const Landing_18 = ({ shop_info, pageInfo, product, visitorID }) => {
-    const { checkout_b_color, checkout_button_color, checkout_button_text_color, checkout_text_color, footer } = pageInfo
+    const { checkout_b_color, checkout_button_color, checkout_button_text_color, checkout_text_color, footer, order_title, checkout_button_text } = pageInfo
     const swiperRef = useRef();
 
     return (
@@ -661,7 +661,7 @@ const Landing_18 = ({ shop_info, pageInfo, product, visitorID }) => {
                 <Container>
                     <div className='Landing__18__PlaseInOdr'>
                         <div id="placeAnOrder">
-                            <Order backgroundColor={checkout_b_color} fontColor={checkout_text_color} btnColor={checkout_button_color} btnTextColor={checkout_button_text_color} product={product} visitorID={visitorID}></Order>
+                            <Order default_delivery_location={shop_info?.default_delivery_location} checkout_button_text={checkout_button_text} order_title={order_title} backgroundColor={checkout_b_color} fontColor={checkout_text_color} btnColor={checkout_button_color} btnTextColor={checkout_button_text_color} product={product} visitorID={visitorID}></Order>
                         </div>
                     </div>
                 </Container>

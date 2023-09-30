@@ -81,6 +81,20 @@ import '../styles/landing-pages-css/landing-28.css';
 
 import '../styles/landing-pages-css/landing-29.css';
 
+import '../styles/landing-pages-css/landing-31.css';
+
+import '../styles/landing-pages-css/landing-32.css';
+
+import '../styles/landing-pages-css/landing-33.css';
+
+import '../styles/landing-pages-css/landing-34.css';
+
+import '../styles/landing-pages-css/landing-35.css';
+
+import '../styles/landing-pages-css/landing-36.css';
+import '../styles/landing-pages-css/landing-37.css';
+import '../styles/landing-pages-css/landing-38.css';
+
 // Multi page one
 import "../styles/multipage/multipage-1.css"
 import "../styles/multipage/multipage-common.css"
@@ -90,6 +104,8 @@ import "../styles/multipage/multipage-common.css"
 import { Toaster } from "react-hot-toast";
 import { ToastContainer } from "react-toastify";
 
+import ScrollToTop from "react-scroll-to-top";
+import { BsArrowUpCircleFill } from "react-icons/bs";
 
 
 function MyApp({ Component, pageProps }) {
@@ -100,6 +116,7 @@ function MyApp({ Component, pageProps }) {
         <ToastContainer autoClose={1000} pauseOnHover={false} />
         <Component {...pageProps} />
         <Toaster position="top-center" />
+        <ScrollToTop smooth component={<BsArrowUpCircleFill />} />
       </Provider>
     </>
   );

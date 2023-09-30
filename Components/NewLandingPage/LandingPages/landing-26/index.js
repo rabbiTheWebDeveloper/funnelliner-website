@@ -24,7 +24,7 @@ import Footer3 from '../../CommonLandingComponent/Footer3/Footer3';
 import Footer4 from '../../CommonLandingComponent/Footer4/Footer4';
 
 const Landing_26 = ({ shop_info, pageInfo, product, visitorID }) => {
-    const { checkout_b_color, checkout_button_color, checkout_button_text_color, checkout_text_color, footer } = pageInfo
+    const { checkout_b_color, checkout_button_color, checkout_button_text_color, checkout_text_color, footer, order_title, checkout_button_text } = pageInfo
     return (
         <div className='Landing__26'>
             {
@@ -609,13 +609,13 @@ const Landing_26 = ({ shop_info, pageInfo, product, visitorID }) => {
             <section className="Landing__26__FooterSec">
                 <div className="Landing__26__FooterContentDiv">
 
-                   
 
-                        <div id="placeAnOrder">
 
-                            <Order backgroundColor={checkout_b_color} fontColor={checkout_text_color} btnColor={checkout_button_color} btnTextColor={checkout_button_text_color} product={product} visitorID={visitorID}></Order>
+                    <div id="placeAnOrder">
 
-                        </div>                     
+                        <Order default_delivery_location={shop_info?.default_delivery_location} checkout_button_text={checkout_button_text} order_title={order_title} backgroundColor={checkout_b_color} fontColor={checkout_text_color} btnColor={checkout_button_color} btnTextColor={checkout_button_text_color} product={product} visitorID={visitorID}></Order>
+
+                    </div>
                     <Container>
 
                         {/* <div className="Landing__26__FooterDiv">
@@ -650,7 +650,7 @@ const Landing_26 = ({ shop_info, pageInfo, product, visitorID }) => {
                         <div className="Landing__26__Hr2"></div>
    
                         <TinyFooter></TinyFooter> */}
-                        
+
 
                     </Container>
 
@@ -658,16 +658,16 @@ const Landing_26 = ({ shop_info, pageInfo, product, visitorID }) => {
 
             </section>
             {
-                footer?.footer_id ==4 && <Footer1 domainName={shop_info?.domain} pageInfo={pageInfo}/>
+                footer?.footer_id == 4 && <Footer1 domainName={shop_info?.domain} pageInfo={pageInfo} />
             }
             {
-                footer?.footer_id ==5 && <Footer2 domainName={shop_info?.domain} pageInfo={pageInfo}/>
+                footer?.footer_id == 5 && <Footer2 domainName={shop_info?.domain} pageInfo={pageInfo} />
             }
             {
-                footer?.footer_id ==6 && <Footer3 domainName={shop_info?.domain} pageInfo={pageInfo}/>
+                footer?.footer_id == 6 && <Footer3 domainName={shop_info?.domain} pageInfo={pageInfo} />
             }
             {
-                footer?.footer_id == 7  && <Footer4 domainName={shop_info?.domain} pageInfo={pageInfo}/>
+                footer?.footer_id == 7 && <Footer4 domainName={shop_info?.domain} pageInfo={pageInfo} />
             }
 
         </div>

@@ -22,8 +22,8 @@ import Footer4 from '../../CommonLandingComponent/Footer4/Footer4';
 
 ;
 
-const Landing_10 = ({ shop_info, pageInfo, product, visitorID }) => {
-  const { checkout_b_color, checkout_button_color, checkout_button_text_color, checkout_text_color, footer } = pageInfo
+const Landing_10 = ({ shop_info, pageInfo, product, visitorID,  }) => {
+  const { checkout_b_color, checkout_button_color, checkout_button_text_color, checkout_text_color, footer,order_title, checkout_button_text  } = pageInfo
   const today = new Date();
 
   const year = today.getFullYear();
@@ -569,126 +569,13 @@ const Landing_10 = ({ shop_info, pageInfo, product, visitorID }) => {
 
         <Container>
 
-          <Order backgroundColor={checkout_b_color} fontColor={checkout_text_color} btnColor={checkout_button_color} btnTextColor={checkout_button_text_color}
+          <Order default_delivery_location={shop_info?.default_delivery_location}  checkout_button_text={checkout_button_text} order_title={order_title} backgroundColor={checkout_b_color} fontColor={checkout_text_color} btnColor={checkout_button_color} btnTextColor={checkout_button_text_color}
             product={product} visitorID={visitorID}></Order>
 
         </Container>
 
 
       </section>
-
-      {/* Section Gaps */}
-
-      {/* ------------------------------------------------------------------------------------------------------------------------------------------------------------------
-            Footer section Start
-        ------------------------------------------------------------------------------------------------------------------------------------------------------------------*/}
-      {/* <section className="Footer">
-
-        <div className="BeeImage">
-
-          <img className="imgBlack" src="/images/landing-10/beelast.svg" alt="" />
-
-        </div>
-
-        <div className="BeeImage2">
-
-          <img className="imgBlack" src="/images/landing-10/beelast.svg" alt="" />
-
-        </div>
-
-        <Container>
-
-          <Row className='justify-content-between'>
-
-            <Col xl={3} lg={4} md={4}>
-              <div className="footermenu">
-
-                <h5>প্রয়োজনে কল করুন</h5>
-
-                <ul className=''>
-
-                  <li><Link href={`tel:${shop_info?.phone}`}><BsTelephone />
-                    {shop_info?.phone}</Link>
-                  </li>
-                </ul>
-                <ul className="social">
-
-                  
-                  <SocialMedia shop_info={shop_info} />
-
-                </ul>
-
-              </div>
-
-            </Col>
-            <Col xl={3} lg={4} md={4}>
-
-              <div className="footermenu">
-
-                <h5>Important Links</h5>
-
-                <ul className=''>
-
-                  <li><Link href={`/${shop_info?.domain}/privacy`}>
-                    Privacy Policy</Link>
-                  </li>
-                  <li><Link href={`/${shop_info?.domain}/terms`}>
-                    Terms & Conditions</Link>
-                  </li>
-                  <li><Link href={`tel:${shop_info?.phone}`}>
-                    Contact</Link>
-                  </li>
-
-                </ul>
-
-              </div>
-
-            </Col>
-            <Col xl={3} lg={4} md={4}>
-
-              <div className="footermenu">
-
-                <h5>Email us</h5>
-
-                <ul className=''>
-
-                  <li><Link href={`mailto:${shop_info?.email}`}><BiEnvelope />
-                    {shop_info?.email}</Link>
-                  </li>
-
-                </ul>
-
-              </div>
-
-
-            </Col>
-
-          </Row>
-
-          <Row>
-            <Col lg={12}>
-              <hr></hr>
-              <div className='d-flex justify-content-center'>
-
-              
-
-              </div>
-            </Col>
-          </Row>
-
-
-        
-          <div className="tinyFooter">
-
-            <p>@ {year} All Rights Reserved </p>
-            <p>System developed by <Link href='https://funnelliner.com/'>Funnel Liner</Link> </p>
-
-          </div>
-
-        </Container>
-
-
-      </section> */}
 
       {
         footer?.footer_id == 4 && <Footer1 domainName={shop_info?.domain} pageInfo={pageInfo} />

@@ -5,7 +5,6 @@ import SocialMedia from '../SocialMedia/SocialMedia'
 import { Container } from 'react-bootstrap'
 
 function MainFooter({ shop_info }) {
-    console.log("shop_info", shop_info)
     return (
         <Container>
             <div className='Landing__25__FooterDiv'>

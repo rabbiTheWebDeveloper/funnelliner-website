@@ -4,19 +4,28 @@ import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
-import { baseUrl } from "../constant/constant";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Otp from "../Components/Otp/Otp";
-import { toast } from "react-toastify";
 import Head from "next/head";
+import { useToast } from "../hooks/useToast";
+import Image from "next/image";
 
-export default function Signup() {
+export default function UserSignup() {
+  const showToast = useToast()
   const router = useRouter();
   const phoneRegex = /^(?:\+88|88)?(01[3-9]\d{8})$/;
   const [loading, setLoading] = useState(false);
   const [phone, setPhone] = useState(null);
   const [verifyLoading, setVerifyLoading] = useState(false);
+  useEffect(() => {
+    const { unverified_user } = router.query;
+    if (unverified_user) {
+      
+      setVerifyLoading(true)
+      setPhone(unverified_user)
+    }
+  }, [router])
 
   const validationSchema = yup.object().shape({
     name: yup.string().required("Full name field is required"),
@@ -48,19 +57,12 @@ export default function Signup() {
     setLoading(true);
 
     axios
-      .post(baseUrl + "/api/v1/signup", data)
+      .post(process.env.API_URL + "/signup", data)
       .then((response) => {
         if (response.data.success === true) {
           setVerifyLoading(true);
           setPhone(response?.data?.data?.phone);
-          toast.success(response.data.message, {
-            position: toast.POSITION.TOP_CENTER,
-            onClose: () => {
-              // setPhone(response.data.data.phone)
-              setLoading(false);
-              setVerifyLoading(true);
-            },
-          });
+          showToast(response.data.message)
         }
       })
       .catch((errors) => {
@@ -90,7 +92,7 @@ export default function Signup() {
           <section className={style.Register}>
             <div className={style.RegisterForm}>
               <div className={style.Overflow}>
-                <div className={style.HeaderPart}>
+                {/* <div className={style.HeaderPart}>
                   <div className="Logo">
                     <img
                       src="/images/logo_1.svg"
@@ -100,32 +102,30 @@ export default function Signup() {
                   </div>
 
                   <div className="text">
-                    {/* <h3>Welcome To </h3> */}
+        
                     <p>
                       The Best Business 360 Solution For Your Business, <br /> Just
                       Login & You’re Ready To Go !
                     </p>
                   </div>
-                </div>
+                </div> */}
 
-                <form onSubmit={handleSubmit(submitForm)}>
+                {/* <form onSubmit={handleSubmit(submitForm)}>
                   <div className={style.form_part}>
                     <div className={style.CustomerInput}>
                       <label
-                        className={`${
-                          errors.name ? `${style.ValidationErrorLabel}` : ""
-                        }`}
+                        className={`${errors.name ? `${style.ValidationErrorLabel}` : ""
+                          }`}
                       >
                         Full Name <span>*</span>
                       </label>
                       <input
                         type="text"
                         name="name"
-                        className={`${
-                          errors.name
+                        className={`${errors.name
                             ? `${style.CustomerInputField} ${style.ValidationError}`
                             : `${style.CustomerInputField}`
-                        }`}
+                          }`}
                         placeholder="Enter Your Full Name "
                         {...register("name")}
                       />
@@ -138,22 +138,20 @@ export default function Signup() {
 
                     <div className={style.CustomerInput}>
                       <label
-                        className={`${
-                          errors.shop_name
+                        className={`${errors.shop_name
                             ? `${style.ValidationErrorLabel}`
                             : ""
-                        }`}
+                          }`}
                       >
                         Shop Name <span>*</span>
                       </label>
                       <input
                         type="text"
                         name="name"
-                        className={`${
-                          errors.shop_name
+                        className={`${errors.shop_name
                             ? `${style.CustomerInputField} ${style.ValidationError}`
                             : `${style.CustomerInputField}`
-                        }`}
+                          }`}
                         placeholder="Enter Your Shop Name "
                         {...register("shop_name")}
                       />
@@ -167,19 +165,17 @@ export default function Signup() {
 
                     <div className={style.CustomerInput}>
                       <label
-                        className={`${
-                          errors.email ? `${style.ValidationErrorLabel}` : ""
-                        }`}
+                        className={`${errors.email ? `${style.ValidationErrorLabel}` : ""
+                          }`}
                       >
                         E-mail Address <span>*</span>
                       </label>
                       <input
                         type="text"
-                        className={`${
-                          errors.email
+                        className={`${errors.email
                             ? `${style.CustomerInputField} ${style.ValidationError}`
                             : `${style.CustomerInputField}`
-                        }`}
+                          }`}
                         placeholder="Enter Your Email Address "
                         {...register("email")}
                       />
@@ -193,19 +189,17 @@ export default function Signup() {
 
                     <div className={style.CustomerInput}>
                       <label
-                        className={`${
-                          errors.phone ? `${style.ValidationErrorLabel}` : ""
-                        }`}
+                        className={`${errors.phone ? `${style.ValidationErrorLabel}` : ""
+                          }`}
                       >
                         Phone Number <span>*</span>
                       </label>
                       <input
                         type="text"
-                        className={`${
-                          errors.phone
+                        className={`${errors.phone
                             ? `${style.CustomerInputField} ${style.ValidationError}`
                             : `${style.CustomerInputField}`
-                        }`}
+                          }`}
                         placeholder="Enter Your Phone Number "
                         {...register("phone")}
                       />
@@ -219,20 +213,18 @@ export default function Signup() {
 
                     <div className={style.CustomerInput}>
                       <label
-                        className={`${
-                          errors.password ? `${style.ValidationErrorLabel}` : ""
-                        }`}
+                        className={`${errors.password ? `${style.ValidationErrorLabel}` : ""
+                          }`}
                       >
                         Password <span>*</span>
                       </label>
                       <input
                         type="password"
                         name="name"
-                        className={`${
-                          errors.password
+                        className={`${errors.password
                             ? `${style.CustomerInputField} ${style.ValidationError}`
                             : `${style.CustomerInputField}`
-                        }`}
+                          }`}
                         placeholder="Enter Your Password "
                         {...register("password")}
                       />
@@ -246,22 +238,20 @@ export default function Signup() {
 
                     <div className={style.CustomerInput}>
                       <label
-                        className={`${
-                          errors.password_confirmation
+                        className={`${errors.password_confirmation
                             ? `${style.ValidationErrorLabel}`
                             : ""
-                        }`}
+                          }`}
                       >
                         Confirm Password <span>*</span>
                       </label>
                       <input
                         type="password"
                         name="name"
-                        className={`${
-                          errors.password_confirmation
+                        className={`${errors.password_confirmation
                             ? `${style.CustomerInputField} ${style.ValidationError}`
                             : `${style.CustomerInputField}`
-                        }`}
+                          }`}
                         placeholder="Confirm Your Password"
                         {...register("password_confirmation")}
                       />
@@ -293,7 +283,41 @@ export default function Signup() {
                       </Link>
                     </p>
                   </div>
-                </form>
+                </form> */}
+
+                {/* <Image src="/Vector Smart Object.png" alt="" width={500}
+                  height={500} /> */}
+                
+                <div>
+                  <img
+                    src="/Vector-Object.png"
+                    alt="asdsa"
+                    style={{
+                      width: '100%', // Set the width to 100% of its container
+                      height: 'auto', // Automatically adjust the height to maintain aspect ratio
+                    }}
+                  />
+                </div>
+
+                {/* <div
+                  style={{
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    zIndex: 9999,
+                  }}
+                >
+                  <Image
+                    src="/Vector Smart Object.png"
+                    alt=""
+                    layout="fill"
+                    objectFit="contain"
+                    loading="eager"
+                  />
+                </div> */}
+
               </div>
             </div>
           </section>

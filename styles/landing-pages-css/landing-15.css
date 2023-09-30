@@ -480,7 +480,7 @@
     background-size: cover;
     background-repeat: no-repeat;
     padding-bottom: 0px;
-    background: #882A32;
+    background-color: #882A32;
 }
 
 .Landing__15 #OrderConfirmFrom h2{
@@ -642,7 +642,8 @@
     margin-top: 36px;
     border-bottom: 1px solid #EE0252;
     margin-bottom: 40px;
-    margin: 0 15%;
+    margin-left: 15%;
+    margin-right: 15%;
 }
 
 .Landing__15_sectionFooter{

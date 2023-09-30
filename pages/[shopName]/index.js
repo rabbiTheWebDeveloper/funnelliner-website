@@ -25,7 +25,7 @@ const index = () => {
 		setIsLoading(true)
 		try {
 			const shopInfo = await axios.post(
-				`${process.env.API_URL}v1/shops/info`,
+				`${process.env.API_URL}/shops/info`,
 				{},
 				{ headers: headers }
 			);
@@ -45,14 +45,11 @@ const index = () => {
 			router.push("/404");
 		}
 	};
-
 	useEffect(() => {
 		if (shopName !== undefined) {
 			getShopInfo();
 		}
-
 	}, [shopName]);
-
 	return (
 		<>
 			{

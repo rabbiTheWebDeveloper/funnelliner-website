@@ -3,6 +3,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react'
 import Skeleton from '../../../Components/Common/Skeleton/Skeleton';
+import { Col, Container, Row } from 'react-bootstrap';
 
 function index() {
     const router = useRouter();
@@ -16,7 +17,7 @@ function index() {
         setIsLoading(true)
         try {
             const shopInfo = await axios.post(
-                `${process.env.API_URL}v1/shops/info`,
+                `${process.env.API_URL}/shops/info`,
                 {},
                 { headers: headers }
             );
@@ -33,7 +34,7 @@ function index() {
             getShopInfo();
         }
     }, [shopDomainName]);
-    
+
     return (
         <>
             <Head>
@@ -42,17 +43,31 @@ function index() {
                 <meta name='viewport' content='width=device-width, user-scalable=no' />
                 <link rel='icon' href={shop_info?.shop_favicon} />
             </Head>
-            <div>
-                <h1 style={{background:"#894BCA", padding:"20px", color:"white", fontWeight:"600"}} align={"center"}>Privacy Policy</h1>
-                <div style={{ width: "900px", margin: "50px auto" }}>
-                    {
-                        isLoading === true && <Skeleton/>
-                    }
-                    {
-                        shop_info?.privacy_policy !== null && shop_info?.privacy_policy !== undefined && <div dangerouslySetInnerHTML={{ __html: shop_info?.privacy_policy }} />
-                    }
-                </div>
-            </div>
+
+            <Container>
+
+                <Row>
+
+                    <Col lg={12}>
+
+                        <div>
+                            <h1 style={{ background: "#894BCA", padding: "20px", color: "white", fontWeight: "600" }} align={"center"}>Privacy Policy</h1>
+                            <div style={{ width: "900px", margin: "50px auto" }}>
+                                {
+                                    isLoading === true && <Skeleton />
+                                }
+                                {
+                                    shop_info?.privacy_policy !== null && shop_info?.privacy_policy !== undefined && <div dangerouslySetInnerHTML={{ __html: shop_info?.privacy_policy }} />
+                                }
+                            </div>
+                        </div>
+
+                    </Col>
+
+                </Row>
+
+            </Container>
+
         </>
     )
 }

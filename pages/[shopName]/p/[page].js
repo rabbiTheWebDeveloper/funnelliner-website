@@ -37,24 +37,39 @@ import Landing_4 from "../../../Components/NewLandingPage/LandingPages/landing-4
 import Landing_3 from "../../../Components/NewLandingPage/LandingPages/landing-3";
 import Landing_1 from "../../../Components/NewLandingPage/LandingPages/landing-1";
 import Landing_2 from "../../../Components/NewLandingPage/LandingPages/landing-2";
+import Landing_31 from "../../../Components/NewLandingPage/LandingPages/landing-31";
+import Landing_32 from "../../../Components/NewLandingPage/LandingPages/landing-32";
+import Landing_33 from "../../../Components/NewLandingPage/LandingPages/landing-33";
+import Landing_34 from "../../../Components/NewLandingPage/LandingPages/landing-34";
+import Landing_35 from "../../../Components/NewLandingPage/LandingPages/landing-35";
 import PageLoader from "../../../Components/Common/PageLoader/PageLoader";
+import CustomLending from "../../../Components/NewLandingPage/LandingPages/custom-landing";
+import Landing_36 from "../../../Components/NewLandingPage/LandingPages/landing-36";
+import Landing_37 from "../../../Components/NewLandingPage/LandingPages/landing-37";
+import Landing_38 from "../../../Components/NewLandingPage/LandingPages/landing-38";
 
 const Page = () => {
   const router = useRouter();
   const shopDomainName = router.query.shopName;
-  const [loading, setIsLoading]=useState(false)
+  const [loading, setIsLoading] = useState(false)
   const { page } = router.query;
-  const [shop_info, setShopInfo]=useState({})
+  const [shop_info, setShopInfo] = useState({})
   const [pageInfo, setPageInfo] = useState({});
+  const [shopId, setShopId] = useState("")
   const [shop_meta_title, setShop_meta_title] = useState("");
   const [shop_meta_description, setShop_meta_description] = useState("");
   const [shop_logo, setShop_logo] = useState("");
   const getPageInfo = async (page) => {
     setIsLoading(true)
     const pageInformation = await axios.get(
-      `${process.env.API_URL}v1/page/${page}`
+      `${process.env.API_URL}/page/${shopId}/${page}`
     );
+    if(pageInformation.data.success === false){
+      router.push("/404")
+    }
     setPageInfo(pageInformation.data.data);
+    Cookies.set("shop_title", pageInformation.data.data.title);
+    Cookies.set("shop_logo", pageInformation.data.data.logo);
     setIsLoading(false)
   };
 
@@ -65,12 +80,13 @@ const Page = () => {
   const getShopInfo = async () => {
     try {
       const shopInfo = await axios.post(
-        `${process.env.API_URL}v1/shops/info`,
+        `${process.env.API_URL}/shops/info`,
         {},
         { headers: headers }
       );
       const shopData = shopInfo?.data?.data;
       setShopInfo(shopData)
+      setShopId(shopData?.shop_id)
       localStorage.setItem("shop_id", shopData.shop_id);
       localStorage.setItem("shop_name", shopData.domain);
       localStorage.setItem("theme_id", shopData.theme_id);
@@ -82,10 +98,8 @@ const Page = () => {
       Cookies.set("shop_meta_description", shopData.shop_meta_description);
       Cookies.set("shop_logo", shopData?.shop_logo?.name);
     } catch (err) {
-      console.log("err", err);
     }
   };
-
   useEffect(() => {
     if (shopDomainName) {
       getShopInfo();
@@ -93,13 +107,10 @@ const Page = () => {
   }, [shopDomainName]);
 
   useEffect(() => {
-    // if (shopDomainName) {
-    //   getShopInfo();
-    // }
-    if (page !== undefined) {
+    if (page !== undefined && shopId) {
       getPageInfo(page);
     }
-  }, [page]);
+  }, [page, shopId]);
   useEffect(() => {
     setShop_meta_title(Cookies.get('shop_title'))
     setShop_meta_description(Cookies.get('shop_meta_description'))
@@ -112,8 +123,8 @@ const Page = () => {
   }, [shop_meta_title, shop_meta_description, shop_logo])
 
   //visitor id generate
-    const [visitorID, setVisitorID] = useState('');
-    const setFp = async () => {
+  const [visitorID, setVisitorID] = useState('');
+  const setFp = async () => {
     const fp = await FingerprintJS.load();
     const { visitorId } = await fp.get();
     setVisitorID(visitorId);
@@ -139,54 +150,55 @@ const Page = () => {
     </>
   ) : (
     <>
+
       <Head>
-        <title>{shop_meta_title}</title>
-        <meta name='description' content={shop_meta_description} />
+        <title>{pageInfo?.title}</title>
+        <meta name='description' content={pageInfo?.descriptions} />
+        <link rel='icon' href={pageInfo?.logo} />
         <meta name='viewport' content='width=device-width, user-scalable=no' />
-        <link rel='icon' href={shop_logo} />
+
       </Head>
-   
       {/* gift valy  */}
-      {loading && <PageLoader/>}
-      {pageInfo.theme !== null && pageInfo?.theme?.name == 1 && <Landing_1 shop_info={shop_info}  pageInfo={pageInfo} product={pageInfo.product} visitorID={visitorID} />}
+      {loading && <PageLoader />}
+      {pageInfo.theme !== null && pageInfo?.theme?.name == 1 && <Landing_1 shop_info={shop_info} pageInfo={pageInfo} product={pageInfo.product} visitorID={visitorID} />}
       {/* ProbashiPackage -2 */}
-      {pageInfo.theme !== null && pageInfo?.theme?.name == 2 && <Landing_2 shop_info={shop_info}  pageInfo={pageInfo} product={pageInfo.product} visitorID={visitorID} />}
+      {pageInfo.theme !== null && pageInfo?.theme?.name == 2 && <Landing_2 shop_info={shop_info} pageInfo={pageInfo} product={pageInfo.product} visitorID={visitorID} />}
       {/* mango -3 */}
-      {pageInfo.theme !== null && pageInfo?.theme?.name == 3 && <Landing_3 shop_info={shop_info}  pageInfo={pageInfo} product={pageInfo.product} visitorID={visitorID} />}
+      {pageInfo.theme !== null && pageInfo?.theme?.name == 3 && <Landing_3 shop_info={shop_info} pageInfo={pageInfo} product={pageInfo.product} visitorID={visitorID} />}
       {/* green tea-4  */}
-      {pageInfo.theme !== null && pageInfo?.theme?.name == 4 && <Landing_4 shop_info={shop_info}  pageInfo={pageInfo} product={pageInfo.product} visitorID={visitorID} />}
+      {pageInfo.theme !== null && pageInfo?.theme?.name == 4 && <Landing_4 shop_info={shop_info} pageInfo={pageInfo} product={pageInfo.product} visitorID={visitorID} />}
       {/* bike store -5 */}
-      {pageInfo.theme !== null && pageInfo?.theme?.name == 5 && <Landing_5 shop_info={shop_info}  pageInfo={pageInfo} product={pageInfo.product} visitorID={visitorID} />}
+      {pageInfo.theme !== null && pageInfo?.theme?.name == 5 && <Landing_5 shop_info={shop_info} pageInfo={pageInfo} product={pageInfo.product} visitorID={visitorID} />}
       {/* dron -6 */}
-      {pageInfo.theme !== null && pageInfo?.theme?.name == 6 && <Landing_6 shop_info={shop_info}  pageInfo={pageInfo} product={pageInfo.product} visitorID={visitorID} />}
+      {pageInfo.theme !== null && pageInfo?.theme?.name == 6 && <Landing_6 shop_info={shop_info} pageInfo={pageInfo} product={pageInfo.product} visitorID={visitorID} />}
       {/* hafsa  -7*/}
-      {pageInfo.theme !== null && pageInfo?.theme?.name == 7 && <Landing_7 shop_info={shop_info}  pageInfo={pageInfo} product={pageInfo.product} visitorID={visitorID} />}
+      {pageInfo.theme !== null && pageInfo?.theme?.name == 7 && <Landing_7 shop_info={shop_info} pageInfo={pageInfo} product={pageInfo.product} visitorID={visitorID} />}
       {/* mani bag -8  */}
-      {pageInfo.theme !== null && pageInfo?.theme?.name == 8 && <Landing_8 shop_info={shop_info}  pageInfo={pageInfo} product={pageInfo.product} visitorID={visitorID} />}
+      {pageInfo.theme !== null && pageInfo?.theme?.name == 8 && <Landing_8 shop_info={shop_info} pageInfo={pageInfo} product={pageInfo.product} visitorID={visitorID} />}
       {/* sarii -9 */}
-      {pageInfo.theme !== null && pageInfo?.theme?.name == 9 && <Landing_9 shop_info={shop_info}  pageInfo={pageInfo} product={pageInfo.product} visitorID={visitorID} />}
+      {pageInfo.theme !== null && pageInfo?.theme?.name == 9 && <Landing_9 shop_info={shop_info} pageInfo={pageInfo} product={pageInfo.product} visitorID={visitorID} />}
       {/* hunny -10 */}
-      {pageInfo.theme !== null && pageInfo?.theme?.name == 10 && <Landing_10 shop_info={shop_info}  pageInfo={pageInfo} product={pageInfo.product} visitorID={visitorID} />}
+      {pageInfo.theme !== null && pageInfo?.theme?.name == 10 && <Landing_10 shop_info={shop_info} pageInfo={pageInfo} product={pageInfo.product} visitorID={visitorID} />}
       {/* Sundorbon Hunny honney -11  */}
-      {pageInfo.theme !== null && pageInfo?.theme?.name == 11 && <Landing_11 shop_info={shop_info}  pageInfo={pageInfo} product={pageInfo.product} visitorID={visitorID} />}
+      {pageInfo.theme !== null && pageInfo?.theme?.name == 11 && <Landing_11 shop_info={shop_info} pageInfo={pageInfo} product={pageInfo.product} visitorID={visitorID} />}
       {/* hunny nut -12 */}
-      {pageInfo.theme !== null && pageInfo?.theme?.name == 12 && <Landing_12 shop_info={shop_info}  pageInfo={pageInfo} product={pageInfo.product} visitorID={visitorID} />}
+      {pageInfo.theme !== null && pageInfo?.theme?.name == 12 && <Landing_12 shop_info={shop_info} pageInfo={pageInfo} product={pageInfo.product} visitorID={visitorID} />}
       {/* hunny nut B -13 */}
-      {pageInfo.theme !== null && pageInfo?.theme?.name == 13 && <Landing_13 shop_info={shop_info}  pageInfo={pageInfo} product={pageInfo.product} visitorID={visitorID} />}
+      {pageInfo.theme !== null && pageInfo?.theme?.name == 13 && <Landing_13 shop_info={shop_info} pageInfo={pageInfo} product={pageInfo.product} visitorID={visitorID} />}
       {/* //mosla-14 */}
-      {pageInfo.theme !== null && pageInfo?.theme?.name == 14 && <Landing_14 shop_info={shop_info}  pageInfo={pageInfo} product={pageInfo.product} visitorID={visitorID} />}
+      {pageInfo.theme !== null && pageInfo?.theme?.name == 14 && <Landing_14 shop_info={shop_info} pageInfo={pageInfo} product={pageInfo.product} visitorID={visitorID} />}
       {/* /T-Price  -15*/}
-      {pageInfo.theme !== null && pageInfo?.theme?.name == 15 && <Landing_15 shop_info={shop_info}  pageInfo={pageInfo} product={pageInfo.product} visitorID={visitorID} />}
+      {pageInfo.theme !== null && pageInfo?.theme?.name == 15 && <Landing_15 shop_info={shop_info} pageInfo={pageInfo} product={pageInfo.product} visitorID={visitorID} />}
       {/* //jenish pant -16 */}
-      {pageInfo.theme !== null && pageInfo?.theme?.name == 16 && <Landing_16 shop_info={shop_info}  pageInfo={pageInfo} product={pageInfo.product} visitorID={visitorID} />}
+      {pageInfo.theme !== null && pageInfo?.theme?.name == 16 && <Landing_16 shop_info={shop_info} pageInfo={pageInfo} product={pageInfo.product} visitorID={visitorID} />}
       {/* //shoes boys -17 */}
-      {pageInfo.theme !== null && pageInfo?.theme?.name == 17 && <Landing_17 shop_info={shop_info}  pageInfo={pageInfo} product={pageInfo.product} visitorID={visitorID} />}
+      {pageInfo.theme !== null && pageInfo?.theme?.name == 17 && <Landing_17 shop_info={shop_info} pageInfo={pageInfo} product={pageInfo.product} visitorID={visitorID} />}
       {/* //ladish bag -18  */}
       {pageInfo.theme !== null && pageInfo?.theme?.name == 18 && <Landing_18 shop_info={shop_info} pageInfo={pageInfo} product={pageInfo.product} visitorID={visitorID} />}
       {/* // cream -19  */}
       {pageInfo.theme !== null && pageInfo?.theme?.name == 19 && <Landing_19 shop_info={shop_info} pageInfo={pageInfo} product={pageInfo.product} visitorID={visitorID} />}
       {/* landing 20 watch*/}
-      {pageInfo.theme !== null && pageInfo?.theme?.name == 20 && <Landing_20 shop_info={shop_info}  pageInfo={pageInfo} product={pageInfo.product} visitorID={visitorID} />}
+      {pageInfo.theme !== null && pageInfo?.theme?.name == 20 && <Landing_20 shop_info={shop_info} pageInfo={pageInfo} product={pageInfo.product} visitorID={visitorID} />}
       {/* daymond -21  */}
       {pageInfo.theme !== null && pageInfo?.theme?.name == 21 && <Landing_21 shop_info={shop_info} pageInfo={pageInfo} product={pageInfo.product} visitorID={visitorID} />}
       {/* sarisa oil -22 */}
@@ -201,6 +213,26 @@ const Page = () => {
       {pageInfo.theme !== null && pageInfo?.theme?.name == 26 && <Landing_26 shop_info={shop_info} pageInfo={pageInfo} product={pageInfo.product} visitorID={visitorID} />}
       {/* lunge -27 */}
       {pageInfo.theme !== null && pageInfo?.theme?.name == 27 && <Landing_27 shop_info={shop_info} pageInfo={pageInfo} product={pageInfo.product} visitorID={visitorID} />}
+
+      {pageInfo.theme !== null && pageInfo?.theme?.name == 31 && <Landing_31 shop_info={shop_info} pageInfo={pageInfo} product={pageInfo.product} visitorID={visitorID} />}
+
+      {pageInfo.theme !== null && pageInfo?.theme?.name == 32 && <Landing_32 shop_info={shop_info} pageInfo={pageInfo} product={pageInfo.product} visitorID={visitorID} />}
+
+      {pageInfo.theme !== null && pageInfo?.theme?.name == 33 && <Landing_33 shop_info={shop_info} pageInfo={pageInfo} product={pageInfo.product} visitorID={visitorID} />}
+
+      {pageInfo.theme !== null && pageInfo?.theme?.name == 34 && <Landing_34 shop_info={shop_info} pageInfo={pageInfo} product={pageInfo.product} visitorID={visitorID} />}
+
+      {pageInfo.theme !== null && pageInfo?.theme?.name == 35 && <Landing_35 shop_info={shop_info} pageInfo={pageInfo} product={pageInfo.product} visitorID={visitorID} />}
+
+      {pageInfo.theme !== null && pageInfo?.theme?.name == 36 && <Landing_36 shop_info={shop_info} pageInfo={pageInfo} product={pageInfo.product} visitorID={visitorID} />}
+
+      {pageInfo.theme !== null && pageInfo?.theme?.name == 37 && <Landing_37 shop_info={shop_info} pageInfo={pageInfo} product={pageInfo.product} visitorID={visitorID} />}
+
+      {pageInfo.theme !== null && pageInfo?.theme?.name == 38 && <Landing_38 shop_info={shop_info} pageInfo={pageInfo} product={pageInfo.product} visitorID={visitorID} />}
+
+      {pageInfo.theme !== null && pageInfo?.theme?.name == 555 && <CustomLending shop_info={shop_info} pageInfo={pageInfo} product={pageInfo.product} visitorID={visitorID} />}
+
+
 
     </>
   );

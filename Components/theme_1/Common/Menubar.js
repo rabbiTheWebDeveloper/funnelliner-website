@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import { Col, Container, Dropdown, Row, Form } from "react-bootstrap";
 import { BiCategory } from "react-icons/bi";
@@ -23,6 +22,7 @@ const Menubar = ({ shopInfo }) => {
   const { fb, instagram, youtube, twitter } = shopInfo;
   const router = useRouter()
   const cartlength = useSelector((state) => state.cart?.cartItems.length);
+  const [searchInput, setSearchInput] = useState('')
 
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -32,9 +32,7 @@ const Menubar = ({ shopInfo }) => {
   const [categories, setCategories] = useState([]);
 
   async function handleFetchCategories(headers) {
-
-    // ${process.env.API_URL}v1/customer/categories
-    const response = await fetch(`${process.env.API_URL}v1/customer/categories`, {
+    const response = await fetch(`${process.env.API_URL}/customer/categories`, {
       headers: headers,
     });
     const data = await response.json();
@@ -75,15 +73,15 @@ const Menubar = ({ shopInfo }) => {
             <div className='Multipage__1__ManubarItem1'>
               <Link href={`/${shopInfo?.domain}`}>
                 <img
-                  src={shopInfo?.shop_logo?.name}
-                  alt=''
+                  src={shopInfo?.shop_logo}
+                  alt='Shop Logo'
                 />
               </Link>
             </div>
             <div className='Multipage__1__ManubarItem2'>
               <div className='Multipage__1__ManubarInputDiv'>
-                <input type="text" placeholder="Search here..." />
-                <button onClick={handleClickSearchBtn} type="button" ><GoSearch /></button>
+                <input type="text" placeholder="Search here..." onChange={(e) => setSearchInput(e.target.value)} />
+                <button onClick={() => router.push(`/${shopInfo?.domain}/shop?search=${searchInput}`)} type="button" ><GoSearch /></button>
               </div>
             </div>
             <div className='Multipage__1__ManubarItem3'>
@@ -114,7 +112,7 @@ const Menubar = ({ shopInfo }) => {
                   <div className='Multipage__1__DropItem'>
                     {categories?.map((item, index) => {
                       return (
-                        <Dropdown.Item key={index} href={`#/${item.name}`}>{item.name}</Dropdown.Item>
+                        <Dropdown.Item key={index} onClick={() => router.push(`/${shopInfo?.domain}/shop?category=${item.name.split(" ").join("-")}&shop=${item?.shop_id}&id=${item?.id}`)}>{item.name}</Dropdown.Item>
                       );
                     })}
                   </div>
@@ -153,8 +151,8 @@ const Menubar = ({ shopInfo }) => {
               </div>
               <div className='Multipage__1__ManubarItem2'>
                 <div className='Multipage__1__ManubarInputDiv'>
-                  <input type="text" placeholder="Search here..." />
-                  <button  onClick={handleClickSearchBtn} type="button" ><GoSearch /></button>
+                  <input type="text" placeholder="Search here..." onChange={(e) => setSearchInput(e.target.value)} />
+                  <button onClick={() => router.push(`/shop?search=${searchInput}`)} type="button" ><GoSearch /></button>
                 </div>
               </div>
             </div>
@@ -174,8 +172,8 @@ const Menubar = ({ shopInfo }) => {
                     <Offcanvas.Title>
                       <Link href={`/${shopInfo?.domain}`}>
                         <img className="multi_page_one_mobile_logo"
-                          src={shopInfo?.shop_logo?.name}
-                          alt=''
+                          src={shopInfo?.shop_logo}
+                          alt='Shop Logo'
                         />
                       </Link>
                     </Offcanvas.Title>
@@ -192,7 +190,7 @@ const Menubar = ({ shopInfo }) => {
 
                         </li>
                         <li>
-                        <Link href={`/${shopInfo?.domain}/about_us`}>About Us</Link>
+                          <Link href={`/${shopInfo?.domain}/about_us`}>About Us</Link>
                         </li>
                       </ul>
                     </div>
@@ -202,8 +200,8 @@ const Menubar = ({ shopInfo }) => {
                 <Link href={`/${shopInfo?.domain}`}>
                   <img
                     className="multi_page_one_mobile_logo"
-                    src={shopInfo?.shop_logo?.name}
-                    alt=''
+                    src={shopInfo?.shop_logo}
+                    alt='Shop Logo'
                   />
                 </Link>
               </div>

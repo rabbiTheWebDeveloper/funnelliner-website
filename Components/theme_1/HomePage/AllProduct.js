@@ -1,111 +1,120 @@
-import Image from "next/image";
 import Link from "next/link";
 import {
-  Col,
   Container,
-  Dropdown,
-  Nav,
-  Row,
-  Tab,
-  Tabs,
-  Form,
 } from "react-bootstrap";
-import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
-import { BiCategory } from "react-icons/bi";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../../redux/stateSlices/CartSlice";
-import { baseUrl } from "../../../constant/constant";
 
-import ContentEditable from "react-contenteditable";
-import Context from "../../Context";
 const axios = require("axios");
 import { useRouter } from "next/router";
 
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
+import Cookies from "js-cookie";
 
 const AllProduct = () => {
-
   const dispatch = useDispatch();
   const router = useRouter();
-  const [allProducts, setAllProducts] = useState();
-  const [allCategories, setAllCategories] = useState([]);
+  const [allProducts, setAllProducts] = useState([]);
+  const [shop_name, setShop_name] = useState("");
+  const ShopID = Cookies.get("shop_id");
 
-  const [shopId, setShopId] = useState();
-  const [shop_name, setShop_name] = useState();
-
-  const handleFetchProduct = async (headers) => {
-
-    try {
-      let res = await axios({
-        method: "get",
-        url: `${process.env.API_URL}v1/customer/products`,
-        headers: headers,
-      });
-      setAllProducts(res.data.data);
-    } catch (err) {
-      // console.log("all products", err.response.data.msg);
-    }
-  };
-  const handleFetchCategories = async (headers) => {
-    try {
-      let res = await axios({
-        method: "get",
-        url: `${process.env.API_URL}v1/customer/products`,
-        headers: headers,
-      });
-      setAllCategories(res?.data?.data);
-
-    } catch (err) {
-      // console.log("all products", err.response.data.msg);
-    }
-  };
   useEffect(() => {
     const headers = {
       "shop-id": localStorage.getItem("shop_id"),
     };
-    handleFetchProduct(headers);
-    handleFetchCategories(headers)
-    setShopId(localStorage.getItem("shop_id"));
     setShop_name(localStorage.getItem("shop_name"));
-  }, []);
 
-  const handleAddToCart = (product) => {
-    dispatch(addToCart(product));
+    const fetchData = async () => {
+      let response;
+      if (router?.query?.id !== undefined && router?.query?.shop !== undefined) {
+        response = await axios.get(
+          `${process.env.API_URL}/customer/category-product/list/${router?.query?.id}`,
+          {
+            headers: {
+              "shop-id": router?.query?.shop,
+            },
+          }
+        );
+      } if (router?.query?.search !== undefined) {
+        response = await axios.get(
+          `${process.env.API_URL}/customer/product-search?search=${router?.query?.search}`,
+          {
+            headers: {
+              "shop-id": ShopID,
+            },
+          }
+        );
+      }
+      else {
+        response = await axios.get(
+          `${process.env.API_URL}/customer/products`,
+          {
+            headers: headers,
+          }
+        );
+      }
+      if (response?.data?.success) {
+        setAllProducts(response?.data?.data);
+      }
+    };
+
+    fetchData();
+  }, [router?.query?.id, router?.query?.shop]);
+
+  const handleAddToCart = (product, detailsPageUrl) => {
+    if (product?.attributes?.length) {
+      router.push(detailsPageUrl)
+    } else {
+      dispatch(addToCart(product));
+    }
   };
-  const handleBuyNow = (product) => {
-    dispatch(addToCart(product));
+
+  const handleBuyNow = (product, detailsPageUrl) => {
+    if (product?.attributes?.length) {
+      router.push(detailsPageUrl)
+    } else {
+      dispatch(addToCart(product));
+      router.push(`/${shop_name}/checkout`)
+    }
   };
+
+
   return (
-
     <section className="Multipage__1">
       <Container>
         <div className='Multipage__1__AllProductDiv'>
-          <h2>All Products</h2>
+          <h2>All Products {router?.query?.category !== undefined ? `of ${router?.query?.category} Category` : null}</h2>
         </div>
         <div className="Multipage__1__grid-container">
 
-          {Array.isArray(allProducts) ?
+          {allProducts?.length ?
             allProducts.map((item, index) => {
               return (
                 <div className="Multipage__1__grid-item" key={item.id}>
                   <div className="Multipage__1__grid-itemAbs">
                   </div>
                   <div className="Multipage__1__CardImgBox">
-                    <Link href={`/${shop_name}/details/${item?.id}`}>
-                      <img src={item?.main_image?.name} alt="" />
+                    <Link href={`/${shop_name}/details/${item?.slug}?id=${item?.id}`}>
+                      <img src={item?.main_image} alt={item?.product_name} />
                     </Link>
                   </div>
                   <div className="Multipage__1__CardTxtBox">
-                    <h4>BDT  {item?.price} <span>{item?.discount}</span></h4>
-                    <h5>{item?.product_name}</h5>
-                    <Link onClick={() => handleAddToCart(item)} href='#' className="bg6"> Add To Cart</Link>
-                    <Link onClick={() => handleBuyNow(item)} href={`/${shop_name}/checkout`} className="bg5"> Order Now</Link>
+                    <h5> <Link href={`/${shop_name}/details/${item?.slug}?id=${item?.id}`}> {item?.product_name} </Link></h5>
+                    <h4>৳ {item?.discounted_price }
+                      {
+                        <del>৳{item?.price}</del>
+                      }
+
+                    </h4>
+                    <div className="d_flex MultiDuelBtn">
+                      <Link onClick={() => handleAddToCart(item, `/${shop_name}/details/${item?.slug}?id=${item?.id}`)} href='#' className="bg6"> Add To Cart</Link>
+                      <Link onClick={() => handleBuyNow(item, `/${shop_name}/details/${item?.slug}?id=${item?.id}`)} href="#" className="bg5"> Order Now</Link>
+                    </div>
                   </div>
                 </div>
               );
-            }) : null
+            }) : <div style={{ width: '100%' }}>Products Not Found</div>
           }
 
         </div>

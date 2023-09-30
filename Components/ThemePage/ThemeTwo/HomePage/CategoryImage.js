@@ -9,14 +9,13 @@ import "swiper/css/pagination";
 import "swiper/css/grid";
 import { Autoplay, Pagination, Navigation, Grid } from "swiper";
 import Link from "next/link";
-import { baseUrl } from "../../../../constant/constant";
 
 const CategoryImage = () => {
   const [categories, setCategories] = useState([]);
 
   async function handleFetchCategories(headers) {
     const response = await fetch(
-      `${process.env.API_URL}v1/customer/categories`,
+      `${process.env.API_URL}/customer/categories`,
       { headers: headers }
     );
     const data = await response.json();

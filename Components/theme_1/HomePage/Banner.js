@@ -1,18 +1,16 @@
-import Image from "next/image";
-import Link from "next/link";
-import { Col, Container, Dropdown, Row } from "react-bootstrap";
-import { BiCategory } from "react-icons/bi";
-
-// Import Swiper React components
-import React, { useRef, useState } from "react";
+import { Col, Container, Row } from "react-bootstrap";
+import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css/pagination";
-import "swiper/css";
-import { Autoplay, Pagination, Navigation, } from "swiper";
+import "swiper/swiper-bundle.min.css"; // Import main Swiper styles
+import SwiperCore, { Autoplay, Pagination } from "swiper";
+import Link from "next/link";
+
+// Import the Swiper styles and components
+SwiperCore.use([Autoplay, Pagination]);
 
 const Banner = ({ shopInfo }) => {
   return (
-    <section >
+    <section>
       <div className='Multipage__1__SwiperDiv'>
         <Container>
           <Row>
@@ -25,39 +23,39 @@ const Banner = ({ shopInfo }) => {
                   }}
                   centeredSlides={true}
                   autoplay={{
-                    delay: 100,
+                    delay: 3000,
                     disableOnInteraction: true,
                   }}
-                  modules={[Pagination]}
                   className='mySwiper'
                 >
-                  {
-                    shopInfo?.slider != null && shopInfo?.slider?.length > 0 && shopInfo?.slider?.map((item, index) => <SwiperSlide key={index}>
+                  {shopInfo?.slider?.length > 0 ? (
+                    shopInfo.slider.map((item, index) => (
+                      <SwiperSlide key={index}>
+                        <div className='BannerItem'>
+                          <Link href={item?.link ? item.link : '#'}>
+                          <img src={item.image} alt='Banner' />
+                          </Link>
+                        
+                        </div>
+                      </SwiperSlide>
+                    ))
+                  ) : (
+                    <SwiperSlide>
                       <div className='BannerItem'>
-                        <img src={item?.image} alt='Banner' />
-                      </div>
-                    </SwiperSlide>)
-                  }
-
-                  {
-                    shopInfo?.slider.length === 0 && <SwiperSlide>
-                      <div className='BannerItem'>
-                        <img src='/images/multipage-1/banner.png' alt='Banner' />
+                        <img
+                          src='/images/multipage-1/banner.jpg'
+                          alt='Banner'
+                        />
                       </div>
                     </SwiperSlide>
-                  }
-
-                  
+                  )}
                 </Swiper>
               </div>
             </Col>
           </Row>
         </Container>
       </div>
-
     </section>
-
-
   );
 };
 

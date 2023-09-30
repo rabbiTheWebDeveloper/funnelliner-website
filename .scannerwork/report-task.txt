@@ -1,0 +1,6 @@
+projectKey=FunnelLiner-client-website-01
+serverUrl=http://localhost:9099
+serverVersion=10.1.0.73491
+dashboardUrl=http://localhost:9099/dashboard?id=FunnelLiner-client-website-01
+ceTaskId=AYmGsxIGGHXaW-iwWjvN
+ceTaskUrl=http://localhost:9099/api/ce/task?id=AYmGsxIGGHXaW-iwWjvN

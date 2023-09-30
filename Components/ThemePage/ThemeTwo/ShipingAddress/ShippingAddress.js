@@ -7,9 +7,7 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import { baseUrl, shopId } from "../../../../constant/constant";
 import { TbCurrencyTaka } from "react-icons/tb";
-// ../../../constant/constant
 import {
   addToCart,
   clearCart,
@@ -17,7 +15,6 @@ import {
   getTotals,
   removeFromCart,
 } from "../../../../redux/stateSlices/CartSlice";
-// ../../../redux/stateSlices/CartSlice
 import { MdOutlineClose } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
@@ -113,12 +110,11 @@ const handleChange = e => {
       product_qty: cartQuantitys,
     };
     axios
-      .post(`${baseUrl}/api/v1/customer/order/store`, postBody, {
+      .post(`${process.env.API_URL}/customer/order/store`, postBody, {
         headers: headers,
       })
       .then((res) => {
         if (res.status === 200) {
-          // console.log("order res", res?.data?.data?.id)
           router.push(`/${shopName}/order_successfull/${res?.data?.data?.id}`);
           handleClearCart();
         }

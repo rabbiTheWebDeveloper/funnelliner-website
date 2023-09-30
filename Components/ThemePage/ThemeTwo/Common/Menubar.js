@@ -33,9 +33,8 @@ const Menubar = ({ name, ...props }) => {
   const [categories, setCategories] = useState([]);
   const [shopName, setShopName] = useState();
   async function handleFetchCategories(headers) {
-    // ${process.env.API_URL}v1/customer/categories
     const response = await fetch(
-      `${process.env.API_URL}v1/customer/categories`,
+      `${process.env.API_URL}/customer/categories`,
       {
         headers: headers,
       }
@@ -53,7 +52,7 @@ const Menubar = ({ name, ...props }) => {
     };
 	setShopName(localStorage.getItem('shop_name'));
     handleFetchCategories(headers)
-    // .then((r) => console.log("r", r));
+
   }, []);
 
   //add to cart total item count

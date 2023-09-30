@@ -302,6 +302,12 @@
     color: #FB8C00;
 }
 
+.sign_up_otp_submit_btn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px
+}
 .OtpContent .OtpCode input:focus{
     outline: unset;
 }
@@ -333,7 +339,7 @@
     font-size: 20px;
     line-height: 30px;
     font-weight: 600;
-    color: var(--white);
+    color: #FFFFFF;
     border: none;
 }
 

@@ -29,7 +29,7 @@ const Footer = ({ shopInfo }) => {
                         <div className="Multipage__1__AddressDivItem ">
 
                             <div className="Multipage__1__text">
-                            <img src={shopInfo?.shop_logo?.name} alt="" />
+                            <img src={shopInfo?.shop_logo} alt="Shop Logo" />
                             </div>
 
                             <div className="Multipage__1__text2">

@@ -1,88 +1,61 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 //theme_1 components
 import MenuBar from "../../../Components/theme_1/Common/Menubar";
 import Footer from "../../../Components/theme_1/Common/Footer";
 import ProductDescription from "../../../Components/theme_1/ProductDetails/ProductDescription";
-
-
+import Head from 'next/head'
 const axios = require("axios");
-import { useRouter } from "next/router";
-import PageLoader from "../../../Components/Common/PageLoader/PageLoader";
-const index = () => {
-  const [loading, setLoading] = useState();
-  const [shopInfo, setShopInfo] = useState()
-  const [singleProduct, setSingleProduct] = useState({});
-  const router = useRouter();
-  const productID = router.query.productID;
-
-  const { shopName } = router.query;
-  const headers = {
-    domain: shopName,
-  };
-  const getShopInfo = async () => {
-    setLoading(true)
-    try {
-      const shopInfo = await axios.post(
-        `${process.env.API_URL}v1/shops/info`,
-        {},
-        { headers: headers }
-      );
-      const shopData = shopInfo?.data?.data;
-      setShopInfo(shopData);
-      setLoading(false)
-    } catch (err) {
-      console.log("err", err)
-    }
-  };
-  useEffect(() => {
-    if (shopName !== undefined) {
-      getShopInfo();
-    }
-  }, [shopName]);
-
-
-  const handleFetchProductById = async (shop_id) => {
-    try {
-      const response = await fetch(
-        `${process.env.API_URL}v1/customer/products/${productID}`,
-        {
-          method: "get",
-          headers: {
-            "shop-id": shop_id,
-          },
-        }
-      );
-      const data = await response?.json();
-      setSingleProduct(data.data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-  useEffect(() => {
-    if (productID !== undefined) {
-      handleFetchProductById(localStorage.getItem("shop_id"));
-    }
-  }, [productID]);
-
-
+const index = ({ shopInfo, product, pageUrl }) => {
   return (
     <>
-      {
-        loading && <PageLoader/>
-      }
-      {shopInfo?.theme_id == 201 && (
-        <>
-          <main>
-            <MenuBar shopInfo={shopInfo}/>
-            <ProductDescription data={singleProduct}></ProductDescription>
-            <Footer shopInfo={shopInfo}></Footer>
-          </main>
-        </>
+      <Head>
+        <title>{product?.product_name}</title>
+        <meta property="og:title" content={product?.product_name} />
+        <meta property="og:image" content={product?.main_image} />
+        <meta property="og:url" content={pageUrl} />
+        <meta property="og:type" content="product" />
+      </Head>
+
+      {shopInfo?.theme_id === 201 || shopInfo?.theme_id === "201" && (
+        <main>
+          <MenuBar shopInfo={shopInfo} />
+          <ProductDescription data={product} pageUrl={pageUrl} />
+          <Footer shopInfo={shopInfo} />
+        </main>
       )}
-     
+
     </>
   );
 };
+
+export async function getServerSideProps(context) {
+  const pageUrl = context.req.headers.referer
+  try {
+    const shopInfoResponse = await axios.post(`${process.env.API_URL}/shops/info`, {},
+      {
+        headers: { domain: context.params.shopName }
+      })
+    const productInfo = await axios.get(`${process.env.API_URL}/customer/products/${context.query.id}`,
+      {
+        headers: { "shop-id": shopInfoResponse?.data?.data?.shop_id }
+      })
+    return {
+      props: {
+        shopInfo: shopInfoResponse?.data?.data,
+        product: productInfo?.data?.data,
+        pageUrl: pageUrl,
+      }
+    }
+  } catch (error) {
+    return {
+      props: {
+        shopInfo: null,
+        product: null,
+        pageUrl: null,
+      },
+    }
+  }
+}
 
 export default index;
 

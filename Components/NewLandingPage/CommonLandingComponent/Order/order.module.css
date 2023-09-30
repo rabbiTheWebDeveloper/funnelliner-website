@@ -280,6 +280,12 @@
 }
 
 
+/* mobile */
+
+.Payment2{
+    display: none ;
+}
+
 
 
 @media (max-width: 1339px) {
@@ -316,7 +322,7 @@
         Media
     ------------------------------------------------------------------------------------------------------
     ------------------------------------------------------------------------------------------------------*/
-@media (max-width: 900px) {
+@media (max-width: 991px) {
 
     .OrderConfirmRight {
         margin-top: 50px;
@@ -330,6 +336,22 @@
         width: 100%;
     }
 
+    /* Mobile */
+
+    .Payment{
+        display: none;
+    }
+        
+    .Payment2{
+        display: block  ;
+    }
+
+   .CustomeInput2{
+    padding: 5px 30px !important;
+   }
+
+
+
 }
 
 @media (max-width: 500px) {
@@ -339,6 +361,7 @@
         padding: 50px 0px !important;
 
     }
+
 
     .OrderConfirmRight ul .left {
         display: block;

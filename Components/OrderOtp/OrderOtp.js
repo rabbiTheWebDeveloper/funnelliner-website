@@ -35,7 +35,7 @@ const OrderOtp = ({restOtpLoading, handldeResendOTP,timeLeft, show, handleClose,
         };
         setIsLoading(true)
         axios
-            .post(`${process.env.API_URL}v1/customer/order/verify`, postBody, {
+            .post(`${process.env.API_URL}/customer/order/verify`, postBody, {
                 headers: { "shop-id": shopID },
             })
             .then((res) => {
@@ -73,7 +73,7 @@ const OrderOtp = ({restOtpLoading, handldeResendOTP,timeLeft, show, handleClose,
                             </Form>
                             <div style={{ display: "flex", justifyContent: "space-between", marginTop: "16px" }}>
                                 {timeLeft > 0 ?<p style={{paddingTop: "7px"}}><b>Time Remaining: {timeLeft} seconds</b></p>:<p style={{paddingTop: "7px"}}><b style={{color:"red"}}></b></p>}
-                                <Button disabled={restOtpLoading} onClick={handldeResendOTP} className={style.ResendOTPBtn} size="sm">Resend OTP</Button>
+                                <Button disabled={restOtpLoading || timeLeft !==0} onClick={handldeResendOTP} className={style.ResendOTPBtn} size="sm">Resend OTP</Button>
                             </div>
                             <Button disabled={isLoading || otp.length < 6 || timeLeft===0} className={isLoading && style.OrderOTP_btn} onClick={handleSubmitOTP} size="lg" style={{background:"#894BCA",border:"0", marginTop: "15px", width: "100%", padding: isLoading ? "0px 0px" : "5px 0px" }} >
                                 {isLoading === !true && "Submit"}
